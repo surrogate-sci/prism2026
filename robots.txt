@@ -1,1 +1,1 @@
-Sitemap: https://surrogate-sci.github.io/science-pub-template/sitemap.xml
+Sitemap: https://surrogate-sci.github.io/prism2026/sitemap.xml
