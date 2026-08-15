@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: If you use this publication, please cite it using the metadata below.
-title: "PRISM 2026: Scientific Causal Reasoning for Interpretability"
+title: "Scientific Causal Reasoning for Interpretability"
 authors:
   - family-names: "PRISM 2026 contributors"
     affiliation: Surrogate Science
@@ -8,7 +8,7 @@ repository-code: https://github.com/surrogate-sci/prism2026
 url: https://surrogate-sci.github.io/prism2026/
 preferred-citation:
   type: article
-  title: "PRISM 2026: Scientific Causal Reasoning for Interpretability"
+  title: "Scientific Causal Reasoning for Interpretability"
   authors:
     - family-names: "PRISM 2026 contributors"
       affiliation: Surrogate Science

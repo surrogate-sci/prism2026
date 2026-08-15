@@ -2,21 +2,21 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "PRISM 2026: Scientific Causal Reasoning for Interpretability –",
+    "title": "Scientific Causal Reasoning for Interpretability –",
     "section": "",
     "text": "NoteAI usage disclosure\n\n\n\n\n\nAI usage disclosure incomplete. Before submission or release, complete ai-use.yml. Every first and last author must describe their exact AI usage, and every remaining author must read the complete disclosure and confirm it in that file."
   },
   {
     "objectID": "index.html#purpose",
     "href": "index.html#purpose",
-    "title": "PRISM 2026: Scientific Causal Reasoning for Interpretability –",
+    "title": "Scientific Causal Reasoning for Interpretability –",
     "section": "Purpose",
     "text": "Purpose\nOnce edited by you, this file will become your publication. Alternatively, if you already have a notebook written that you’re trying to transform into a pub, replace this file with your own, but be sure to add the YAML front matter (the first cell) to your notebook.\nYour pub should begin with a section titled Purpose where you, as briefly as possible, explain why you did the work described in the pub, the key takeaway, your primary audience, and how you think it could be useful to them/why you’re sharing it."
   },
   {
     "objectID": "index.html#learn-more",
     "href": "index.html#learn-more",
-    "title": "PRISM 2026: Scientific Causal Reasoning for Interpretability –",
+    "title": "Scientific Causal Reasoning for Interpretability –",
     "section": "Learn more",
     "text": "Learn more\nRefer to Demo to learn about possible syntax."
   },
@@ -67,7 +67,7 @@
     "href": "pages/CONTRIBUTING.html",
     "title": "Contributing",
     "section": "",
-    "text": "PRISM students and collaborators contribute through focused branches and reviewed pull requests. Ask a maintainer before making a large structural change or changing authorship, licensing, or publication policy.\n\n\n\n\n\n\nNote\n\n\n\nDiscuss authorship and contributor credit early. A merged contribution does not by itself determine author order or authorship.\n\n\n\n\nStart from an up-to-date main branch and use a short, descriptive branch name:\ngit switch main\ngit pull --ff-only\ngit switch -c initials/short-description\nKeep unrelated edits in separate pull requests. Never commit credentials, private correspondence, reviewer material, session notes, or local agent artifacts.\n\n\n\n\nWrite the main narrative in index.ipynb.\nPut reusable analysis code in src/analysis/.\nAdd BibTeX records to ref.bib and cite them in the manuscript with Quarto citation syntax.\nUpdate authors.yml when the working author roster changes.\nDo not change the Warm Journal default or either publication theme during a writing contribution.\n\n\n\n\nBefore release, the team must complete both processes:\n\nFollow the CRediT contribution guide. The issue form records the ordered roster, all 14 CRediT roles, and author approval.\nComplete ai-use.yml according to the AI usage guide. Every first and last author supplies an exact statement. Every other author reads the full disclosure and confirms that review.\n\nKeep ai-use.yml at status: draft while statements are incomplete. Change it to complete only after the required authors have reviewed the generated disclosure.\n\n\n\nPreview both supported presentations of the same content:\nmake preview-warm\nmake preview-technical\nBefore requesting review, run:\nmake test\nmake render-warm\nmake render-technical\nIf code-cell results changed intentionally, run make execute and include the relevant _freeze/ updates. Review the rendered narrative, figures, citations, links, author display, and AI disclosure.\n\n\n\nPush your branch and open a pull request into main. In the description:\n\nsummarize the scientific or editorial change;\nidentify any new data, dependencies, or generated outputs;\nlist the checks and previews you ran;\nflag decisions that still need author or maintainer review; and\nrequest review from the appropriate mentor or collaborator.\n\nRespond to review comments on the same branch. Do not resolve scientific disagreements by silently rewriting another author’s claims; discuss them in the pull request.\n\n\n\nAfter review, a maintainer merges the pull request into main. GitHub Actions then rebuilds the site and updates the public PRISM 2026 publication. Releases and Zenodo deposits are separate, deliberate milestones; a routine merge does not create a DOI."
+    "text": "PRISM fellows and collaborators contribute through focused branches and reviewed pull requests. Ask a maintainer before making a large structural change or changing authorship, licensing, or publication policy.\n\n\n\n\n\n\nNote\n\n\n\nDiscuss authorship and contributor credit early. A merged contribution does not by itself determine author order or authorship.\n\n\n\n\nStart from an up-to-date main branch and use a short, descriptive branch name:\ngit switch main\ngit pull --ff-only\ngit switch -c initials/short-description\nKeep unrelated edits in separate pull requests. Never commit credentials, private correspondence, reviewer material, session notes, or local agent artifacts.\n\n\n\n\nWrite the main narrative in index.ipynb.\nPut reusable analysis code in src/analysis/.\nAdd BibTeX records to ref.bib and cite them in the manuscript with Quarto citation syntax.\nUpdate authors.yml when the working author roster changes.\nDo not change the Warm Journal default or either publication theme during a writing contribution.\n\n\n\n\nBefore release, the team must complete both processes:\n\nFollow the CRediT contribution guide. The issue form records the ordered roster, all 14 CRediT roles, and author approval.\nComplete ai-use.yml according to the AI usage guide. Every first and last author supplies an exact statement. Every other author reads the full disclosure and confirms that review.\n\nKeep ai-use.yml at status: draft while statements are incomplete. Change it to complete only after the required authors have reviewed the generated disclosure.\n\n\n\nPreview both supported presentations of the same content:\nmake preview-warm\nmake preview-technical\nBefore requesting review, run:\nmake test\nmake render-warm\nmake render-technical\nIf code-cell results changed intentionally, run make execute and include the relevant _freeze/ updates. Review the rendered narrative, figures, citations, links, author display, and AI disclosure.\n\n\n\nPush your branch and open a pull request into main. In the description:\n\nsummarize the scientific or editorial change;\nidentify any new data, dependencies, or generated outputs;\nlist the checks and previews you ran;\nflag decisions that still need author or maintainer review; and\nrequest review from the appropriate mentor or collaborator.\n\nRespond to review comments on the same branch. Do not resolve scientific disagreements by silently rewriting another author’s claims; discuss them in the pull request.\n\n\n\nAfter review, a maintainer merges the pull request into main. GitHub Actions then rebuilds the site and updates the public project publication. Releases and Zenodo deposits are separate, deliberate milestones; a routine merge does not create a DOI."
   },
   {
     "objectID": "pages/CONTRIBUTING.html#create-a-focused-branch",
@@ -109,7 +109,7 @@
     "href": "pages/CONTRIBUTING.html#publication",
     "title": "Contributing",
     "section": "",
-    "text": "After review, a maintainer merges the pull request into main. GitHub Actions then rebuilds the site and updates the public PRISM 2026 publication. Releases and Zenodo deposits are separate, deliberate milestones; a routine merge does not create a DOI."
+    "text": "After review, a maintainer merges the pull request into main. GitHub Actions then rebuilds the site and updates the public project publication. Releases and Zenodo deposits are separate, deliberate milestones; a routine merge does not create a DOI."
   },
   {
     "objectID": "pages/FAQ.html",

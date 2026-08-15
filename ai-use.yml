@@ -2,7 +2,7 @@
 # See developer-docs/AI_USAGE.md for instructions and policy.
 schema_version: 1
 status: draft
-manuscript: "PRISM 2026: Scientific Causal Reasoning for Interpretability"
+manuscript: "Scientific Causal Reasoning for Interpretability"
 
 # Include every first author, including co-first authors.
 first_authors: []
