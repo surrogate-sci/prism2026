@@ -6,11 +6,11 @@ This document explains how to set up the development environment for working wit
 
 This repository uses conda to manage the computational and build environment. If you don't have it installed (check with `conda --version`), you can find operating system-specific instructions for installing miniconda [here](https://docs.anaconda.com/miniconda/).
 
-When you're ready, run the following commands to create and activate the environment. Replace `[REPO-NAME]` with your repository name.
+When you're ready, run the following commands to create and activate the project environment.
 
 ```bash
-conda env create -n [REPO-NAME] --file env.yml
-conda activate [REPO-NAME]
+conda env create -n prism2026 --file env.yml
+conda activate prism2026
 ```
 
 (As you introduce dependencies to your publication, or if you already have your full set of dependencies, add them to `env.yml` with the version pinned.)

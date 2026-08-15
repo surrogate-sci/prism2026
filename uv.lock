@@ -3,6 +3,6 @@ revision = 3
 requires-python = ">=3.10"
 
 [[package]]
-name = "science-pub-template"
+name = "prism2026"
 version = "0.0.0"
 source = { editable = "." }

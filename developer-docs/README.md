@@ -1,24 +1,24 @@
 # Developer Documentation
 
-This directory contains documentation for developers who maintain or use the notebook publication template.
+This directory contains detailed guidance for PRISM publication authors and maintainers.
 
 ## Contents
 
-- [Quickstart Guide](QUICKSTART.md): **The most efficient way to get started** is to follow this guide.
+- [Student Quickstart](QUICKSTART.md): Clone, branch, write, preview, and request review.
 - [CRediT Author Contributions](CREDIT_CONTRIBUTIONS.md): Collect author-approved CRediT assignments and generate a contribution statement.
 - [Environment Setup Guide](ENVIRONMENT_SETUP.md): How to set up your development environment.
 - [Publishing Guide](PUBLISHING_GUIDE.md): How to publish your notebook publication.
-- [Template Architecture](TEMPLATE_ARCHITECTURE.md): Technical details about the structure and components of this template repository.
+- [Publication Architecture](TEMPLATE_ARCHITECTURE.md): Technical details about the repository structure and components.
 - [GitHub Actions](GITHUB_ACTIONS.md): Technical details about the GitHub Actions workflows that are used to build and publish the notebook publications.
-- [Template Development](TEMPLATE_DEVELOPMENT.md): Guide for developing the science-pub-template itself (extensions, demo notebook, `_quarto.yml`).
+- [Publication system development](TEMPLATE_DEVELOPMENT.md): Guide for changing extensions, the demo notebook, or `_quarto.yml`.
 
 ## Purpose
 
 These documents are intended to provide clarity on:
 
-1. How to properly set up and use the template
-2. Which files in the template are safe to edit and which should not be modified
-3. The overall architecture and dependencies of the template
+1. How to set up and contribute to the PRISM publication
+2. Which files authors should edit and which maintainers should review carefully
+3. The overall architecture and dependencies of the publication system
 4. The complete publishing workflow
 
-This documentation is particularly useful for developers who need to maintain or update the template itself, as well as for users who want a deeper understanding of how the template works.
+This documentation supports both student authors and maintainers who need a deeper understanding of how the publication works.

@@ -1,63 +1,43 @@
-## Quick Start
+# PRISM student quick start
 
-1. **Create a repo from this template**
+1. Clone the project:
 
-    In the top-right of this GitHub repo, select the green button that says "*Use this template*".
+   ```bash
+   git clone https://github.com/surrogate-sci/prism2026.git
+   cd prism2026
+   ```
 
-    Leave *Include all branches* unchecked. The publishing workflow creates the generated `gh-pages` branch when it is needed, so a new publication should begin from `main` only.
+2. Follow the [environment setup guide](ENVIRONMENT_SETUP.md).
 
-2. **Configure your publication**
+3. Create a focused branch from an up-to-date `main`:
 
-    * Replace the variables in `_variables.yml`.
-    * Feel free to edit the variables in `authors.yml`.
-      - Replace the example author information with the people and contributor roles for your publication before release.
+   ```bash
+   git switch main
+   git pull --ff-only
+   git switch -c initials/short-description
+   ```
 
-3. **Install Quarto**
+4. Write in `index.ipynb`, add citations to `ref.bib`, and keep reusable analysis code in
+   `src/analysis/`.
 
-    The publication is rendered with [Quarto](https://quarto.org/). If you don't have it installed (check with `quarto --version`), you can [install it here](https://quarto.org/docs/get-started/).
+5. Preview the existing Warm Journal default:
 
-4. **Set up your environment**
+   ```bash
+   make preview-warm
+   ```
 
-    See the [Environment Setup Guide](ENVIRONMENT_SETUP.md) for complete instructions.
+   The Technical Notebook view remains available with `make preview-technical`. Do not change the
+   project-wide theme during a writing contribution.
 
-5. **Choose a publication theme**
+6. Follow the [contribution guide](../pages/CONTRIBUTING.qmd) for author metadata, CRediT, AI-use
+   disclosure, required checks, and pull-request review.
 
-    Warm Journal is the default theme:
+7. Before requesting review, run:
 
-    ```bash
-    make preview-warm
-    ```
+   ```bash
+   make test
+   make render-warm
+   make render-technical
+   ```
 
-    To use the Technical Notebook theme instead:
-
-    ```bash
-    make preview-technical
-    ```
-
-    The matching render commands are `make render-warm` and `make render-technical`. In CI, set `QUARTO_PROFILE=technical-notebook` to select the technical theme.
-
-6. **Prepare publication metadata**
-
-    Before release, replace the placeholders in `CITATION.cff`, `authors.yml`, `_variables.yml`, and `README.md` with accurate publication details.
-
-7. **Create your publication**
-
-    Edit `index.ipynb` to create your publication. As you work, you can render a live preview of your changes with:
-
-    ```bash
-    make preview
-    ```
-
-    Then, commit your changes to a development branch and merge them into `main` using our usual PR-based workflow.
-
-    As you work, please be careful to avoid modifying any files in the following directories:
-
-      - `/_extensions` (Quarto extensions)
-      - `/_freeze` (Generated execution results)
-      - `/_site` (Generated website files)
-
-    These files are all either necessary to build the publication or are automatically generated during the publication process.
-
-8. **Publishing**
-
-    Every push to `main` renders and publishes the site through GitHub Actions. See the [Publishing Guide](PUBLISHING_GUIDE.md) for setup and optional integrations.
+Reviewed changes merge into `main`; GitHub Actions then updates the published site automatically.

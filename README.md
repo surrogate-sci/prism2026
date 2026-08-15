@@ -1,17 +1,43 @@
-# Surrogate Science Publication Template
+# PRISM 2026: Scientific Causal Reasoning for Interpretability
 
-This repository is a Surrogate Science template for computational publications authored in Quarto. It supports Jupyter notebooks, executable Python or R content, reproducible figures, and a GitHub Pages HTML publication.
+This repository is the shared writing and computational-publication workspace for the PRISM 2026
+student project. The publication combines narrative, citations, code, figures, and reproducible
+results in Quarto.
 
-[View the live demo](https://surrogate-sci.github.io/science-pub-template/)
+[Read the current publication](https://surrogate-sci.github.io/prism2026/)
+
+## Student quick start
+
+1. Clone the repository and enter it:
+
+   ```bash
+   git clone https://github.com/surrogate-sci/prism2026.git
+   cd prism2026
+   ```
+
+2. Follow the [environment setup guide](developer-docs/ENVIRONMENT_SETUP.md), then create a branch
+   for one focused change:
+
+   ```bash
+   git switch -c initials/short-description
+   ```
+
+3. Write in `index.ipynb`. Put reusable analysis code in `src/analysis/`, bibliography entries in
+   `ref.bib`, and publication-ready figures or data in clearly named project folders.
+
+4. Preview the publication locally:
+
+   ```bash
+   make preview-warm
+   ```
+
+5. Run the checks, push your branch, and open a pull request. See the complete
+   [contribution guide](pages/CONTRIBUTING.qmd).
 
 ## Publication themes
 
-The template includes two separate themes built from the same Surrogate Science palette and type system:
-
-- **Warm Journal** is the default. It uses Cormorant Garamond for editorial display, Assistant for interface text, and Fira for labels and code.
-- **Technical Notebook** uses Assistant Semibold for technical display, a teal masthead, and Fira for labels and code.
-
-Preview or render either theme explicitly:
+The project retains both Surrogate Science themes. **Warm Journal remains the default**; do not
+change the project-wide theme as part of a writing contribution.
 
 ```bash
 make preview-warm
@@ -20,37 +46,31 @@ make render-warm
 make render-technical
 ```
 
-For CI or hosting, set `QUARTO_PROFILE=technical-notebook` to select Theme B. Without an explicit profile, Quarto uses `warm-journal`.
+## Before requesting review
 
-## Template Documentation
+- Update `authors.yml` when the working author roster changes.
+- Add sources to `ref.bib` and cite them from the manuscript rather than typing references by hand.
+- Complete the [CRediT contribution intake](developer-docs/CREDIT_CONTRIBUTIONS.md) before release.
+- Record author-specific AI use in `ai-use.yml`; first and last authors provide statements, and all
+  other authors confirm that they read the complete disclosure.
+- Run `make test`, `make render-warm`, and `make render-technical`.
+- Confirm that generated output, private notes, credentials, and local session files are not in the
+  pull request.
 
-All the learning resources for this template can be found in `developer-docs/`.
+## Publishing
 
-- [Quickstart Guide](developer-docs/QUICKSTART.md) - **The most efficient way to get started** is to follow this guide (the rest can wait)
-- [CRediT Author Contributions](developer-docs/CREDIT_CONTRIBUTIONS.md) - Collect author-approved roles and generate a contribution statement
-- [AI Usage Disclosure](developer-docs/AI_USAGE.md) - Record required author statements and review confirmation in `ai-use.yml`
-- [Environment Setup Guide](developer-docs/ENVIRONMENT_SETUP.md) - How to set up your development environment
-- [Publishing Guide](developer-docs/PUBLISHING_GUIDE.md) - How to publish your notebook publication
-- [Template Architecture](developer-docs/TEMPLATE_ARCHITECTURE.md) - Understanding the template's structure
+Every reviewed merge to `main` triggers the Quarto Publish workflow. It renders the default profile
+and updates the `gh-pages` branch automatically. GitHub Pages serves that branch at the publication
+URL above.
 
----
+Create a GitHub release when the team is ready to preserve a citable version. Connect the repository
+to Zenodo only after the title, author order, contribution statement, and release metadata have been
+reviewed.
 
-**NOTE: When ready to publish, fill in the information below, then delete this line and everything above it.**
+## Documentation
 
-# [PUB-TITLE]
-
-This code repository contains or points to all materials required for creating and hosting the publication entitled, *"[PUB-TITLE]"*.
-
-The publication is hosted at [this URL](https://surrogate-sci.dev/[REPO-NAME]/).
-
-## Data Description
-
-[DESCRIPTION OF THE DATA]
-
-## Reproduce
-
-Please see [SETUP.qmd](pages/SETUP.qmd).
-
-## Contribute
-
-Please see [CONTRIBUTING.qmd](pages/CONTRIBUTING.qmd).
+- [Contributing](pages/CONTRIBUTING.qmd)
+- [Environment setup](developer-docs/ENVIRONMENT_SETUP.md)
+- [AI usage disclosure](developer-docs/AI_USAGE.md)
+- [CRediT author contributions](developer-docs/CREDIT_CONTRIBUTIONS.md)
+- [Publishing guide](developer-docs/PUBLISHING_GUIDE.md)
