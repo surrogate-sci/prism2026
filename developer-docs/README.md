@@ -4,7 +4,7 @@ This directory contains detailed guidance for PRISM publication authors and main
 
 ## Contents
 
-- [Student Quickstart](QUICKSTART.md): Clone, branch, write, preview, and request review.
+- [PRISM Fellow Quickstart](QUICKSTART.md): Clone, branch, write, preview, and request review.
 - [CRediT Author Contributions](CREDIT_CONTRIBUTIONS.md): Collect author-approved CRediT assignments and generate a contribution statement.
 - [Environment Setup Guide](ENVIRONMENT_SETUP.md): How to set up your development environment.
 - [Publishing Guide](PUBLISHING_GUIDE.md): How to publish your notebook publication.
@@ -21,4 +21,4 @@ These documents are intended to provide clarity on:
 3. The overall architecture and dependencies of the publication system
 4. The complete publishing workflow
 
-This documentation supports both student authors and maintainers who need a deeper understanding of how the publication works.
+This documentation supports both PRISM fellows and maintainers who need a deeper understanding of how the publication works.

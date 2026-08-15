@@ -2,7 +2,7 @@
 
 ## Scope
 
-This repository is a student-authored scientific publication. Preserve author intent and treat
+This repository is a project publication. Preserve author intent and treat
 scientific claims, methods, interpretation, author order, and credit as author decisions. Flag
 questions rather than silently changing substantive content.
 
@@ -34,4 +34,3 @@ make render-technical
 If computational outputs changed intentionally, run `make execute` and review the corresponding
 `_freeze/` changes. Verify the rendered narrative, figures, citations, links, author display, and AI
 disclosure in both profiles.
-

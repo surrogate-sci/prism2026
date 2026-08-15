@@ -1,4 +1,4 @@
-# PRISM student quick start
+# PRISM fellow quick start
 
 1. Clone the project:
 

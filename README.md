@@ -1,12 +1,11 @@
-# PRISM 2026: Scientific Causal Reasoning for Interpretability
+# Scientific Causal Reasoning for Interpretability
 
-This repository is the shared writing and computational-publication workspace for the PRISM 2026
-student project. The publication combines narrative, citations, code, figures, and reproducible
-results in Quarto.
+This repository is the shared writing and computational workspace for the project publication. The
+publication combines narrative, citations, code, figures, and reproducible results in Quarto.
 
 [Read the current publication](https://surrogate-sci.github.io/prism2026/)
 
-## Student quick start
+## Quick start for PRISM fellows
 
 1. Clone the repository and enter it:
 

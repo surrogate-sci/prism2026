@@ -112,7 +112,8 @@ def test_project_metadata_uses_prism_repository_values():
 
     assert 'org: "surrogate-sci"' in variables
     assert 'repo: "prism2026"' in variables
-    assert "PRISM 2026: Scientific Causal Reasoning for Interpretability" in citation
+    assert "Scientific Causal Reasoning for Interpretability" in citation
+    assert "PRISM 2026: Scientific Causal Reasoning for Interpretability" not in citation
     assert "[AUTHOR" not in citation
     assert "doi:" not in citation.lower()
     assert "repository-code: https://github.com/surrogate-sci/prism2026" in citation
