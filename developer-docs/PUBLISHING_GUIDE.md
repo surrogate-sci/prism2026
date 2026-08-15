@@ -1,11 +1,11 @@
 # Publishing Guide
 
-This template publishes its Quarto site to GitHub Pages whenever a change reaches `main`.
+This repository publishes its Quarto site to GitHub Pages whenever a reviewed change reaches `main`.
 
 ## Initial setup
 
 1. In *Settings → Actions → General → Workflow permissions*, select **Read and write permissions**.
-2. Replace the placeholders in `CITATION.cff`, `authors.yml`, `_variables.yml`, and `README.md`.
+2. Review `CITATION.cff`, `authors.yml`, `_variables.yml`, `README.md`, and `ai-use.yml` before each release.
 3. Render both supported profiles locally:
 
    ```bash
@@ -16,7 +16,7 @@ This template publishes its Quarto site to GitHub Pages whenever a change reache
 4. Merge the reviewed publication changes into `main`. The **Quarto Publish** workflow renders the default profile and pushes the generated site to `gh-pages`.
 5. After the first successful run, verify that *Settings → Pages* uses **Deploy from a branch**, with `gh-pages` and `/ (root)` selected. GitHub normally detects the generated branch automatically.
 
-The public project URL will normally be `https://<organization>.github.io/<repository>/`. A custom domain is optional and can be configured later in the repository's Pages settings.
+The public project URL is `https://surrogate-sci.github.io/prism2026/`. A custom domain is optional and can be configured later in the repository's Pages settings.
 
 ## Publishing revisions
 

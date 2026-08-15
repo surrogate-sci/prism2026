@@ -1,6 +1,6 @@
 [project]
-name = "science-pub-template"
-description = "Python project for the Surrogate Science publication template."
+name = "prism2026"
+description = "Scientific Causal Reasoning for Interpretability publication project."
 version = "0.0.0"
 readme = "README.md"
 requires-python = ">=3.10"

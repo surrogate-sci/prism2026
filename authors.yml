@@ -1,30 +1,5 @@
-# For roles, choose from:
-#
-# - conceptualization
-# - formal analysis
-# - investigation
-# - methodology
-# - software
-# - supervision
-# - writing
-# - critical feedback
-# - data curation
-# - editing
-# - project administration
-# - resources
-# - validation
-# - visualization
+# Replace this collective entry with the reviewed author roster before release.
+# See developer-docs/CREDIT_CONTRIBUTIONS.md.
 authors:
-  - name: <author name as 'First M. Last'>
-    orcid: 0000-0000-0000-0000
-    roles:
-      - conceptualization
-      - formal analysis
-      - investigation
-      - methodology
-      - software
-  - name: <author name as 'First M. Last'>
-    orcid: 0000-0000-0000-0000
-    roles:
-      - data curation
-      - validation
+  - name: PRISM 2026 contributors
+    roles: []

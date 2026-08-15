@@ -1,4 +1,4 @@
-name: Validate AI usage disclosure
+name: Validate publication metadata
 
 on:
   pull_request:
@@ -23,6 +23,9 @@ jobs:
 
       - name: Install YAML parser
         run: python -m pip install pyyaml==6.0.2
+
+      - name: Validate publication metadata and links
+        run: python scripts/validate_publication_metadata.py
 
       - name: Validate AI usage disclosure
         run: python scripts/generate_ai_disclosure.py ai-use.yml --check

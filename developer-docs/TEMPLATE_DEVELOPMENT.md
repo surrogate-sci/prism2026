@@ -1,14 +1,14 @@
 # Template Development Guide
 
-This guide is for people **developing the science-pub-template itself** — adding extensions, updating the demo notebook, modifying `_quarto.yml`, or changing how the template works. If you're using the template to create a publication, see the [Quickstart Guide](QUICKSTART.md) instead.
+This guide is for maintainers changing the publication system itself — adding extensions, updating the demo notebook, modifying `_quarto.yml`, or changing how the project renders. Publication authors should use the [Quickstart Guide](QUICKSTART.md) instead.
 
 ## Environment setup
 
 You need [Quarto](https://quarto.org/docs/get-started/) installed separately — it's not included in `env.yml`.
 
 ```bash
-conda env create -n science-pub-template --file env.yml
-conda activate science-pub-template
+conda env create -n prism2026 --file env.yml
+conda activate prism2026
 pip install -e .
 pre-commit install
 ```

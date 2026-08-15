@@ -2,19 +2,13 @@
 # See developer-docs/AI_USAGE.md for instructions and policy.
 schema_version: 1
 status: draft
-manuscript: "[PUBLICATION TITLE]"
+manuscript: "PRISM 2026: Scientific Causal Reasoning for Interpretability"
 
 # Include every first author, including co-first authors.
-first_authors:
-  - name: "[FIRST AUTHOR NAME]"
-    statement: ""
+first_authors: []
 
 # Include every last/senior author, including co-last or co-senior authors.
-last_authors:
-  - name: "[LAST AUTHOR NAME]"
-    statement: ""
+last_authors: []
 
 # Every remaining author must read the complete disclosure and confirm that here.
-other_authors:
-  - name: "[OTHER AUTHOR NAME]"
-    reviewed_full_disclosure: false
+other_authors: []

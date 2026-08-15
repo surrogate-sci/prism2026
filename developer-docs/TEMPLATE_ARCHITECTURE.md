@@ -21,7 +21,7 @@ That's it! Focus on creating great content in your notebook and let the template
 ## File Structure Overview
 
 ```
-science-pub-template/
+prism2026/
 ├── index.ipynb        # Your main publication content
 ├── _variables.yml     # Publication metadata
 ├── authors.yml        # Author information
