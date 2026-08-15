@@ -4,7 +4,7 @@ comments: false
 
 # Contributing
 
-PRISM students and collaborators contribute through focused branches and reviewed pull requests.
+PRISM fellows and collaborators contribute through focused branches and reviewed pull requests.
 Ask a maintainer before making a large structural change or changing authorship, licensing, or
 publication policy.
 
@@ -83,5 +83,5 @@ rewriting another author's claims; discuss them in the pull request.
 ## 6. Publication
 
 After review, a maintainer merges the pull request into `main`. GitHub Actions then rebuilds the site
-and updates [the public PRISM 2026 publication](https://surrogate-sci.github.io/prism2026/). Releases
+and updates [the public project publication](https://surrogate-sci.github.io/prism2026/). Releases
 and Zenodo deposits are separate, deliberate milestones; a routine merge does not create a DOI.

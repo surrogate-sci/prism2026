@@ -6,7 +6,7 @@ import yaml
 
 ROOT = Path(__file__).parents[1]
 VALIDATOR = ROOT / "scripts/validate_publication_metadata.py"
-PUBLICATION_TITLE = "PRISM 2026: Scientific Causal Reasoning for Interpretability"
+PUBLICATION_TITLE = "Scientific Causal Reasoning for Interpretability"
 REPOSITORY_URL = "https://github.com/surrogate-sci/prism2026"
 PUBLICATION_URL = "https://surrogate-sci.github.io/prism2026/"
 
@@ -43,13 +43,13 @@ def test_prism_metadata_and_public_links_replace_template_values():
     assert "[PUB-TITLE]" not in active_docs
 
 
-def test_readme_is_a_student_facing_quick_start():
+def test_readme_is_a_prism_fellow_facing_quick_start():
     readme = (ROOT / "README.md").read_text()
 
     for required in (
         PUBLICATION_TITLE,
         PUBLICATION_URL,
-        "Student quick start",
+        "Quick start for PRISM fellows",
         "make preview-warm",
         "make preview-technical",
         "index.ipynb",
@@ -63,7 +63,7 @@ def test_readme_is_a_student_facing_quick_start():
         assert required in readme
 
 
-def test_contribution_guide_covers_the_reviewed_student_workflow():
+def test_contribution_guide_covers_the_reviewed_prism_fellow_workflow():
     guide = (ROOT / "pages/CONTRIBUTING.qmd").read_text()
 
     for required in (
@@ -83,11 +83,28 @@ def test_contribution_guide_covers_the_reviewed_student_workflow():
         assert required.lower() in guide.lower()
 
 
+def test_public_guidance_uses_prism_fellows_not_students():
+    active_docs = "\n".join(
+        path.read_text()
+        for path in (
+            ROOT / "README.md",
+            ROOT / "AGENTS.md",
+            ROOT / "developer-docs/README.md",
+            ROOT / "developer-docs/QUICKSTART.md",
+            ROOT / "pages/CONTRIBUTING.qmd",
+        )
+    )
+
+    assert "PRISM fellow" in active_docs
+    assert "student" not in active_docs.lower()
+
+
 def test_agent_guidance_is_shared_without_committing_agent_session_folders():
     agents = (ROOT / "AGENTS.md").read_text()
     claude = (ROOT / "CLAUDE.md").read_text()
 
     assert "@AGENTS.md" in claude
+    assert "project publication" in agents
     for required in (
         "Do not change the publication theme",
         "Do not commit session notes",
