@@ -736,7 +736,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
-    <a href="https://github.com/surrogate-sci/science-pub-template" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://github.com/surrogate-sci/prism2026" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -775,10 +775,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This document details how to create a local copy of this pub’s codebase, setup your compute environment, and reproduce the pub itself. This will enable you to experiment with the analysis in the pub and, optionally, contribute revisions to it.</p>
 <section id="obtain-local-copy" class="level2">
 <h2 class="anchored" data-anchor-id="obtain-local-copy">Obtain local copy</h2>
-<p>The codebase is hosted on GitHub and can be found <a href="https://github.com/surrogate-sci/science-pub-template">here</a>.</p>
+<p>The codebase is hosted on GitHub and can be found <a href="https://github.com/surrogate-sci/prism2026">here</a>.</p>
 <p>To obtain a local copy of this repo, you can either <em>clone</em> it directly or fork it to your own GitHub account, then clone your fork. If you aren’t sure which to choose, clone directly for reproduction and fork when you intend to propose revisions.</p>
 <p>To clone:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/surrogate-sci/science-pub-template.git</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/surrogate-sci/prism2026.git</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="installation" class="level2">
 <h2 class="anchored" data-anchor-id="installation">Installation</h2>
@@ -796,8 +796,8 @@ Important
 </div>
 </div>
 <p>This repository uses conda to manage the computational and build environment. If you don’t have it installed (check with <code>conda --version</code>), you can find operating system-specific instructions for installing miniconda <a href="https://docs.conda.io/projects/miniconda/en/latest/">here</a>. After installing, run the following commands to create and activate the environment.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env create <span class="at">-n</span> science-pub-template <span class="at">--file</span> env.yml</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate science-pub-template</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env create <span class="at">-n</span> prism2026 <span class="at">--file</span> env.yml</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate prism2026</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Now, install any internal packages in the repository:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-e</span> .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>And finally, if you plan to submit a pull request, install the <a href="https://pre-commit.com/">pre-commit</a> hooks:</p>

@@ -2,21 +2,21 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "[PUBLICATION TITLE] –",
+    "title": "PRISM 2026: Scientific Causal Reasoning for Interpretability –",
     "section": "",
     "text": "NoteAI usage disclosure\n\n\n\n\n\nAI usage disclosure incomplete. Before submission or release, complete ai-use.yml. Every first and last author must describe their exact AI usage, and every remaining author must read the complete disclosure and confirm it in that file."
   },
   {
     "objectID": "index.html#purpose",
     "href": "index.html#purpose",
-    "title": "[PUBLICATION TITLE] –",
+    "title": "PRISM 2026: Scientific Causal Reasoning for Interpretability –",
     "section": "Purpose",
     "text": "Purpose\nOnce edited by you, this file will become your publication. Alternatively, if you already have a notebook written that you’re trying to transform into a pub, replace this file with your own, but be sure to add the YAML front matter (the first cell) to your notebook.\nYour pub should begin with a section titled Purpose where you, as briefly as possible, explain why you did the work described in the pub, the key takeaway, your primary audience, and how you think it could be useful to them/why you’re sharing it."
   },
   {
     "objectID": "index.html#learn-more",
     "href": "index.html#learn-more",
-    "title": "[PUBLICATION TITLE] –",
+    "title": "PRISM 2026: Scientific Causal Reasoning for Interpretability –",
     "section": "Learn more",
     "text": "Learn more\nRefer to Demo to learn about possible syntax."
   },
@@ -25,21 +25,21 @@
     "href": "pages/SETUP.html",
     "title": "Setup",
     "section": "",
-    "text": "This document details how to create a local copy of this pub’s codebase, setup your compute environment, and reproduce the pub itself. This will enable you to experiment with the analysis in the pub and, optionally, contribute revisions to it.\n\n\nThe codebase is hosted on GitHub and can be found here.\nTo obtain a local copy of this repo, you can either clone it directly or fork it to your own GitHub account, then clone your fork. If you aren’t sure which to choose, clone directly for reproduction and fork when you intend to propose revisions.\nTo clone:\ngit clone https://github.com/surrogate-sci/science-pub-template.git\n\n\n\n\n\n\n\n\n\nImportant\n\n\n\nThe publication is rendered with Quarto. If you don’t have it installed (check with quarto --version), you can install it here.\n\n\nThis repository uses conda to manage the computational and build environment. If you don’t have it installed (check with conda --version), you can find operating system-specific instructions for installing miniconda here. After installing, run the following commands to create and activate the environment.\nconda env create -n science-pub-template --file env.yml\nconda activate science-pub-template\nNow, install any internal packages in the repository:\npip install -e .\nAnd finally, if you plan to submit a pull request, install the pre-commit hooks:\npre-commit install"
+    "text": "This document details how to create a local copy of this pub’s codebase, setup your compute environment, and reproduce the pub itself. This will enable you to experiment with the analysis in the pub and, optionally, contribute revisions to it.\n\n\nThe codebase is hosted on GitHub and can be found here.\nTo obtain a local copy of this repo, you can either clone it directly or fork it to your own GitHub account, then clone your fork. If you aren’t sure which to choose, clone directly for reproduction and fork when you intend to propose revisions.\nTo clone:\ngit clone https://github.com/surrogate-sci/prism2026.git\n\n\n\n\n\n\n\n\n\nImportant\n\n\n\nThe publication is rendered with Quarto. If you don’t have it installed (check with quarto --version), you can install it here.\n\n\nThis repository uses conda to manage the computational and build environment. If you don’t have it installed (check with conda --version), you can find operating system-specific instructions for installing miniconda here. After installing, run the following commands to create and activate the environment.\nconda env create -n prism2026 --file env.yml\nconda activate prism2026\nNow, install any internal packages in the repository:\npip install -e .\nAnd finally, if you plan to submit a pull request, install the pre-commit hooks:\npre-commit install"
   },
   {
     "objectID": "pages/SETUP.html#obtain-local-copy",
     "href": "pages/SETUP.html#obtain-local-copy",
     "title": "Setup",
     "section": "",
-    "text": "The codebase is hosted on GitHub and can be found here.\nTo obtain a local copy of this repo, you can either clone it directly or fork it to your own GitHub account, then clone your fork. If you aren’t sure which to choose, clone directly for reproduction and fork when you intend to propose revisions.\nTo clone:\ngit clone https://github.com/surrogate-sci/science-pub-template.git"
+    "text": "The codebase is hosted on GitHub and can be found here.\nTo obtain a local copy of this repo, you can either clone it directly or fork it to your own GitHub account, then clone your fork. If you aren’t sure which to choose, clone directly for reproduction and fork when you intend to propose revisions.\nTo clone:\ngit clone https://github.com/surrogate-sci/prism2026.git"
   },
   {
     "objectID": "pages/SETUP.html#installation",
     "href": "pages/SETUP.html#installation",
     "title": "Setup",
     "section": "",
-    "text": "Important\n\n\n\nThe publication is rendered with Quarto. If you don’t have it installed (check with quarto --version), you can install it here.\n\n\nThis repository uses conda to manage the computational and build environment. If you don’t have it installed (check with conda --version), you can find operating system-specific instructions for installing miniconda here. After installing, run the following commands to create and activate the environment.\nconda env create -n science-pub-template --file env.yml\nconda activate science-pub-template\nNow, install any internal packages in the repository:\npip install -e .\nAnd finally, if you plan to submit a pull request, install the pre-commit hooks:\npre-commit install"
+    "text": "Important\n\n\n\nThe publication is rendered with Quarto. If you don’t have it installed (check with quarto --version), you can install it here.\n\n\nThis repository uses conda to manage the computational and build environment. If you don’t have it installed (check with conda --version), you can find operating system-specific instructions for installing miniconda here. After installing, run the following commands to create and activate the environment.\nconda env create -n prism2026 --file env.yml\nconda activate prism2026\nNow, install any internal packages in the repository:\npip install -e .\nAnd finally, if you plan to submit a pull request, install the pre-commit hooks:\npre-commit install"
   },
   {
     "objectID": "pages/SETUP.html#reproduce",
@@ -67,28 +67,49 @@
     "href": "pages/CONTRIBUTING.html",
     "title": "Contributing",
     "section": "",
-    "text": "We welcome improvements to this publication! If you’d like to improve or extend the publication, please submit a pull request. We’ll collaborate with you to incorporate your revisions. You can also open an issue, or use the publication’s comment box when its maintainers have optionally enabled Giscus.\n\nDid you spot any mistakes?\nDo you think an analysis is missing?\nDo you think the wording could be improved?\nDid you spot a typo or grammatical mistake?\n\nThese are just a few examples of revisions that we’d be happy to receive from you.\n\n\n\n\n\n\nNote\n\n\n\nDiscuss contributor credit and authorship with the publication maintainers before release.\n\n\n\n\nIf you haven’t already, follow our setup guide to create a local copy of the code and compute environment.\n\n\n\nEdit index.ipynb to your liking.\n\n\n\nTo publish your revisions, we need you to open a pull request. And in order for us to merge your pull request, here’s what we’ll need from you in addition to your content changes.\nBegin with a clean branch (no uncommitted changes). Then run the notebook from the command line:\nmake execute\nThis command will update index.ipynb with the latest execution results.\nThen run make preview to see how the publication is rendering. Verify that your changes appear how you intend them to appear. If not, make the necessary changes and re-run make execute.\nOnce everything looks good, commit index.ipynb and all files in the _freeze/ directory.\nFinally, submit a pull request and we’ll work with you to merge your changes.\nOnce we approve and merge your pull request, we’ll publish a new version of the pub. We’ll notify you when this new version goes live at the hosted URL. Thanks for contributing!"
+    "text": "PRISM students and collaborators contribute through focused branches and reviewed pull requests. Ask a maintainer before making a large structural change or changing authorship, licensing, or publication policy.\n\n\n\n\n\n\nNote\n\n\n\nDiscuss authorship and contributor credit early. A merged contribution does not by itself determine author order or authorship.\n\n\n\n\nStart from an up-to-date main branch and use a short, descriptive branch name:\ngit switch main\ngit pull --ff-only\ngit switch -c initials/short-description\nKeep unrelated edits in separate pull requests. Never commit credentials, private correspondence, reviewer material, session notes, or local agent artifacts.\n\n\n\n\nWrite the main narrative in index.ipynb.\nPut reusable analysis code in src/analysis/.\nAdd BibTeX records to ref.bib and cite them in the manuscript with Quarto citation syntax.\nUpdate authors.yml when the working author roster changes.\nDo not change the Warm Journal default or either publication theme during a writing contribution.\n\n\n\n\nBefore release, the team must complete both processes:\n\nFollow the CRediT contribution guide. The issue form records the ordered roster, all 14 CRediT roles, and author approval.\nComplete ai-use.yml according to the AI usage guide. Every first and last author supplies an exact statement. Every other author reads the full disclosure and confirms that review.\n\nKeep ai-use.yml at status: draft while statements are incomplete. Change it to complete only after the required authors have reviewed the generated disclosure.\n\n\n\nPreview both supported presentations of the same content:\nmake preview-warm\nmake preview-technical\nBefore requesting review, run:\nmake test\nmake render-warm\nmake render-technical\nIf code-cell results changed intentionally, run make execute and include the relevant _freeze/ updates. Review the rendered narrative, figures, citations, links, author display, and AI disclosure.\n\n\n\nPush your branch and open a pull request into main. In the description:\n\nsummarize the scientific or editorial change;\nidentify any new data, dependencies, or generated outputs;\nlist the checks and previews you ran;\nflag decisions that still need author or maintainer review; and\nrequest review from the appropriate mentor or collaborator.\n\nRespond to review comments on the same branch. Do not resolve scientific disagreements by silently rewriting another author’s claims; discuss them in the pull request.\n\n\n\nAfter review, a maintainer merges the pull request into main. GitHub Actions then rebuilds the site and updates the public PRISM 2026 publication. Releases and Zenodo deposits are separate, deliberate milestones; a routine merge does not create a DOI."
   },
   {
-    "objectID": "pages/CONTRIBUTING.html#getting-started",
-    "href": "pages/CONTRIBUTING.html#getting-started",
+    "objectID": "pages/CONTRIBUTING.html#create-a-focused-branch",
+    "href": "pages/CONTRIBUTING.html#create-a-focused-branch",
     "title": "Contributing",
     "section": "",
-    "text": "If you haven’t already, follow our setup guide to create a local copy of the code and compute environment."
+    "text": "Start from an up-to-date main branch and use a short, descriptive branch name:\ngit switch main\ngit pull --ff-only\ngit switch -c initials/short-description\nKeep unrelated edits in separate pull requests. Never commit credentials, private correspondence, reviewer material, session notes, or local agent artifacts."
   },
   {
-    "objectID": "pages/CONTRIBUTING.html#make-your-changes",
-    "href": "pages/CONTRIBUTING.html#make-your-changes",
+    "objectID": "pages/CONTRIBUTING.html#edit-the-publication",
+    "href": "pages/CONTRIBUTING.html#edit-the-publication",
     "title": "Contributing",
     "section": "",
-    "text": "Edit index.ipynb to your liking."
+    "text": "Write the main narrative in index.ipynb.\nPut reusable analysis code in src/analysis/.\nAdd BibTeX records to ref.bib and cite them in the manuscript with Quarto citation syntax.\nUpdate authors.yml when the working author roster changes.\nDo not change the Warm Journal default or either publication theme during a writing contribution."
   },
   {
-    "objectID": "pages/CONTRIBUTING.html#steps-before-publishing",
-    "href": "pages/CONTRIBUTING.html#steps-before-publishing",
+    "objectID": "pages/CONTRIBUTING.html#record-contributions-and-ai-use",
+    "href": "pages/CONTRIBUTING.html#record-contributions-and-ai-use",
     "title": "Contributing",
     "section": "",
-    "text": "To publish your revisions, we need you to open a pull request. And in order for us to merge your pull request, here’s what we’ll need from you in addition to your content changes.\nBegin with a clean branch (no uncommitted changes). Then run the notebook from the command line:\nmake execute\nThis command will update index.ipynb with the latest execution results.\nThen run make preview to see how the publication is rendering. Verify that your changes appear how you intend them to appear. If not, make the necessary changes and re-run make execute.\nOnce everything looks good, commit index.ipynb and all files in the _freeze/ directory.\nFinally, submit a pull request and we’ll work with you to merge your changes.\nOnce we approve and merge your pull request, we’ll publish a new version of the pub. We’ll notify you when this new version goes live at the hosted URL. Thanks for contributing!"
+    "text": "Before release, the team must complete both processes:\n\nFollow the CRediT contribution guide. The issue form records the ordered roster, all 14 CRediT roles, and author approval.\nComplete ai-use.yml according to the AI usage guide. Every first and last author supplies an exact statement. Every other author reads the full disclosure and confirms that review.\n\nKeep ai-use.yml at status: draft while statements are incomplete. Change it to complete only after the required authors have reviewed the generated disclosure."
+  },
+  {
+    "objectID": "pages/CONTRIBUTING.html#preview-and-test",
+    "href": "pages/CONTRIBUTING.html#preview-and-test",
+    "title": "Contributing",
+    "section": "",
+    "text": "Preview both supported presentations of the same content:\nmake preview-warm\nmake preview-technical\nBefore requesting review, run:\nmake test\nmake render-warm\nmake render-technical\nIf code-cell results changed intentionally, run make execute and include the relevant _freeze/ updates. Review the rendered narrative, figures, citations, links, author display, and AI disclosure."
+  },
+  {
+    "objectID": "pages/CONTRIBUTING.html#open-a-pull-request",
+    "href": "pages/CONTRIBUTING.html#open-a-pull-request",
+    "title": "Contributing",
+    "section": "",
+    "text": "Push your branch and open a pull request into main. In the description:\n\nsummarize the scientific or editorial change;\nidentify any new data, dependencies, or generated outputs;\nlist the checks and previews you ran;\nflag decisions that still need author or maintainer review; and\nrequest review from the appropriate mentor or collaborator.\n\nRespond to review comments on the same branch. Do not resolve scientific disagreements by silently rewriting another author’s claims; discuss them in the pull request."
+  },
+  {
+    "objectID": "pages/CONTRIBUTING.html#publication",
+    "href": "pages/CONTRIBUTING.html#publication",
+    "title": "Contributing",
+    "section": "",
+    "text": "After review, a maintainer merges the pull request into main. GitHub Actions then rebuilds the site and updates the public PRISM 2026 publication. Releases and Zenodo deposits are separate, deliberate milestones; a routine merge does not create a DOI."
   },
   {
     "objectID": "pages/FAQ.html",

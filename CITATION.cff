@@ -1,16 +1,15 @@
 cff-version: 1.2.0
-message: If you use this publication, please cite it using the completed metadata below.
-title: "[PUBLICATION TITLE] — Surrogate Science Publication Template"
+message: If you use this publication, please cite it using the metadata below.
+title: "PRISM 2026: Scientific Causal Reasoning for Interpretability"
 authors:
-  - family-names: "[AUTHOR FAMILY NAME]"
-    given-names: "[AUTHOR GIVEN NAME]"
+  - family-names: "PRISM 2026 contributors"
     affiliation: Surrogate Science
-repository-code: https://github.com/surrogate-sci/[REPOSITORY-NAME]
-url: https://surrogate-sci.dev/[REPOSITORY-NAME]/
+repository-code: https://github.com/surrogate-sci/prism2026
+url: https://surrogate-sci.github.io/prism2026/
 preferred-citation:
   type: article
-  title: "[PUBLICATION TITLE] — Surrogate Science Publication Template"
+  title: "PRISM 2026: Scientific Causal Reasoning for Interpretability"
   authors:
-    - family-names: "[AUTHOR FAMILY NAME]"
-      given-names: "[AUTHOR GIVEN NAME]"
+    - family-names: "PRISM 2026 contributors"
       affiliation: Surrogate Science
+  url: https://surrogate-sci.github.io/prism2026/
