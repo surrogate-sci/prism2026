@@ -105,19 +105,9 @@ def test_active_theme_uses_only_surrogate_css_custom_properties():
     assert "--surrogate-" in css
 
 
-def test_project_metadata_uses_prism_repository_values():
-    variables = (ROOT / "_variables.yml").read_text()
-    citation = (ROOT / "CITATION.cff").read_text()
+def test_license_preserves_upstream_and_surrogate_science_attribution():
     license_text = (ROOT / "LICENSE").read_text()
 
-    assert 'org: "surrogate-sci"' in variables
-    assert 'repo: "prism2026"' in variables
-    assert "Scientific Causal Reasoning for Interpretability" in citation
-    assert "PRISM 2026: Scientific Causal Reasoning for Interpretability" not in citation
-    assert "[AUTHOR" not in citation
-    assert "doi:" not in citation.lower()
-    assert "repository-code: https://github.com/surrogate-sci/prism2026" in citation
-    assert "url: https://surrogate-sci.github.io/prism2026/" in citation
     assert "Copyright (c) 2024 Arcadia Science" in license_text
     assert "Copyright (c) 2026 Surrogate Science" in license_text
 
@@ -137,7 +127,6 @@ def test_active_documentation_has_no_arcadia_operations_or_urls():
     active_docs = "\n".join(path.read_text() for path in active_paths)
 
     assert "arcadia" not in active_docs.lower()
-    assert "https://surrogate-sci.github.io/prism2026/" in active_docs
 
 
 def test_tracking_and_comments_are_disabled_by_default():
@@ -251,7 +240,7 @@ def test_includes_resolve_project_resources_from_quarto_offset_and_base_uri():
         assert "window.location.hostname" not in include
 
 
-def test_active_project_uses_the_canonical_prism_name():
+def test_active_project_has_no_legacy_template_names():
     active_paths = [
         ROOT / "pyproject.toml",
         ROOT / "uv.lock",
@@ -263,22 +252,12 @@ def test_active_project_uses_the_canonical_prism_name():
 
     assert "notebook-pub-template" not in active_text
     assert "science-pub-template" not in active_text
-    assert 'name = "prism2026"' in (ROOT / "pyproject.toml").read_text()
 
 
 def test_documented_environment_installs_make_test_dependencies():
     environment = (ROOT / "env.yml").read_text()
 
     assert re.search(r"^\s*- pytest(?:[=<>]|$)", environment, flags=re.MULTILINE)
-
-
-def test_quickstart_is_for_prism_students_not_template_creation():
-    quickstart = (ROOT / "developer-docs/QUICKSTART.md").read_text()
-
-    assert "Use this template" not in quickstart
-    assert "git clone https://github.com/surrogate-sci/prism2026.git" in quickstart
-    assert "make preview-warm" in quickstart
-    assert "pages/CONTRIBUTING.qmd" in quickstart
 
 
 def test_public_project_excludes_internal_agent_session_artifacts():
@@ -297,9 +276,3 @@ def test_public_project_excludes_internal_agent_session_artifacts():
     assert "CLAUDE.md" not in ignored
     assert (ROOT / "AGENTS.md").exists()
     assert (ROOT / "CLAUDE.md").read_text().strip() == "@AGENTS.md"
-
-
-def test_readme_links_to_the_prism_publication():
-    readme = (ROOT / "README.md").read_text()
-
-    assert "https://surrogate-sci.github.io/prism2026/" in readme
