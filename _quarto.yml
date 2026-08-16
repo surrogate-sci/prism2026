@@ -10,6 +10,7 @@ project:
   - authors.yml
   - CITATION.cff
   - ai-use.yml
+  - posts/**
 profile:
   default: warm-journal
   group:
