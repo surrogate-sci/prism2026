@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en" class="surrogate-warm-journal">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guiding question: LLM potency &amp; selectivity shortcuts | PRISM 2026</title>
+
+  <!-- Fonts (from includes/fonts.html) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Fira+Mono:wght@400;500&family=Fira+Sans:wght@500;600;700&display=swap">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <style>
+    /* ============================================================
+       CSS CUSTOM PROPERTIES — mirrors colors.css + main.css
+       ============================================================ */
+    :root {
+      /* Canonical Surrogate Science blog palette */
+      --surrogate-paper:    #F5F0E2;
+      --surrogate-teal:     #235F66;
+      --surrogate-orange:   #F28A1C;
+      --surrogate-amber:    #FFB83E;
+      --surrogate-charcoal: #30332F;
+
+      /* Derived transparencies */
+      --surrogate-charcoal-68: rgba(48,51,47,0.68);
+      --surrogate-charcoal-50: rgba(48,51,47,0.50);
+      --surrogate-charcoal-20: rgba(48,51,47,0.20);
+      --surrogate-paper-50:    rgba(245,240,226,0.50);
+
+      /* Semantic tokens */
+      --surrogate-body-color:  var(--surrogate-charcoal);
+      --surrogate-label-color: var(--surrogate-teal);
+      --surrogate-muted-color: var(--surrogate-charcoal-68);
+      --surrogate-link-color:  var(--surrogate-teal);
+      --surrogate-logo-size:   2rem;
+
+      /* Code surface */
+      --bs-code-bg-color:          color-mix(in srgb, #F5F0E2 92%, #30332F);
+      --bs-code-border-color:      rgba(48,51,47,0.20);
+      --bs-code-left-border-color: rgba(35,95,102,0.60);
+      --bs-code-color:             var(--surrogate-teal);
+
+      /* Callout accents */
+      --callout-note-rgb:      var(--surrogate-teal);
+      --callout-warning-rgb:   var(--surrogate-amber);
+      --callout-important-rgb: var(--surrogate-orange);
+
+      /* Typography — mirrors main.css */
+      --nb-font-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+      --nb-font-sans:  "Assistant", ui-sans-serif, system-ui, sans-serif;
+      --nb-font-label: "Fira Sans", ui-sans-serif, system-ui, sans-serif;
+      --nb-font-mono:  "Fira Mono", ui-monospace, Consolas, monospace;
+      --nb-h1-font-size: 2.5rem;
+      --nb-h2-font-size: 2rem;
+
+      /* Layout */
+      --navbar-height:     4rem;
+      --mini-title-height: 3rem;
+    }
+
+    /* ============================================================
+       RESET
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ============================================================
+       BODY — mirrors article.css + warm-journal.css
+       ============================================================ */
+    body {
+      font-family: var(--nb-font-sans);
+      color: var(--surrogate-body-color);
+      background-color: var(--surrogate-paper);
+      line-height: 1.65;
+      font-size: 1rem;
+    }
+
+    a { color: var(--surrogate-teal); text-decoration: none; }
+    a:hover { color: var(--surrogate-orange); }
+
+    /* ============================================================
+       NAVBAR — mirrors navbar.css + warm-journal.css
+       ============================================================ */
+    .navbar {
+      height: var(--navbar-height);
+      background-color: var(--surrogate-paper);
+      border-bottom: 1px solid var(--surrogate-charcoal-20);
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1030;
+      gap: 1rem;
+    }
+
+    .navbar-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .navbar-logo {
+      width: 2.8rem;
+      height: 2.8rem;
+      max-height: 2.8rem;
+    }
+
+    .navbar-title {
+      color: var(--surrogate-charcoal);
+      font-family: var(--nb-font-serif);
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+
+    .navbar-nav {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      gap: 0.25rem;
+      margin-left: auto;
+    }
+
+    .navbar-nav .nav-link {
+      color: var(--surrogate-charcoal);
+      font-family: var(--nb-font-sans);
+      font-size: 0.9rem;
+      padding: 0.4rem 0.6rem;
+      text-decoration: none;
+      position: relative;
+    }
+
+    .navbar-nav .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 100%; height: 2px;
+      bottom: -2px; left: 0;
+      background-color: currentColor;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .navbar-nav .nav-link:hover { color: var(--surrogate-charcoal); }
+    .navbar-nav .nav-link:hover::after { opacity: 1; }
+
+    /* ============================================================
+       TITLE BANNER — mirrors frontmatter.css + warm-journal.css
+       ============================================================ */
+    .quarto-title-banner {
+      background-color: var(--surrogate-paper) !important;
+      border-bottom: 1px solid var(--surrogate-charcoal-20);
+      padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 6vw, 5rem);
+    }
+
+    .quarto-title-banner h1 {
+      max-width: 62rem;
+      color: var(--surrogate-charcoal) !important;
+      font-family: var(--nb-font-serif) !important;
+      font-size: clamp(2.6rem, 6vw, 5.25rem) !important;
+      font-weight: 600 !important;
+      letter-spacing: -0.035em;
+      line-height: 1.0;
+    }
+
+    /* ============================================================
+       TITLE META + ABSTRACT — mirrors frontmatter.css + warm-journal.css
+       ============================================================ */
+    .title-meta-container {
+      padding: 0 clamp(1.5rem, 6vw, 5rem);
+    }
+
+    .quarto-title-meta {
+      background-color: var(--bs-code-bg-color);
+      padding: 1em 2em 0 2em;
+      margin-top: 2rem;
+      border-radius: 8px 8px 0 0;
+      border: 1px solid rgba(0,0,0,0.10);
+      border-bottom: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .quarto-title-meta-heading {
+      font-family: var(--nb-font-label) !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--surrogate-teal) !important;
+      font-size: 0.72rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .quarto-title-meta-contents {
+      font-family: var(--nb-font-sans);
+      font-size: 0.9rem;
+      color: var(--surrogate-body-color);
+      padding-bottom: 1em;
+    }
+
+    .abstract {
+      background-color: var(--bs-code-bg-color);
+      padding: 1rem 2rem 1.5rem 2rem;
+      border-radius: 0 0 8px 8px;
+      border: 1px solid rgba(0,0,0,0.10);
+      border-top: none;
+    }
+
+    .abstract .block-title {
+      font-family: var(--nb-font-label) !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--surrogate-teal) !important;
+      font-size: 0.72rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .abstract p {
+      font-family: var(--nb-font-serif);
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--surrogate-body-color);
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    /* ============================================================
+       PAGE LAYOUT — mirrors grid.css
+       ============================================================ */
+    .page-layout {
+      display: grid;
+      grid-template-columns:
+        [outer-left] clamp(1rem, 4vw, 4rem)
+        [content-start] minmax(0, 820px)
+        [content-end] clamp(0px, 3vw, 2rem)
+        [toc-start] clamp(140px, 16vw, 210px)
+        [toc-end] clamp(1rem, 4vw, 4rem)
+        [outer-right];
+      padding-top: 2.5rem;
+      align-items: start;
+    }
+
+    .article-content {
+      grid-column: content-start / content-end;
+      padding-bottom: 5rem;
+      min-width: 0;
+    }
+
+    .sidebar-toc {
+      grid-column: toc-start / toc-end;
+      position: sticky;
+      top: calc(var(--navbar-height) + 2rem);
+      align-self: start;
+      max-height: calc(100vh - var(--navbar-height) - 4rem);
+      overflow-y: auto;
+    }
+
+    /* ============================================================
+       TABLE OF CONTENTS — mirrors sidebar.css
+       ============================================================ */
+    #toc-title {
+      font-family: var(--nb-font-mono);
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--surrogate-label-color);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.6rem;
+    }
+
+    .toc-nav ul { list-style: none; padding: 0; }
+    .toc-nav li { margin: 0.1rem 0; }
+
+    .toc-nav a {
+      font-family: var(--nb-font-mono);
+      font-weight: 300;
+      font-size: 0.78rem;
+      color: var(--surrogate-body-color);
+      text-decoration: none;
+      display: block;
+      padding: 0.15rem 0.5rem;
+      border-left: 2px solid transparent;
+      transition: all 0.2s ease;
+      line-height: 1.4;
+    }
+
+    .toc-nav a:hover,
+    .toc-nav a.active {
+      border-left-color: var(--surrogate-teal);
+      color: var(--surrogate-teal) !important;
+    }
+
+    .toc-nav ul ul { padding-left: 0.75rem; }
+
+    /* ============================================================
+       ARTICLE TYPOGRAPHY — mirrors article.css + warm-journal.css
+       ============================================================ */
+    .article-content h2 {
+      font-family: var(--nb-font-serif) !important;
+      font-weight: 600 !important;
+      color: var(--surrogate-charcoal);
+      font-size: var(--nb-h2-font-size);
+      margin-top: 3rem;
+      margin-bottom: 0.75rem;
+      line-height: 1.15;
+    }
+
+    .article-content h3 {
+      font-family: var(--nb-font-sans) !important;
+      font-weight: 400 !important;
+      color: var(--surrogate-charcoal);
+      font-size: 1.25rem;
+      margin-top: 2rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .article-content p {
+      margin-bottom: 1.15rem;
+      line-height: 1.7;
+    }
+
+    .article-content ul,
+    .article-content ol {
+      margin-bottom: 1.15rem;
+      padding-left: 1.5rem;
+    }
+
+    .article-content li {
+      margin-bottom: 0.4rem;
+      line-height: 1.65;
+    }
+
+    .article-content hr {
+      border: none;
+      border-top: 1px solid var(--surrogate-charcoal-20);
+      margin: 2.5rem 0;
+    }
+
+    /* ============================================================
+       CALLOUTS — mirrors article.css
+       ============================================================ */
+    .callout {
+      border-radius: 4px;
+      margin: 1.5rem 0;
+      border: 1px solid var(--surrogate-charcoal-20);
+      border-left-width: 4px;
+      overflow: hidden;
+    }
+
+    .callout-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      font-family: var(--nb-font-label);
+      font-weight: 600;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+    }
+
+    .callout-body {
+      padding: 0.75rem 1rem 0.9rem;
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+
+    .callout-body ul  { margin-bottom: 0; }
+    .callout-body p:last-child { margin-bottom: 0; }
+
+    .callout-note      { border-left-color: var(--surrogate-teal); }
+    .callout-note .callout-header {
+      background-color: rgba(35,95,102,0.10);
+      color: var(--surrogate-teal);
+    }
+
+    .callout-important { border-left-color: var(--surrogate-orange); }
+    .callout-important .callout-header {
+      background-color: rgba(242,138,28,0.10);
+      color: var(--surrogate-orange);
+    }
+
+    .callout-warning   { border-left-color: var(--surrogate-amber); }
+    .callout-warning .callout-header {
+      background-color: rgba(255,184,62,0.12);
+      color: #8a6200;
+    }
+
+    /* ============================================================
+       FIGURES — mirrors article.css
+       ============================================================ */
+    figure { margin: 2rem 0; }
+
+    figure img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+      display: block;
+    }
+
+    figcaption {
+      font-family: var(--nb-font-label) !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--surrogate-teal) !important;
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    figcaption .cap-body {
+      display: block;
+      font-family: var(--nb-font-sans);
+      font-weight: 400;
+      font-size: 0.88rem;
+      text-transform: none;
+      letter-spacing: normal;
+      color: var(--surrogate-muted-color);
+      margin-top: 0.2rem;
+      line-height: 1.55;
+    }
+
+    /* ============================================================
+       TABLES
+       ============================================================ */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-family: var(--nb-font-sans);
+      font-size: 0.88rem;
+    }
+
+    th {
+      background-color: var(--surrogate-charcoal);
+      color: var(--surrogate-paper);
+      padding: 0.55rem 0.9rem;
+      text-align: left;
+      font-family: var(--nb-font-label);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+    }
+
+    td {
+      padding: 0.55rem 0.9rem;
+      border-bottom: 1px solid var(--surrogate-charcoal-20);
+      vertical-align: top;
+      line-height: 1.55;
+    }
+
+    tr:nth-child(even) td { background-color: var(--bs-code-bg-color); }
+
+    /* ============================================================
+       CODE & FORMULA
+       ============================================================ */
+    code {
+      font-family: var(--nb-font-mono);
+      font-weight: 300;
+      color: var(--bs-code-color);
+      background-color: var(--bs-code-bg-color);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+      font-size: 0.88em;
+    }
+
+    .formula {
+      font-family: var(--nb-font-mono);
+      background-color: var(--bs-code-bg-color);
+      border: 1px solid var(--bs-code-border-color);
+      border-radius: 4px;
+      padding: 0.75rem 1.5rem;
+      text-align: center;
+      font-size: 1.05rem;
+      margin: 1.5rem 0;
+      color: var(--surrogate-charcoal);
+    }
+
+    /* ============================================================
+       BLOCKQUOTE — mirrors warm-journal.css
+       ============================================================ */
+    blockquote {
+      border-left: 0.35rem solid var(--surrogate-orange);
+      padding: 0.5rem 1rem;
+      margin: 1.5rem 0;
+      color: var(--surrogate-charcoal-68);
+      font-style: italic;
+    }
+
+    /* ============================================================
+       FOOTER — mirrors footer.css
+       ============================================================ */
+    .site-footer {
+      background-color: var(--surrogate-charcoal) !important;
+      padding: 2rem;
+      margin-top: 4rem;
+      width: 100%;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1300px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--surrogate-paper);
+      font-family: var(--nb-font-sans);
+      font-size: 0.85rem;
+    }
+
+    .footer-logo-wrap {
+      padding: 0.25rem;
+      background: var(--surrogate-paper);
+      border-radius: 0.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.4rem;
+      height: 2.4rem;
+    }
+
+    .footer-logo-wrap img { width: 1.7rem; height: 1.7rem; }
+
+    .footer-right a {
+      color: var(--surrogate-paper);
+      font-size: 1.2rem;
+      text-decoration: none;
+    }
+
+    .footer-right a:hover { color: var(--surrogate-amber); }
+
+    /* ============================================================
+       REFERENCES
+       ============================================================ */
+    .footnote-ref {
+      font-size: 0.72em;
+      vertical-align: super;
+      color: var(--surrogate-teal);
+    }
+
+    .references-section {
+      margin-top: 3rem;
+      border-top: 1px solid var(--surrogate-charcoal-20);
+      padding-top: 2rem;
+    }
+
+    .references-section h2 { font-size: 1.4rem !important; margin-top: 0 !important; }
+
+    .ref-entry {
+      margin: 0.75rem 1rem;
+      font-family: var(--nb-font-sans);
+      font-size: 0.88rem;
+      line-height: 1.55;
+    }
+
+    /* ============================================================
+       APPENDIX
+       ============================================================ */
+    .appendix-section {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 2px solid var(--surrogate-charcoal-20);
+    }
+
+    .appendix-section h2 { margin-top: 0 !important; }
+
+    /* ============================================================
+       RESPONSIVE — mirrors mobile.css
+       ============================================================ */
+    @media (max-width: 900px) {
+      .page-layout { grid-template-columns: 1rem 1fr 1rem; }
+      .article-content { grid-column: 2; }
+      .sidebar-toc { display: none; }
+      .navbar-nav { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .quarto-title-banner { padding: 2rem 1.25rem; }
+      .quarto-title-banner h1 { font-size: clamp(2rem, 10vw, 3rem) !important; }
+      .title-meta-container { padding: 0 1.25rem; }
+    }
+  </style>
+</head>
+<body class="surrogate-warm-journal">
+
+<!-- ================================================================
+     NAVBAR
+     ================================================================ -->
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <a class="navbar-brand" href="https://github.com/surrogate-sci">
+    <img class="navbar-logo"
+         src="./logo_surrogate_mark.svg"
+         alt="Surrogate Science logo">
+    <span class="navbar-title">SURROGATE SCIENCE</span>
+  </a>
+  <ul class="navbar-nav">
+    <li><a class="nav-link" href="../index.html">PRISM 2026</a></li>
+    <li><a class="nav-link" href="../pages/FAQ.html">FAQ</a></li>
+    <li><a class="nav-link" href="../pages/SETUP.html">Reproduce this pub</a></li>
+    <li>
+      <a class="nav-link"
+         href="https://github.com/surrogate-sci/prism2026"
+         aria-label="GitHub repository">
+        <i class="bi bi-github"></i>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<!-- ================================================================
+     TITLE BANNER
+     ================================================================ -->
+<div class="quarto-title-banner">
+  <h1>Guiding question: can we figure out something interesting about how LLM models internally represent potency and selectivity, and if they use shortcuts to answer scientific questions?</h1>
+</div>
+
+<!-- ================================================================
+     TITLE META + ABSTRACT
+     ================================================================ -->
+<div class="title-meta-container">
+  <div class="quarto-title-meta">
+    <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">Mid-August 2026 · Team Update</div>
+    </div>
+    <div>
+      <div class="quarto-title-meta-heading">Authors</div>
+      <div class="quarto-title-meta-contents">PRISM 2026 Contributors</div>
+    </div>
+    <div>
+      <div class="quarto-title-meta-heading">Dataset</div>
+      <div class="quarto-title-meta-contents">PXR Dataset · HuggingFace · 11,000+ screened compounds</div>
+    </div>
+  </div>
+
+  <div class="abstract">
+    <div class="block-title">Summary</div>
+    <p>We are using the PXR dataset by Huggingface, with over 11,000 screened compounds, to explore
+    whether LLMs use 'shortcuts' for reasoning in scientific contexts. We probe activations, apply
+    reparameterization, and patch residual streams to investigate whether models genuinely reason about
+    potency and selectivity or default to arithmetic shortcuts.</p>
+  </div>
+</div>
+
+<!-- ================================================================
+     MAIN LAYOUT
+     ================================================================ -->
+<div class="page-layout">
+
+  <!-- ==================== ARTICLE ==================== -->
+  <article class="article-content">
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="introduction">
+
+      <p>The use of models for scientific reasoning is a fascinating problem. While there are many benchmarks that investigate progress that LLMs make for being able to process/understand various biological datasets, there remain many open questions for scientists. That is, how much of 'causality' do models understand and how can we investigate representations of this?</p>
+
+      <p>There has been some previous work on this. One paper asks whether an internal mechanism in a neural network implements a higher-level causal model<a href="#fn1" class="footnote-ref"><sup>1</sup></a>. In another interesting direction, a CauSciBench<a href="#fn2" class="footnote-ref"><sup>2</sup></a> pre-print asked if LLMs can automate causal inference in real-world scientific research, including "method and variable selection to computation of causal effects and statistical interpretation in the context of real-world research problems".</p>
+
+      <p>To at least partially explore this question, we are using the PXR dataset by Huggingface, with over 11,000 screened compounds. They also provide assay data, information about molecule structure and novel results that many models have not been trained on yet. The overall motivation and guiding question is: can we see how models are more likely to use 'shortcuts' for reasoning? For example, if given the curve for null and pxr assay data AND the pec50 and emax values in a misguiding situation where you need the curves to have a complete understanding of the situation, does the model default to using arithmetic shortcuts, or does it actually try to reason? How can we probe activations? Can we steer? E.g. steer a model to ignore text information, or get it to understand that it SHOULD be uncertain? Can we isolate proxies for causal reasoning?</p>
+
+      <p>A little bit about the terms we used above:</p>
+      <ul>
+        <li>PXR is a ligand-dependent transcription factor that regulates the expression of various metabolic enzymes and drug transporters critical for breaking down drugs.</li>
+        <li>A null assay can be thought of as a 'control'</li>
+        <li>Pec50 is the half-maximal effective concentration of a drug or agonist (e.g. amount of drug you need to have half the maximal effect).</li>
+        <li>Emax is the maximum possible effect or maximal efficacy that a drug can produce when binding to its receptors (aka adding a greater concentration of the drug won't have a greater effect).</li>
+      </ul>
+    </section>
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="background">
+      <h2>Background information about the dataset</h2>
+
+      <figure>
+        <img src="./figures/page2_img1.png"
+             alt="An aesthetic depiction of the PXR receptor with multiple entrances showing how molecules of different shapes can potentially bind to it">
+        <figcaption>Figure 1
+          <span class="cap-body">An aesthetic depiction of the PXR receptor (multiple entrances, demonstrating how molecules of different shapes can potentially bind to it).</span>
+        </figcaption>
+      </figure>
+
+      <h3>Importance of PXR and Null Assays</h3>
+      <ul>
+        <li>The counter-screen is a cell line with PXR disabled, so a real PXR activator cannot light it up.</li>
+        <li>Analogous to the placebo group in a clinical trial, it is the perfect control to catch all reasons the typical PXR assay might be a false positive.</li>
+      </ul>
+
+      <p>The two reporter assays sort compounds four ways.</p>
+
+      <figure>
+        <img src="./figures/page2_img2.png"
+             alt="Table showing the four compound categories sorted by the two reporter assays">
+        <figcaption>Table 1
+          <span class="cap-body">The four compound categories defined by the PXR reporter assay and null counter-screen.</span>
+        </figcaption>
+      </figure>
+
+      <p>However, this is not the complete story. Assay results are dose-dependent, which means that there are numerous dose-response curves that could fit the same pec50 and emax values.</p>
+    </section>
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="question-1">
+      <h2>Question 1: Does the model actually understand selectivity?</h2>
+
+      <div class="callout callout-warning">
+        <div class="callout-header">
+          <i class="bi bi-chat-left-text-fill"></i>&nbsp; Comment — Afnan Alabdulwahab
+        </div>
+        <div class="callout-body">
+          <p>Actually can we show a demonstration of a naive LLM given PXR data which automatically uses it without raising any questions at all? Can you provide an example from one of the larger models? Qwen 3.5/3.6 or Gemma 4 31b?</p>
+        </div>
+      </div>
+
+      <p>So every compound in our dataset gets tested twice: once in PXR reporter assay, and once in a "null" counter-screen that uses the same cellular machinery but without functional PXR signaling. If a compound lights up in both, that is a red flag – it might not be doing anything specific to PXR at all. Selectivity is the gap between the two: strong in the real assay and quiet in the null.</p>
+
+      <p>So with H1, we ask a simple question: when a language model reads those two numbers and renders a verdict, is it actually reasoning about selectivity as its own concept, distinct from "how potent is this compound?" – or is it doing something shallow that happens to look right most of the time? And if selectivity really is there, can we find where in the model it lives, and prove the model uses it rather than just represent it?</p>
+
+      <p>So, how would we even probe for selectivity? Unlike potency, selectivity is not one of the numbers that we include in the prompt. It can be thought of as a relationship between two measurements (difference between the PXR and nul pEC50s), where Selectivity = pEC50(PXR) - pEC50(null). As such, we can control when the information required to construct a selectivity representation becomes available to the model we're probing.</p>
+
+      <p>As such, we rendered the same assay information in two possible orders: PXR pEC50 text input first, and then null pEC50. And the same information, but in the reverse order. We then probed the residual stream at the number-token positions, based on where we included input for the PXR and null assays respectively. In other words, when PXR appears first, its token contains the potency reading but because the model hasn't seen the null reading, it cannot determine selectivity. However, when PXR appears second, and we probe there, both measurements are already available and we can probe for selectivity there. As such, we can ask both if selectivity can be decoded, and where this representation carrying information about selectivity appears.</p>
+
+      <p>The first step is to know whether the model can uncover the concept of potency and selectivity, in order to do so we'd like to find a linear direction which could describe these two concepts. The first result is both potency and selectivity are linearly decodable from the residual stream. Potency reads out at its own number token position and selectivity decodes once both numbers have been read. It tells us both readings are present and linearly available.</p>
+
+      <p>Now we know that these concepts are present in residual stream, however we want to know whether the concept of selectivity is an abstract one or an arithmetic concept.</p>
+
+      <p>One way to uncover this is through reparameterization. If the model is doing subtraction of the printed digits, we can break it by changing the unit from pEC50 to EC50. So we render every prompt in EC50 nanomolar instead of pEC50, using EC50 = 10^(9−pEC50). Now a potent compound prints a small number, and selectivity becomes a ratio instead of a difference. A model subtracting the digits should invert while a model tracking the real quantity should not.</p>
+
+      <p>It doesn't invert. The verdict tracks true selectivity in both notations, rank agreement +0.94 in pEC50 and +0.86 in nM so naive subtraction can be ruled out.</p>
+
+      <p>However, It does not establish a construct. Instead it shows something more general than naïve subtraction, but it can't tell us whether it is a construct or a specific arithmetic different from subtraction.</p>
+
+      <figure>
+        <img src="./figures/page4_img1.png"
+             alt="Scatter plots showing rank agreement with true selectivity in pEC50 and EC50 nanomolar units, both before and after reasoning">
+        <figcaption>Figure 2
+          <span class="cap-body">Both readouts rise with true selectivity in both notations. Rank agreements are Spearman correlations over all 32 molecules.</span>
+        </figcaption>
+      </figure>
+
+      <p>What we'd like to know is whether changing to an other unit could change the verdict? So we intervene on the same compound and render in pEC50 and in EC50. We take the residual stream at the number token from one rendering and patch it into the other, then observe the verdict before reasoning.</p>
+
+      <p>If the model had converted the reading into a unit invariant quantity, swapping notations should do nothing, we would observe in that case that both patched readings would land in the grey band.</p>
+
+      <figure>
+        <img src="./figures/page5_img1.png"
+             alt="Activation patching results showing change in score caused by cross-unit substitution for PXR and counter-screen readings">
+        <figcaption>Figure 3
+          <span class="cap-body">Rewriting a reading it denotes identically moves the model's verdict, so the reading is not held as a quantity. Patch applied from layer 8 upward, 32 compounds.</span>
+        </figcaption>
+      </figure>
+
+      <p>Instead, what we find is, both reading are outside of the band and patching moves the verdict for PXR reading (+5,85 logits and -3,55 logits in both directions, stronger than PXR_null). So at the number token, the digit is not a converted quantity, the model is reading the quantity. This rules out the notation invariance in the pre-reasoning phase.</p>
+
+      <h3>Results</h3>
+      <p>After these different experiments what we find is that it's not a construct (unidentifiable by probing and invalidated at the number token by patching). It's also not a naive subtraction and not a unit-independent quantity. What survives is narrow and specific, an arithmetic more general than subtraction and on numbers the model never abstracts away from how they were written.</p>
+    </section>
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="question-2">
+      <h2>Question 2: How is selectivity really encoded in LLMs. Does it go beyond arithmetic?</h2>
+
+      <p>We attempt to answer a proxy for this question by giving the model just the Emax and pEC50 values for the null and PXR assays, in which just having these, if you do just the arithmetic on summary statistics like Hill coefficients, can reasonably give you a conclusion about the dose-response of the molecule (e.g. that the molecule is selective for PXR). However, remember that the response is dose-dependent.</p>
+
+      <p>Take a look at the visualization below. The difference between Case A and Case C is shown here, where they have the same pec50 and emax, but the curves look different and reveal a different 'reality'.</p>
+
+      <figure>
+        <img src="./figures/page6_img1.png"
+             alt="Paired dose-response plots for Case A and Case C showing how identical pEC50 and Emax values can correspond to different curve shapes and biological conclusions">
+        <figcaption>Figure 4
+          <span class="cap-body">Case A against Case C with the summary held identical. Both curves in each row measure back to the same printed pEC50 and Emax. Only the shape above the peak differs, and that alone changes the biological conclusion.</span>
+        </figcaption>
+      </figure>
+
+      <p>There are seven molecules in the dataset that fall under the defined terms of Case A (left graphs) and Case C (right graphs), so we simulated some dose-dependent response curves. For this experimental design, we use the predicted 'real version' which is either Case A or Case C, and then simulate the curve for what it would look like if crossing/not crossing, and then synthesize the curve for the alternative case to have a control. In other words, Case A is consistent with just the pec50 and emax, but Case C is not. This is just a behavioural task, for which we did do some internal probing and activation work, but that's a blog post for another time. We also had some other cases (B, D, E, F) that you can read more about in the 'appendix' section of this blog post.</p>
+
+      <h3>Results</h3>
+
+      <p>I ran case A as a baseline. All models guess correctly basically all the time (except for Sol and Sonnet, which seem to enjoy hedging). In case c, they flip successfully from about 50-75% of the time when given the curve as an image, and less frequently when given the curve as a table. But this also depends on the model. This is curious, because if the models were actually using the dose table or curve, they should flip all the time. Remember that Curve A matches the naive math-based pEC50 and Emax conclusion while Curve C reveals info that is not naively captured by JUST subtracting pec50 and emax and would lead to a diff conclusion.</p>
+
+      <figure>
+        <img src="./figures/page7_img1.png"
+             alt="Bar chart showing model accuracy across five information conditions for Case A and Case C">
+        <figcaption>Figure 5
+          <span class="cap-body">Paired design, 3 replicates — bars are the mean, black dots are the individual replicates. At temperature 0 a deterministic server would place all three dots on top of each other; any spread is the serving stack, not sampling.</span>
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="conclusion">
+      <h2>Conclusion</h2>
+
+      <h3>Why does this matter?</h3>
+      <p>Toy tasks are easy to study, but can miss failures. Scientific experiments are more realistic, with controls and known sources of error. Using this approach, we can compare: What the model says (its prediction), what's actually true (wet-lab experiment assay results) and what interp tools claim (investigated through probe · steering · patching). PXR could become a first example of a broader approach: use compelling scientific tasks to actually audit for the kinds of problems the position papers pointed out.<a href="#fn3" class="footnote-ref"><sup>3</sup></a></p>
+    </section>
+
+    <hr>
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="appendix" class="appendix-section">
+      <h2>Appendix</h2>
+
+      <figure>
+        <img src="./figures/page8_img1.png"
+             alt="Case-by-case breakdown showing six cases (A, B, C, D, C constructed, F) each rendered three ways: pEC50 only, adding Emax, and adding the reconstructed dose-response curve">
+        <figcaption>Appendix Figure
+          <span class="cap-body">Case-by-case breakdown. The same released measurement shown three ways. Every curve is reconstructed from the two published parameters; only the Case C row marked "constructed" has a number changed.</span>
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- ---------------------------------------------------------- -->
+    <div class="references-section">
+      <h2>References</h2>
+
+      <div class="ref-entry" id="fn1">
+        <sup>1</sup> <a href="https://arxiv.org/abs/2301.04709">https://arxiv.org/abs/2301.04709</a>
+      </div>
+
+      <div class="ref-entry" id="fn2">
+        <sup>2</sup> <a href="https://openreview.net/forum?id=v9d4RqaPFO">https://openreview.net/forum?id=v9d4RqaPFO</a>
+      </div>
+
+      <div class="ref-entry" id="fn3">
+        <sup>3</sup> Lin, Z., &amp; Liu, F. (2026). Position: Mechanistic interpretability must disclose identification assumptions for causal claims [Preprint]. arXiv. <a href="https://doi.org/10.48550/arXiv.2605.08012">https://doi.org/10.48550/arXiv.2605.08012</a>
+        <br>
+        Joshi, S., Mueller, A., Klindt, D., Brendel, W., Reizinger, P., &amp; Sridhar, D. (2026). Causality is key for interpretability claims to generalise [Preprint]. arXiv. <a href="https://doi.org/10.48550/arXiv.2602.16698">https://doi.org/10.48550/arXiv.2602.16698</a>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ==================== SIDEBAR TOC ==================== -->
+  <aside class="sidebar-toc" aria-label="Table of contents">
+    <div id="toc-title">On this page</div>
+    <nav class="toc-nav">
+      <ul>
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#background">Background</a></li>
+        <li><a href="#question-1">Q1: Does the model understand selectivity?</a>
+          <ul>
+            <li><a href="#question-1">Probing</a></li>
+            <li><a href="#question-1">Reparameterization</a></li>
+            <li><a href="#question-1">Activation Patching</a></li>
+          </ul>
+        </li>
+        <li><a href="#question-2">Q2: Beyond arithmetic?</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+        <li><a href="#appendix">Appendix</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+</div><!-- /page-layout -->
+
+<!-- ================================================================
+     FOOTER
+     ================================================================ -->
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="footer-logo-wrap">
+        <img src="./logo_surrogate_mark.svg"
+             alt="Surrogate Science">
+      </div>
+      <span>Copyright 2026, Surrogate Science</span>
+    </div>
+    <div class="footer-right">
+      <a href="https://github.com/surrogate-sci/prism2026" aria-label="GitHub">
+        <i class="bi bi-github"></i>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- ================================================================
+     TOC ACTIVE-LINK SCRIPT
+     ================================================================ -->
+<script>
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-nav a');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        tocLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+        });
+      }
+    });
+  }, { rootMargin: '-15% 0% -75% 0%' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
