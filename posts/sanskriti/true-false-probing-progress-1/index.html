@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en" class="surrogate-warm-journal">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>True/False Probing, Progress Update 1 | PRISM 2026</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Fira+Mono:wght@400;500&family=Fira+Sans:wght@500;600;700&display=swap">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <style>
+    /* ============================================================
+       CSS CUSTOM PROPERTIES — mirrors colors.css + main.css
+       ============================================================ */
+    :root {
+      --surrogate-paper:    #F5F0E2;
+      --surrogate-teal:     #235F66;
+      --surrogate-orange:   #F28A1C;
+      --surrogate-amber:    #FFB83E;
+      --surrogate-charcoal: #30332F;
+
+      --surrogate-charcoal-68: rgba(48,51,47,0.68);
+      --surrogate-charcoal-50: rgba(48,51,47,0.50);
+      --surrogate-charcoal-20: rgba(48,51,47,0.20);
+      --surrogate-paper-50:    rgba(245,240,226,0.50);
+
+      --surrogate-body-color:  var(--surrogate-charcoal);
+      --surrogate-label-color: var(--surrogate-teal);
+      --surrogate-muted-color: var(--surrogate-charcoal-68);
+      --surrogate-link-color:  var(--surrogate-teal);
+      --surrogate-logo-size:   2rem;
+
+      --bs-code-bg-color:          color-mix(in srgb, #F5F0E2 92%, #30332F);
+      --bs-code-border-color:      rgba(48,51,47,0.20);
+      --bs-code-left-border-color: rgba(35,95,102,0.60);
+      --bs-code-color:             var(--surrogate-teal);
+
+      --callout-note-rgb:      var(--surrogate-teal);
+      --callout-warning-rgb:   var(--surrogate-amber);
+      --callout-important-rgb: var(--surrogate-orange);
+
+      --nb-font-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+      --nb-font-sans:  "Assistant", ui-sans-serif, system-ui, sans-serif;
+      --nb-font-label: "Fira Sans", ui-sans-serif, system-ui, sans-serif;
+      --nb-font-mono:  "Fira Mono", ui-monospace, Consolas, monospace;
+      --nb-h1-font-size: 2.5rem;
+      --nb-h2-font-size: 2rem;
+
+      --navbar-height:     4rem;
+      --mini-title-height: 3rem;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--nb-font-sans);
+      color: var(--surrogate-body-color);
+      background-color: var(--surrogate-paper);
+      line-height: 1.65;
+      font-size: 1rem;
+    }
+
+    a { color: var(--surrogate-teal); text-decoration: none; }
+    a:hover { color: var(--surrogate-orange); }
+
+    /* ============================================================
+       NAVBAR
+       ============================================================ */
+    .navbar {
+      height: var(--navbar-height);
+      background-color: var(--surrogate-paper);
+      border-bottom: 1px solid var(--surrogate-charcoal-20);
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1030;
+      gap: 1rem;
+    }
+
+    .navbar-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .navbar-logo {
+      width: 2.8rem;
+      height: 2.8rem;
+      max-height: 2.8rem;
+    }
+
+    .navbar-title {
+      color: var(--surrogate-charcoal);
+      font-family: var(--nb-font-serif);
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+
+    .navbar-nav {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      gap: 0.25rem;
+      margin-left: auto;
+    }
+
+    .navbar-nav .nav-link {
+      color: var(--surrogate-charcoal);
+      font-family: var(--nb-font-sans);
+      font-size: 0.9rem;
+      padding: 0.4rem 0.6rem;
+      text-decoration: none;
+      position: relative;
+    }
+
+    .navbar-nav .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 100%; height: 2px;
+      bottom: -2px; left: 0;
+      background-color: currentColor;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .navbar-nav .nav-link:hover { color: var(--surrogate-charcoal); }
+    .navbar-nav .nav-link:hover::after { opacity: 1; }
+
+    /* ============================================================
+       TITLE BANNER
+       ============================================================ */
+    .quarto-title-banner {
+      background-color: var(--surrogate-paper) !important;
+      border-bottom: 1px solid var(--surrogate-charcoal-20);
+      padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 6vw, 5rem);
+    }
+
+    .quarto-title-banner h1 {
+      max-width: 62rem;
+      color: var(--surrogate-charcoal) !important;
+      font-family: var(--nb-font-serif) !important;
+      font-size: clamp(2.6rem, 6vw, 5.25rem) !important;
+      font-weight: 600 !important;
+      letter-spacing: -0.035em;
+      line-height: 1.0;
+    }
+
+    /* ============================================================
+       TITLE META + ABSTRACT
+       ============================================================ */
+    .title-meta-container {
+      padding: 0 clamp(1.5rem, 6vw, 5rem);
+    }
+
+    .quarto-title-meta {
+      background-color: var(--bs-code-bg-color);
+      padding: 1em 2em 0 2em;
+      margin-top: 2rem;
+      border-radius: 8px 8px 0 0;
+      border: 1px solid rgba(0,0,0,0.10);
+      border-bottom: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .quarto-title-meta-heading {
+      font-family: var(--nb-font-label) !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--surrogate-teal) !important;
+      font-size: 0.72rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .quarto-title-meta-contents {
+      font-family: var(--nb-font-sans);
+      font-size: 0.9rem;
+      color: var(--surrogate-body-color);
+      padding-bottom: 1em;
+    }
+
+    .abstract {
+      background-color: var(--bs-code-bg-color);
+      padding: 1rem 2rem 1.5rem 2rem;
+      border-radius: 0 0 8px 8px;
+      border: 1px solid rgba(0,0,0,0.10);
+      border-top: none;
+    }
+
+    .abstract .block-title {
+      font-family: var(--nb-font-label) !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--surrogate-teal) !important;
+      font-size: 0.72rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .abstract p {
+      font-family: var(--nb-font-serif);
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--surrogate-body-color);
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    /* ============================================================
+       PAGE LAYOUT
+       ============================================================ */
+    .page-layout {
+      display: grid;
+      grid-template-columns:
+        [outer-left] clamp(1rem, 4vw, 4rem)
+        [content-start] minmax(0, 820px)
+        [content-end] clamp(0px, 3vw, 2rem)
+        [toc-start] clamp(140px, 16vw, 210px)
+        [toc-end] clamp(1rem, 4vw, 4rem)
+        [outer-right];
+      padding-top: 2.5rem;
+      align-items: start;
+    }
+
+    .article-content {
+      grid-column: content-start / content-end;
+      padding-bottom: 5rem;
+      min-width: 0;
+    }
+
+    .sidebar-toc {
+      grid-column: toc-start / toc-end;
+      position: sticky;
+      top: calc(var(--navbar-height) + 2rem);
+      align-self: start;
+      max-height: calc(100vh - var(--navbar-height) - 4rem);
+      overflow-y: auto;
+    }
+
+    /* ============================================================
+       TABLE OF CONTENTS
+       ============================================================ */
+    #toc-title {
+      font-family: var(--nb-font-mono);
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--surrogate-label-color);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.6rem;
+    }
+
+    .toc-nav ul { list-style: none; padding: 0; }
+    .toc-nav li { margin: 0.1rem 0; }
+
+    .toc-nav a {
+      font-family: var(--nb-font-mono);
+      font-weight: 300;
+      font-size: 0.78rem;
+      color: var(--surrogate-body-color);
+      text-decoration: none;
+      display: block;
+      padding: 0.15rem 0.5rem;
+      border-left: 2px solid transparent;
+      transition: all 0.2s ease;
+      line-height: 1.4;
+    }
+
+    .toc-nav a:hover,
+    .toc-nav a.active {
+      border-left-color: var(--surrogate-teal);
+      color: var(--surrogate-teal) !important;
+    }
+
+    .toc-nav ul ul { padding-left: 0.75rem; }
+
+    /* ============================================================
+       ARTICLE TYPOGRAPHY
+       ============================================================ */
+    .article-content h2 {
+      font-family: var(--nb-font-serif) !important;
+      font-weight: 600 !important;
+      color: var(--surrogate-charcoal);
+      font-size: var(--nb-h2-font-size);
+      margin-top: 3rem;
+      margin-bottom: 0.75rem;
+      line-height: 1.15;
+    }
+
+    .article-content h3 {
+      font-family: var(--nb-font-sans) !important;
+      font-weight: 400 !important;
+      color: var(--surrogate-charcoal);
+      font-size: 1.25rem;
+      margin-top: 2rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .article-content p {
+      margin-bottom: 1.15rem;
+      line-height: 1.7;
+    }
+
+    .article-content ul,
+    .article-content ol {
+      margin-bottom: 1.15rem;
+      padding-left: 1.5rem;
+    }
+
+    .article-content li {
+      margin-bottom: 0.4rem;
+      line-height: 1.65;
+    }
+
+    .article-content hr {
+      border: none;
+      border-top: 1px solid var(--surrogate-charcoal-20);
+      margin: 2.5rem 0;
+    }
+
+    /* ============================================================
+       CALLOUTS
+       ============================================================ */
+    .callout {
+      border-radius: 4px;
+      margin: 1.5rem 0;
+      border: 1px solid var(--surrogate-charcoal-20);
+      border-left-width: 4px;
+      overflow: hidden;
+    }
+
+    .callout-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      font-family: var(--nb-font-label);
+      font-weight: 600;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+    }
+
+    .callout-body {
+      padding: 0.75rem 1rem 0.9rem;
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+
+    .callout-body ul  { margin-bottom: 0; }
+    .callout-body p:last-child { margin-bottom: 0; }
+
+    .callout-note      { border-left-color: var(--surrogate-teal); }
+    .callout-note .callout-header {
+      background-color: rgba(35,95,102,0.10);
+      color: var(--surrogate-teal);
+    }
+
+    .callout-important { border-left-color: var(--surrogate-orange); }
+    .callout-important .callout-header {
+      background-color: rgba(242,138,28,0.10);
+      color: var(--surrogate-orange);
+    }
+
+    .callout-warning   { border-left-color: var(--surrogate-amber); }
+    .callout-warning .callout-header {
+      background-color: rgba(255,184,62,0.12);
+      color: #8a6200;
+    }
+
+    /* ============================================================
+       FIGURES
+       ============================================================ */
+    figure { margin: 2rem 0; }
+
+    figure img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+      display: block;
+    }
+
+    figcaption {
+      font-family: var(--nb-font-label) !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--surrogate-teal) !important;
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    figcaption .cap-body {
+      display: block;
+      font-family: var(--nb-font-sans);
+      font-weight: 400;
+      font-size: 0.88rem;
+      text-transform: none;
+      letter-spacing: normal;
+      color: var(--surrogate-muted-color);
+      margin-top: 0.2rem;
+      line-height: 1.55;
+    }
+
+    /* ============================================================
+       CODE
+       ============================================================ */
+    code {
+      font-family: var(--nb-font-mono);
+      font-weight: 300;
+      color: var(--bs-code-color);
+      background-color: var(--bs-code-bg-color);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+      font-size: 0.88em;
+    }
+
+    pre {
+      font-family: var(--nb-font-mono);
+      background-color: var(--bs-code-bg-color);
+      border: 1px solid var(--bs-code-border-color);
+      border-left: 4px solid var(--bs-code-left-border-color);
+      border-radius: 4px;
+      padding: 1rem 1.25rem;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      color: var(--surrogate-charcoal);
+      white-space: pre-wrap;
+    }
+
+    /* ============================================================
+       BLOCKQUOTE
+       ============================================================ */
+    blockquote {
+      border-left: 0.35rem solid var(--surrogate-orange);
+      padding: 0.5rem 1rem;
+      margin: 1.5rem 0;
+      color: var(--surrogate-charcoal-68);
+      font-style: italic;
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .site-footer {
+      background-color: var(--surrogate-charcoal) !important;
+      padding: 2rem;
+      margin-top: 4rem;
+      width: 100%;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1300px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--surrogate-paper);
+      font-family: var(--nb-font-sans);
+      font-size: 0.85rem;
+    }
+
+    .footer-logo-wrap {
+      padding: 0.25rem;
+      background: var(--surrogate-paper);
+      border-radius: 0.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.4rem;
+      height: 2.4rem;
+    }
+
+    .footer-logo-wrap img { width: 1.7rem; height: 1.7rem; }
+
+    .footer-right a {
+      color: var(--surrogate-paper);
+      font-size: 1.2rem;
+      text-decoration: none;
+    }
+
+    .footer-right a:hover { color: var(--surrogate-amber); }
+
+    /* ============================================================
+       APPENDIX
+       ============================================================ */
+    .appendix-section {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 2px solid var(--surrogate-charcoal-20);
+    }
+
+    .appendix-section h2 { margin-top: 0 !important; }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 900px) {
+      .page-layout { grid-template-columns: 1rem 1fr 1rem; }
+      .article-content { grid-column: 2; }
+      .sidebar-toc { display: none; }
+      .navbar-nav { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .quarto-title-banner { padding: 2rem 1.25rem; }
+      .quarto-title-banner h1 { font-size: clamp(2rem, 10vw, 3rem) !important; }
+      .title-meta-container { padding: 0 1.25rem; }
+    }
+  </style>
+</head>
+<body class="surrogate-warm-journal">
+
+<!-- ================================================================
+     NAVBAR
+     ================================================================ -->
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <a class="navbar-brand" href="https://github.com/surrogate-sci">
+    <img class="navbar-logo"
+         src="./logo_surrogate_mark.svg"
+         alt="Surrogate Science logo">
+    <span class="navbar-title">SURROGATE SCIENCE</span>
+  </a>
+  <ul class="navbar-nav">
+    <li><a class="nav-link" href="../../index.html">PRISM 2026</a></li>
+    <li><a class="nav-link" href="../../pages/FAQ.html">FAQ</a></li>
+    <li><a class="nav-link" href="../../pages/SETUP.html">Reproduce this pub</a></li>
+    <li>
+      <a class="nav-link"
+         href="https://github.com/surrogate-sci/prism2026"
+         aria-label="GitHub repository">
+        <i class="bi bi-github"></i>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<!-- ================================================================
+     TITLE BANNER
+     ================================================================ -->
+<div class="quarto-title-banner">
+  <h1>True/False Probing, Progress Update 1</h1>
+</div>
+
+<!-- ================================================================
+     TITLE META + ABSTRACT
+     ================================================================ -->
+<div class="title-meta-container">
+  <div class="quarto-title-meta">
+    <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">August 2026 · Progress Update</div>
+    </div>
+    <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">Sanskriti Shindadkar</div>
+    </div>
+    <div>
+      <div class="quarto-title-meta-heading">Topic</div>
+      <div class="quarto-title-meta-contents">H4 — True/False Probing · Qwen2.5-7B-Instruct · Mistral</div>
+    </div>
+  </div>
+
+  <div class="abstract">
+    <div class="block-title">Hypothesis</div>
+    <p>In activation space, is there a direction that separates prompts where the assertion is chemically true from prompts where it is chemically false? Can we steer across these, using selectivity as a case study?</p>
+  </div>
+</div>
+
+<!-- ================================================================
+     MAIN LAYOUT
+     ================================================================ -->
+<div class="page-layout">
+
+  <!-- ==================== ARTICLE ==================== -->
+  <article class="article-content">
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="hypothesis">
+      <h2>Hypothesis</h2>
+
+      <ul>
+        <li>In activation space, is there a direction that separates prompts where the assertion is chemically true from prompts where it is chemically false? Can we steer across these, using selectivity as a case study?</li>
+        <li>Using true, confounded, and false claims…</li>
+      </ul>
+
+      <h3>Contextualizing why we're doing this</h3>
+
+      <ul>
+        <li>There are lots of true/false probes, and it is a natural question to see how they generalize across models, to more specific science-related contexts</li>
+        <li>Personal note: This section needs to be filled out still! Manjari suggested as next steps, also trying experiments but using the true/false probes from cadenza labs (they know which ones work).</li>
+      </ul>
+    </section>
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="methodology">
+      <h2>Methodology</h2>
+
+      <figure>
+        <img src="./figures/page1_img1.png"
+             alt="Data partition diagram showing how true/false probes were trained">
+        <figcaption>Figure 1
+          <span class="cap-body">Our data partition, and how our true/false probes were trained.</span>
+        </figcaption>
+      </figure>
+
+      <p>We had three types of claims: true, confounded, and false.</p>
+
+      <ul>
+        <li>A true claim is straightforwardly true, while a false one is very obviously false. These 'obvious' test cases were constructed using the H0 dataset, which was prefiltered to have a large gap between selectivity and potency.</li>
+      </ul>
+
+      <h3>What does a confounded claim look like, data partitioning-wise?</h3>
+
+      <ul>
+        <li>All PXR compounds from the interp_benchmark and probe_benchmark datasets are split by selectivity label. Those with selectivity ≤ 0.5 AND pEC50<sub>PXR</sub> ≥ 5.5 are tagged as fake-out (confounded) and held out entirely from probe training.</li>
+      </ul>
+
+      <h3>What happens next?</h3>
+
+      <ul>
+        <li>The remaining ordinary (True/False) compounds are split compound-disjointly into probe_train (~80%, ~74 instances) and probe_holdout (~20%, ~18 instances). The confounded set (n = 38 instances, 6 compounds × 2 templates × ~3 instances each)</li>
+      </ul>
+
+      <figure>
+        <img src="./figures/page2_img1.png"
+             alt="Table of experimental controls used in the methodology">
+        <figcaption>Table X
+          <span class="cap-body">Different things we controlled for in the methodology. Experimental Controls, and why we used them.</span>
+        </figcaption>
+      </figure>
+
+      <ul>
+        <li>At some point I was experimenting and realized that things look incredibly different based on how direct the prompt looks like, so we had 6-8 variants.</li>
+        <li>On the to-do is to run this again, but with the SIMPLEST assertion possible (for a ninth variant)</li>
+      </ul>
+
+      <h3>Sample prompt</h3>
+
+<pre>You are an expert toxicologist. Molecule X (SMILES:
+COCCOC1CC(CO)CN(S(=O)(=O)C2=CC(F)=CC=C2C)C1) was tested in a human PXR
+luciferase reporter (pEC50 = 5.52) and a paired PXR-null luciferase reporter
+(pEC50 = 5.08).
+
+Assertion: "The primary reporter signal for this compound is PXR-specific and
+is not explained by non-specific luciferase activity."
+
+Is the assertion True or False? Answer with a single line: Assertion: True or
+Assertion: False.</pre>
+
+      <p>Ground truth: False. The compound activates both reporters at nearly the same potency (5.52 vs 5.08 pEC50). The signal is non-specific luciferase activation, not PXR engagement. A toxicologist reading those two numbers carefully should reject the specificity claim immediately: PXR specificity requires the primary reporter to be substantially stronger than the null. Both 7B models (that we tested) say True regardless.</p>
+
+      <p>At this point… I was curious. QUESTION: how prompt-dependent is this true/false vector? Can we (in the scope of this experiment :P) find something that generalizes across 6-8 versions of the chemistry context prompt?</p>
+    </section>
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="results">
+      <h2>Results</h2>
+
+      <figure>
+        <img src="./figures/page3_img1.png"
+             alt="Results figure showing model behaviour across claim types">
+        <figcaption>Figure 2
+          <span class="cap-body">Results.</span>
+        </figcaption>
+      </figure>
+
+      <p>Also notable is that the 7B models were not able to understand selectivity UNTIL the null response assay number was actually just larger than the PXR number. Smaller magnitudes didn't really matter</p>
+
+      <ul>
+        <li>there is a flip! That happens at gap = 0</li>
+      </ul>
+
+      <figure>
+        <img src="./figures/page3_img2.png"
+             alt="Figure showing the flip in model verdict at gap = 0">
+        <figcaption>Figure 3
+          <span class="cap-body">The flip at gap = 0.</span>
+        </figcaption>
+      </figure>
+
+      <ul>
+        <li>Every compound with gap &lt; 0 (null &gt; PXR, even by 0.03 log-units) gets correctly rejected under stripped context. Every compound with gap ≥ 0 (PXR ≥ null, even by 0.03) gets wrongly assigned True. Full context is always True regardless.</li>
+      </ul>
+
+      <p>Also ran versions of the prompt without the chem context, did better on confounded prompts….</p>
+
+      <p>Mistral (AND QWEN) at ~16 layers has literally antipodal truth representations across template families. The selectivity geometry and inactivity geometry for "true/false" are pointing in opposite directions in the residual stream.</p>
+
+      <p>Also with figures below, it seems that Gemma 4B probes generalize from chemistry to stripped, but not other way around as strongly. Also, for other 4B models, the probe doesn't work in either direction!</p>
+
+      <ul>
+        <li>crazy!</li>
+      </ul>
+
+      <figure>
+        <img src="./figures/page4_img1.png"
+             alt="Probe generalization results figure 1">
+        <figcaption>Figure 4
+          <span class="cap-body">Probe generalization across template families.</span>
+        </figcaption>
+      </figure>
+
+      <figure>
+        <img src="./figures/page4_img2.png"
+             alt="Probe generalization results figure 2">
+        <figcaption>Figure 5
+          <span class="cap-body">Probe generalization across template families (continued).</span>
+        </figcaption>
+      </figure>
+
+      <figure>
+        <img src="./figures/page4_img3.png"
+             alt="Probe generalization results figure 3">
+        <figcaption>Figure 6
+          <span class="cap-body">Probe generalization across template families (continued).</span>
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="results-part-2">
+      <h2>Results part 2 (IN PROGRESS)</h2>
+
+      <p>Then tried to see if we could do activation steering to turn confounded claims from true to false (correct)</p>
+
+      <p>This worked without incorrectly steering any actually true or actually false claims away</p>
+
+      <figure>
+        <img src="./figures/page5_img1.png"
+             alt="Activation steering results showing confounded claims steered from True to False">
+        <figcaption>Figure 7
+          <span class="cap-body">Activation steering results. Confounded claims steered from True to False (correct direction) without incorrectly flipping ordinary true or false claims.</span>
+        </figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="appendix" class="appendix-section">
+      <h2>Appendix</h2>
+
+      <h3>Question: So why did we choose L16 for Mistral/Qwen?</h3>
+
+      <p>Answer: sweep, and it was highest on the hold-out AUROC. But to be honest the other layers might have something interesting, so this is on the to do.</p>
+
+      <figure>
+        <img src="./figures/page7_img1.png"
+             alt="Layer sweep figure">
+        <figcaption>Appendix Figure
+          <span class="cap-body">Layer sweep.</span>
+        </figcaption>
+      </figure>
+    </section>
+
+  </article>
+
+  <!-- ==================== SIDEBAR TOC ==================== -->
+  <nav class="sidebar-toc" aria-label="Table of contents">
+    <div id="toc-title">On this page</div>
+    <div class="toc-nav">
+      <ul>
+        <li><a href="#hypothesis">Hypothesis</a></li>
+        <li><a href="#methodology">Methodology</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#results-part-2">Results part 2</a></li>
+        <li><a href="#appendix">Appendix</a></li>
+      </ul>
+    </div>
+  </nav>
+
+</div><!-- .page-layout -->
+
+<!-- ================================================================
+     FOOTER
+     ================================================================ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="footer-logo-wrap">
+        <img src="./logo_surrogate_mark.svg" alt="Surrogate Science">
+      </div>
+      <span>© 2026 Surrogate Science · PRISM 2026</span>
+    </div>
+    <div class="footer-right">
+      <a href="https://github.com/surrogate-sci/prism2026" aria-label="GitHub">
+        <i class="bi bi-github"></i>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
