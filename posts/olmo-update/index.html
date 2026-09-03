@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en" class="surrogate-warm-journal">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OLMo branch experiments | PRISM 2026</title>
+
+  <!-- Fonts (from includes/fonts.html) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Fira+Mono:wght@400;500&family=Fira+Sans:wght@500;600;700&display=swap">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <style>
+    /* ============================================================
+       CSS CUSTOM PROPERTIES — mirrors colors.css + main.css
+       ============================================================ */
+    :root {
+      /* Canonical Surrogate Science blog palette */
+      --surrogate-paper:    #F5F0E2;
+      --surrogate-teal:     #235F66;
+      --surrogate-orange:   #F28A1C;
+      --surrogate-amber:    #FFB83E;
+      --surrogate-charcoal: #30332F;
+
+      /* Derived transparencies */
+      --surrogate-charcoal-68: rgba(48,51,47,0.68);
+      --surrogate-charcoal-50: rgba(48,51,47,0.50);
+      --surrogate-charcoal-20: rgba(48,51,47,0.20);
+      --surrogate-paper-50:    rgba(245,240,226,0.50);
+
+      /* Semantic tokens */
+      --surrogate-body-color:  var(--surrogate-charcoal);
+      --surrogate-label-color: var(--surrogate-teal);
+      --surrogate-muted-color: var(--surrogate-charcoal-68);
+      --surrogate-link-color:  var(--surrogate-teal);
+      --surrogate-logo-size:   2rem;
+
+      /* Code surface */
+      --bs-code-bg-color:          color-mix(in srgb, #F5F0E2 92%, #30332F);
+      --bs-code-border-color:      rgba(48,51,47,0.20);
+      --bs-code-left-border-color: rgba(35,95,102,0.60);
+      --bs-code-color:             var(--surrogate-teal);
+
+      /* Callout accents */
+      --callout-note-rgb:      var(--surrogate-teal);
+      --callout-warning-rgb:   var(--surrogate-amber);
+      --callout-important-rgb: var(--surrogate-orange);
+
+      /* Typography — mirrors main.css */
+      --nb-font-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+      --nb-font-sans:  "Assistant", ui-sans-serif, system-ui, sans-serif;
+      --nb-font-label: "Fira Sans", ui-sans-serif, system-ui, sans-serif;
+      --nb-font-mono:  "Fira Mono", ui-monospace, Consolas, monospace;
+      --nb-h1-font-size: 2.5rem;
+      --nb-h2-font-size: 2rem;
+
+      /* Layout */
+      --navbar-height:     4rem;
+      --mini-title-height: 3rem;
+    }
+
+    /* ============================================================
+       RESET
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ============================================================
+       BODY — mirrors article.css + warm-journal.css
+       ============================================================ */
+    body {
+      font-family: var(--nb-font-sans);
+      color: var(--surrogate-body-color);
+      background-color: var(--surrogate-paper);
+      line-height: 1.65;
+      font-size: 1rem;
+    }
+
+    a { color: var(--surrogate-teal); text-decoration: none; }
+    a:hover { color: var(--surrogate-orange); }
+
+    /* ============================================================
+       NAVBAR — mirrors navbar.css + warm-journal.css
+       ============================================================ */
+    .navbar {
+      height: var(--navbar-height);
+      background-color: var(--surrogate-paper);
+      border-bottom: 1px solid var(--surrogate-charcoal-20);
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1030;
+      gap: 1rem;
+    }
+
+    .navbar-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .navbar-logo {
+      width: 2.8rem;
+      height: 2.8rem;
+      max-height: 2.8rem;
+    }
+
+    .navbar-title {
+      color: var(--surrogate-charcoal);
+      font-family: var(--nb-font-serif);
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+
+    .navbar-nav {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      gap: 0.25rem;
+      margin-left: auto;
+    }
+
+    .navbar-nav .nav-link {
+      color: var(--surrogate-charcoal);
+      font-family: var(--nb-font-sans);
+      font-size: 0.9rem;
+      padding: 0.4rem 0.6rem;
+      text-decoration: none;
+      position: relative;
+    }
+
+    .navbar-nav .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 100%; height: 2px;
+      bottom: -2px; left: 0;
+      background-color: currentColor;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .navbar-nav .nav-link:hover { color: var(--surrogate-charcoal); }
+    .navbar-nav .nav-link:hover::after { opacity: 1; }
+
+    /* ============================================================
+       TITLE BANNER — mirrors frontmatter.css + warm-journal.css
+       ============================================================ */
+    .quarto-title-banner {
+      background-color: var(--surrogate-paper) !important;
+      border-bottom: 1px solid var(--surrogate-charcoal-20);
+      padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 6vw, 5rem);
+    }
+
+    .quarto-title-banner h1 {
+      max-width: 62rem;
+      color: var(--surrogate-charcoal) !important;
+      font-family: var(--nb-font-serif) !important;
+      font-size: clamp(2.6rem, 6vw, 5.25rem) !important;
+      font-weight: 600 !important;
+      letter-spacing: -0.035em;
+      line-height: 1.0;
+    }
+
+    /* ============================================================
+       TITLE META + ABSTRACT — mirrors frontmatter.css + warm-journal.css
+       ============================================================ */
+    .title-meta-container {
+      padding: 0 clamp(1.5rem, 6vw, 5rem);
+    }
+
+    .quarto-title-meta {
+      background-color: var(--bs-code-bg-color);
+      padding: 1em 2em 0 2em;
+      margin-top: 2rem;
+      border-radius: 8px 8px 0 0;
+      border: 1px solid rgba(0,0,0,0.10);
+      border-bottom: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .quarto-title-meta-heading {
+      font-family: var(--nb-font-label) !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--surrogate-teal) !important;
+      font-size: 0.72rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .quarto-title-meta-contents {
+      font-family: var(--nb-font-sans);
+      font-size: 0.9rem;
+      color: var(--surrogate-body-color);
+      padding-bottom: 1em;
+    }
+
+    .abstract {
+      background-color: var(--bs-code-bg-color);
+      padding: 1rem 2rem 1.5rem 2rem;
+      border-radius: 0 0 8px 8px;
+      border: 1px solid rgba(0,0,0,0.10);
+      border-top: none;
+    }
+
+    .abstract .block-title {
+      font-family: var(--nb-font-label) !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--surrogate-teal) !important;
+      font-size: 0.72rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .abstract p {
+      font-family: var(--nb-font-serif);
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--surrogate-body-color);
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    /* ============================================================
+       PAGE LAYOUT — mirrors grid.css
+       ============================================================ */
+    .page-layout {
+      display: grid;
+      grid-template-columns:
+        [outer-left] clamp(1rem, 4vw, 4rem)
+        [content-start] minmax(0, 820px)
+        [content-end] clamp(0px, 3vw, 2rem)
+        [toc-start] clamp(140px, 16vw, 210px)
+        [toc-end] clamp(1rem, 4vw, 4rem)
+        [outer-right];
+      padding-top: 2.5rem;
+      align-items: start;
+    }
+
+    .article-content {
+      grid-column: content-start / content-end;
+      padding-bottom: 5rem;
+      min-width: 0;
+    }
+
+    .sidebar-toc {
+      grid-column: toc-start / toc-end;
+      position: sticky;
+      top: calc(var(--navbar-height) + 2rem);
+      align-self: start;
+      max-height: calc(100vh - var(--navbar-height) - 4rem);
+      overflow-y: auto;
+    }
+
+    /* ============================================================
+       TABLE OF CONTENTS — mirrors sidebar.css
+       ============================================================ */
+    #toc-title {
+      font-family: var(--nb-font-mono);
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--surrogate-label-color);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.6rem;
+    }
+
+    .toc-nav ul { list-style: none; padding: 0; }
+    .toc-nav li { margin: 0.1rem 0; }
+
+    .toc-nav a {
+      font-family: var(--nb-font-mono);
+      font-weight: 300;
+      font-size: 0.78rem;
+      color: var(--surrogate-body-color);
+      text-decoration: none;
+      display: block;
+      padding: 0.15rem 0.5rem;
+      border-left: 2px solid transparent;
+      transition: all 0.2s ease;
+      line-height: 1.4;
+    }
+
+    .toc-nav a:hover,
+    .toc-nav a.active {
+      border-left-color: var(--surrogate-teal);
+      color: var(--surrogate-teal) !important;
+    }
+
+    .toc-nav ul ul { padding-left: 0.75rem; }
+
+    /* ============================================================
+       ARTICLE TYPOGRAPHY — mirrors article.css + warm-journal.css
+       ============================================================ */
+    .article-content h2 {
+      font-family: var(--nb-font-serif) !important;
+      font-weight: 600 !important;
+      color: var(--surrogate-charcoal);
+      font-size: var(--nb-h2-font-size);
+      margin-top: 3rem;
+      margin-bottom: 0.75rem;
+      line-height: 1.15;
+    }
+
+    .article-content h3 {
+      font-family: var(--nb-font-sans) !important;
+      font-weight: 400 !important;
+      color: var(--surrogate-charcoal);
+      font-size: 1.25rem;
+      margin-top: 2rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .article-content p {
+      margin-bottom: 1.15rem;
+      line-height: 1.7;
+    }
+
+    .article-content ul,
+    .article-content ol {
+      margin-bottom: 1.15rem;
+      padding-left: 1.5rem;
+    }
+
+    .article-content li {
+      margin-bottom: 0.4rem;
+      line-height: 1.65;
+    }
+
+    .article-content hr {
+      border: none;
+      border-top: 1px solid var(--surrogate-charcoal-20);
+      margin: 2.5rem 0;
+    }
+
+    /* ============================================================
+       CALLOUTS — mirrors article.css
+       ============================================================ */
+    .callout {
+      border-radius: 4px;
+      margin: 1.5rem 0;
+      border: 1px solid var(--surrogate-charcoal-20);
+      border-left-width: 4px;
+      overflow: hidden;
+    }
+
+    .callout-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      font-family: var(--nb-font-label);
+      font-weight: 600;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+    }
+
+    .callout-body {
+      padding: 0.75rem 1rem 0.9rem;
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+
+    .callout-body ul  { margin-bottom: 0; }
+    .callout-body p:last-child { margin-bottom: 0; }
+
+    .callout-note      { border-left-color: var(--surrogate-teal); }
+    .callout-note .callout-header {
+      background-color: rgba(35,95,102,0.10);
+      color: var(--surrogate-teal);
+    }
+
+    .callout-important { border-left-color: var(--surrogate-orange); }
+    .callout-important .callout-header {
+      background-color: rgba(242,138,28,0.10);
+      color: var(--surrogate-orange);
+    }
+
+    .callout-warning   { border-left-color: var(--surrogate-amber); }
+    .callout-warning .callout-header {
+      background-color: rgba(255,184,62,0.12);
+      color: #8a6200;
+    }
+
+    /* ============================================================
+       FIGURES — mirrors article.css
+       ============================================================ */
+    figure { margin: 2rem 0; }
+
+    figure img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+      display: block;
+    }
+
+    figcaption {
+      font-family: var(--nb-font-label) !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--surrogate-teal) !important;
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    figcaption .cap-body {
+      display: block;
+      font-family: var(--nb-font-sans);
+      font-weight: 400;
+      font-size: 0.88rem;
+      text-transform: none;
+      letter-spacing: normal;
+      color: var(--surrogate-muted-color);
+      margin-top: 0.2rem;
+      line-height: 1.55;
+    }
+
+    /* Figure placeholder */
+    .figure-placeholder {
+      background-color: var(--bs-code-bg-color);
+      border: 2px dashed var(--surrogate-charcoal-20);
+      border-radius: 4px;
+      padding: 3rem 2rem;
+      text-align: center;
+      font-family: var(--nb-font-mono);
+      font-size: 0.85rem;
+      color: var(--surrogate-muted-color);
+    }
+
+    /* ============================================================
+       TABLES
+       ============================================================ */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-family: var(--nb-font-sans);
+      font-size: 0.88rem;
+    }
+
+    th {
+      background-color: var(--surrogate-charcoal);
+      color: var(--surrogate-paper);
+      padding: 0.55rem 0.9rem;
+      text-align: left;
+      font-family: var(--nb-font-label);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+    }
+
+    td {
+      padding: 0.55rem 0.9rem;
+      border-bottom: 1px solid var(--surrogate-charcoal-20);
+      vertical-align: top;
+      line-height: 1.55;
+    }
+
+    tr:nth-child(even) td { background-color: var(--bs-code-bg-color); }
+
+    /* ============================================================
+       CODE & FORMULA
+       ============================================================ */
+    code {
+      font-family: var(--nb-font-mono);
+      font-weight: 300;
+      color: var(--bs-code-color);
+      background-color: var(--bs-code-bg-color);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+      font-size: 0.88em;
+    }
+
+    .formula {
+      font-family: var(--nb-font-mono);
+      background-color: var(--bs-code-bg-color);
+      border: 1px solid var(--bs-code-border-color);
+      border-radius: 4px;
+      padding: 0.75rem 1.5rem;
+      text-align: center;
+      font-size: 1.05rem;
+      margin: 1.5rem 0;
+      color: var(--surrogate-charcoal);
+    }
+
+    /* ============================================================
+       BLOCKQUOTE — mirrors warm-journal.css
+       ============================================================ */
+    blockquote {
+      border-left: 0.35rem solid var(--surrogate-orange);
+      padding: 0.5rem 1rem;
+      margin: 1.5rem 0;
+      color: var(--surrogate-charcoal-68);
+      font-style: italic;
+    }
+
+    /* ============================================================
+       FOOTER — mirrors footer.css
+       ============================================================ */
+    .site-footer {
+      background-color: var(--surrogate-charcoal) !important;
+      padding: 2rem;
+      margin-top: 4rem;
+      width: 100%;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1300px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--surrogate-paper);
+      font-family: var(--nb-font-sans);
+      font-size: 0.85rem;
+    }
+
+    .footer-logo-wrap {
+      padding: 0.25rem;
+      background: var(--surrogate-paper);
+      border-radius: 0.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.4rem;
+      height: 2.4rem;
+    }
+
+    .footer-logo-wrap img { width: 1.7rem; height: 1.7rem; }
+
+    .footer-right a {
+      color: var(--surrogate-paper);
+      font-size: 1.2rem;
+      text-decoration: none;
+    }
+
+    .footer-right a:hover { color: var(--surrogate-amber); }
+
+    /* ============================================================
+       REFERENCES
+       ============================================================ */
+    .footnote-ref {
+      font-size: 0.72em;
+      vertical-align: super;
+      color: var(--surrogate-teal);
+    }
+
+    .references-section {
+      margin-top: 3rem;
+      border-top: 1px solid var(--surrogate-charcoal-20);
+      padding-top: 2rem;
+    }
+
+    .references-section h2 { font-size: 1.4rem !important; margin-top: 0 !important; }
+
+    .ref-entry {
+      margin: 0.75rem 1rem;
+      font-family: var(--nb-font-sans);
+      font-size: 0.88rem;
+      line-height: 1.55;
+    }
+
+    /* ============================================================
+       APPENDIX
+       ============================================================ */
+    .appendix-section {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 2px solid var(--surrogate-charcoal-20);
+    }
+
+    .appendix-section h2 { margin-top: 0 !important; }
+
+    /* ============================================================
+       RESPONSIVE — mirrors mobile.css
+       ============================================================ */
+    @media (max-width: 900px) {
+      .page-layout { grid-template-columns: 1rem 1fr 1rem; }
+      .article-content { grid-column: 2; }
+      .sidebar-toc { display: none; }
+      .navbar-nav { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .quarto-title-banner { padding: 2rem 1.25rem; }
+      .quarto-title-banner h1 { font-size: clamp(2rem, 10vw, 3rem) !important; }
+      .title-meta-container { padding: 0 1.25rem; }
+    }
+  </style>
+</head>
+<body class="surrogate-warm-journal">
+
+<!-- ================================================================
+     NAVBAR
+     ================================================================ -->
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <a class="navbar-brand" href="https://github.com/surrogate-sci">
+    <img class="navbar-logo"
+         src="./logo_surrogate_mark.svg"
+         alt="Surrogate Science logo">
+    <span class="navbar-title">SURROGATE SCIENCE</span>
+  </a>
+  <ul class="navbar-nav">
+    <li><a class="nav-link" href="../index.html">PRISM 2026</a></li>
+    <li><a class="nav-link" href="./">Blog</a></li>
+    <li><a class="nav-link" href="../pages/FAQ.html">FAQ</a></li>
+    <li><a class="nav-link" href="../pages/SETUP.html">Reproduce this pub</a></li>
+    <li>
+      <a class="nav-link"
+         href="https://github.com/surrogate-sci/prism2026"
+         aria-label="GitHub repository">
+        <i class="bi bi-github"></i>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<!-- ================================================================
+     TITLE BANNER
+     ================================================================ -->
+<div class="quarto-title-banner">
+  <h1>OLMo branch experiments</h1>
+</div>
+
+<!-- ================================================================
+     TITLE META + ABSTRACT
+     ================================================================ -->
+<div class="title-meta-container">
+  <div class="quarto-title-meta">
+    <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">September 2026 &middot; Team Update</div>
+    </div>
+    <div>
+      <div class="quarto-title-meta-heading">Authors</div>
+      <div class="quarto-title-meta-contents">PRISM 2026 Contributors</div>
+    </div>
+    <div>
+      <div class="quarto-title-meta-heading">Models</div>
+      <div class="quarto-title-meta-contents">OLMo-2-7B &middot; Pythia-6.9B &middot; Gemma-4-E4B</div>
+    </div>
+  </div>
+
+  <div class="abstract">
+    <div class="block-title">Summary</div>
+    <p>Does potency become linearly decodable before selectivity, and does selectivity as a construct emerge before or after arithmetic selectivity? We run frozen probes across OLMo, Pythia, and Gemma checkpoints to investigate whether models learn genuine selectivity constructs or default to arithmetic shortcuts.</p>
+  </div>
+</div>
+
+<!-- ================================================================
+     MAIN LAYOUT
+     ================================================================ -->
+<div class="page-layout">
+
+  <!-- ==================== ARTICLE ==================== -->
+  <article class="article-content">
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="core-questions">
+      <h2>Core Questions</h2>
+
+      <p>For the OLMO based experiments, the core question is: does potency become linearly decodable before selectivity, and does selectivity as a construct (which transfers to out-of-distribution items) emerge before or after arithmetic selectivity (pEC50_pxr - pEC50_null, which is just one subtraction from the inputs)?</p>
+
+      <p>Another core question remains: finding a linear direction that separates true from false claims, or selective from non-selective compounds, does not by itself establish that the model uses that direction when processing the task!</p>
+
+      <!-- TODO: citations to be added here or in background section -->
+    </section>
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="methodology">
+      <h2>Methodology</h2>
+
+      <p>Olmo branch experiments were also tried on Pythia Models to check generalization. We run three frozen probes on each checkpoint in the training series. First, Potency: AUROC for high vs. low pEC50_pxr. Second, Arithmetic selectivity: AUROC for sign(pEC50_pxr &minus; pEC50_null) on items where both numbers appear. Third, abstract selectivity construct: a probe trained on PXR items and then transferred to out-of-distribution items where the PXR arithmetic is not available. Examples in the Appendix! The motivation for this is that a probe that only learned to compute pEC50_pxr &minus; pEC50_null should score at chance on the OOD items; a probe on the actual construct should generalize well.</p>
+
+      <p>To test this we trained probes on two different prompt formats for the same task. The chemistry-framed probe is trained on standard prompts: a toxicologist role, SMILES, both pEC50 readings, and a natural-language assertion about PXR specificity or compound activity. The stripped-context probe is trained on anonymous numerical prompts in which all chemistry framing is removed. The two measurements are presented only as "Primary assay measurement" and "Null control assay measurement". The ground truth in the stripped setting is: whether the primary value exceeds the null-control value. To prevent the probe from learning positional shortcuts, we apply two independent randomizations per instance: which value is placed in the Primary slot, and whether the Primary line appears before or after the Null control line in the prompt. We then evaluate both probes on both contexts!</p>
+
+      <!-- figure placeholder -->
+      <figure>
+        <div class="figure-placeholder">Figure &mdash; to be added</div>
+        <figcaption>Figure 1
+          <span class="cap-body">Probe setup diagram.</span>
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="results">
+      <h2>Results</h2>
+
+      <h3>The arithmetic selectivity direction becomes decodable very early in pretraining&hellip;with, and never after, the counter-screen fragility</h3>
+
+      <p>On the developmental experiments, OLMo-2-7B shows arithmetic selectivity reaching the 0.75 AUROC threshold between 5B and 10B training tokens, while the fragility onset is resolved to the 3B&ndash;5B bracket. This means the fragility of the probes occurs either right before or is simultaneous with arithmetic emergence. On Pythia-6.9B the ordering is the same but compressed: arithmetic selectivity emerges at 1B&ndash;2B tokens, fragility at fewer than 1B tokens, and potency at 4B&ndash;6B tokens, all substantially earlier than on OLMo-2-7B. The selectivity direction is basically arithmetic: the model learns early to compare two numbers, and that comparison generalises across chemistry contexts. The stripped probe cannot transfer to the inactivity group judgment that depends on chemistry-specific contextual cues about what absence of signal means in a biological assay (model only makes this distinction when chemistry context is given).</p>
+
+      <!-- figure placeholder -->
+      <figure>
+        <div class="figure-placeholder">Figure &mdash; to be added</div>
+        <figcaption>Figure 2
+          <span class="cap-body">OLMo-2-7B and Pythia-6.9B developmental trajectory.</span>
+        </figcaption>
+      </figure>
+
+      <h3>Gemma-4-E4B</h3>
+
+      <p>The main result from Gemma-4-E4B: the stripped-chem-context probe achieves LOTO AUROC of 1.000 on the selectivity evaluation group starting at layer 22. The same probe achieves AUROC of 0.08&ndash;0.32 on the inactivity evaluation group. This is well well below chance, meaning the probe is learning something that is in the opposite direction to inactive compounds. The chemistry-framed probe shows the same pattern. Overall, the direction that distinguishes selective from non-selective compounds transfers great across contexts; but the direction for compound inactivity does not transfer at all! Both falsification variants (in the appendix) replicate this result.</p>
+
+      <!-- figure placeholder -->
+      <figure>
+        <div class="figure-placeholder">Figure &mdash; to be added</div>
+        <figcaption>Figure 3
+          <span class="cap-body">Gemma-4-E4B probe AUROC by layer.</span>
+        </figcaption>
+      </figure>
+
+      <div class="callout callout-note">
+        <div class="callout-header">
+          <i class="bi bi-chat-left-text-fill"></i>&nbsp; Note &mdash; possible framing
+        </div>
+        <div class="callout-body">
+          <p>Also spoke with Claude about this, and they thought that this might be a good framing: "establishes that probes can be fooled: you think you're probing selectivity reasoning, but you're actually probing molecular identity. That's the 'shortcuts' result" &mdash; because I did followup experiments + controls and the probe was not actually for selectivity! I guess we can decide whether to include this or not.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="appendix" class="appendix-section">
+      <h2>Appendix</h2>
+
+      <!-- figure placeholder -->
+      <figure>
+        <div class="figure-placeholder">Appendix figures &mdash; to be added</div>
+        <figcaption>Appendix
+          <span class="cap-body">OOD transfer examples and falsification variants.</span>
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- ---------------------------------------------------------- -->
+    <div class="references-section">
+      <h2>References</h2>
+
+      <!-- TODO: citations to be added -->
+      <div class="ref-entry">
+        <em>Citations to be added.</em>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ==================== SIDEBAR TOC ==================== -->
+  <aside class="sidebar-toc" aria-label="Table of contents">
+    <div id="toc-title">On this page</div>
+    <nav class="toc-nav">
+      <ul>
+        <li><a href="#core-questions">Core Questions</a></li>
+        <li><a href="#methodology">Methodology</a></li>
+        <li><a href="#results">Results</a>
+          <ul>
+            <li><a href="#results">Arithmetic selectivity</a></li>
+            <li><a href="#results">Gemma-4-E4B</a></li>
+          </ul>
+        </li>
+        <li><a href="#appendix">Appendix</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+</div><!-- /page-layout -->
+
+<!-- ================================================================
+     FOOTER
+     ================================================================ -->
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="footer-logo-wrap">
+        <img src="./logo_surrogate_mark.svg"
+             alt="Surrogate Science">
+      </div>
+      <span>Copyright 2026, Surrogate Science</span>
+    </div>
+    <div class="footer-right">
+      <a href="https://github.com/surrogate-sci/prism2026" aria-label="GitHub">
+        <i class="bi bi-github"></i>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- ================================================================
+     TOC ACTIVE-LINK SCRIPT
+     ================================================================ -->
+<script>
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-nav a');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        tocLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+        });
+      }
+    });
+  }, { rootMargin: '-15% 0% -75% 0%' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
