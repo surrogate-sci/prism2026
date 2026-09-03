@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en" class="surrogate-warm-journal">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog | PRISM 2026</title>
+
+  <!-- Fonts (from includes/fonts.html) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Fira+Mono:wght@400;500&family=Fira+Sans:wght@500;600;700&display=swap">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <style>
+    /* ============================================================
+       CSS CUSTOM PROPERTIES — mirrors colors.css + main.css
+       ============================================================ */
+    :root {
+      /* Canonical Surrogate Science blog palette */
+      --surrogate-paper:    #F5F0E2;
+      --surrogate-teal:     #235F66;
+      --surrogate-orange:   #F28A1C;
+      --surrogate-amber:    #FFB83E;
+      --surrogate-charcoal: #30332F;
+
+      /* Derived transparencies */
+      --surrogate-charcoal-68: rgba(48,51,47,0.68);
+      --surrogate-charcoal-50: rgba(48,51,47,0.50);
+      --surrogate-charcoal-20: rgba(48,51,47,0.20);
+      --surrogate-paper-50:    rgba(245,240,226,0.50);
+
+      /* Semantic tokens */
+      --surrogate-body-color:  var(--surrogate-charcoal);
+      --surrogate-label-color: var(--surrogate-teal);
+      --surrogate-muted-color: var(--surrogate-charcoal-68);
+      --surrogate-link-color:  var(--surrogate-teal);
+      --surrogate-logo-size:   2rem;
+
+      /* Code surface */
+      --bs-code-bg-color:          color-mix(in srgb, #F5F0E2 92%, #30332F);
+      --bs-code-border-color:      rgba(48,51,47,0.20);
+      --bs-code-left-border-color: rgba(35,95,102,0.60);
+      --bs-code-color:             var(--surrogate-teal);
+
+      /* Typography — mirrors main.css */
+      --nb-font-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+      --nb-font-sans:  "Assistant", ui-sans-serif, system-ui, sans-serif;
+      --nb-font-label: "Fira Sans", ui-sans-serif, system-ui, sans-serif;
+      --nb-font-mono:  "Fira Mono", ui-monospace, Consolas, monospace;
+      --nb-h1-font-size: 2.5rem;
+      --nb-h2-font-size: 2rem;
+
+      /* Layout */
+      --navbar-height: 4rem;
+    }
+
+    /* ============================================================
+       RESET
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ============================================================
+       BODY
+       ============================================================ */
+    body {
+      font-family: var(--nb-font-sans);
+      color: var(--surrogate-body-color);
+      background-color: var(--surrogate-paper);
+      line-height: 1.65;
+      font-size: 1rem;
+    }
+
+    a { color: var(--surrogate-teal); text-decoration: none; }
+    a:hover { color: var(--surrogate-orange); }
+
+    /* ============================================================
+       NAVBAR
+       ============================================================ */
+    .navbar {
+      height: var(--navbar-height);
+      background-color: var(--surrogate-paper);
+      border-bottom: 1px solid var(--surrogate-charcoal-20);
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1030;
+      gap: 1rem;
+    }
+
+    .navbar-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .navbar-logo {
+      width: 2.8rem;
+      height: 2.8rem;
+      max-height: 2.8rem;
+    }
+
+    .navbar-title {
+      color: var(--surrogate-charcoal);
+      font-family: var(--nb-font-serif);
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+
+    .navbar-nav {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      gap: 0.25rem;
+      margin-left: auto;
+    }
+
+    .navbar-nav .nav-link {
+      color: var(--surrogate-charcoal);
+      font-family: var(--nb-font-sans);
+      font-size: 0.9rem;
+      padding: 0.4rem 0.6rem;
+      text-decoration: none;
+      position: relative;
+    }
+
+    .navbar-nav .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 100%; height: 2px;
+      bottom: -2px; left: 0;
+      background-color: currentColor;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .navbar-nav .nav-link:hover { color: var(--surrogate-charcoal); }
+    .navbar-nav .nav-link:hover::after { opacity: 1; }
+
+    /* ============================================================
+       PAGE HEADER
+       ============================================================ */
+    .page-header {
+      background-color: var(--surrogate-paper);
+      border-bottom: 1px solid var(--surrogate-charcoal-20);
+      padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 6vw, 5rem);
+    }
+
+    .page-header h1 {
+      max-width: 62rem;
+      color: var(--surrogate-charcoal);
+      font-family: var(--nb-font-serif);
+      font-size: clamp(2.6rem, 6vw, 5.25rem);
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      line-height: 1.0;
+    }
+
+    .page-header .subtitle {
+      max-width: 62rem;
+      font-family: var(--nb-font-sans);
+      font-size: 1.1rem;
+      color: var(--surrogate-muted-color);
+      margin-top: 1rem;
+      line-height: 1.55;
+    }
+
+    /* ============================================================
+       POST LISTING
+       ============================================================ */
+    .listing-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 6vw, 5rem);
+    }
+
+    .post-card {
+      display: block;
+      background-color: var(--bs-code-bg-color);
+      border: 1px solid rgba(0,0,0,0.10);
+      border-radius: 8px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      text-decoration: none;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .post-card:hover {
+      border-color: var(--surrogate-teal);
+      box-shadow: 0 2px 12px rgba(35,95,102,0.10);
+    }
+
+    .post-card .post-meta {
+      font-family: var(--nb-font-label);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--surrogate-teal);
+      font-size: 0.72rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .post-card .post-title {
+      font-family: var(--nb-font-serif);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--surrogate-charcoal);
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+
+    .post-card:hover .post-title {
+      color: var(--surrogate-teal);
+    }
+
+    .post-card .post-summary {
+      font-family: var(--nb-font-serif);
+      font-size: 1rem;
+      color: var(--surrogate-muted-color);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .post-card .read-more {
+      display: inline-block;
+      margin-top: 1rem;
+      font-family: var(--nb-font-label);
+      font-weight: 600;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--surrogate-teal);
+    }
+
+    .post-card:hover .read-more {
+      color: var(--surrogate-orange);
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .site-footer {
+      background-color: var(--surrogate-charcoal) !important;
+      padding: 2rem;
+      margin-top: 4rem;
+      width: 100%;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1300px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--surrogate-paper);
+      font-family: var(--nb-font-sans);
+      font-size: 0.85rem;
+    }
+
+    .footer-logo-wrap {
+      padding: 0.25rem;
+      background: var(--surrogate-paper);
+      border-radius: 0.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.4rem;
+      height: 2.4rem;
+    }
+
+    .footer-logo-wrap img { width: 1.7rem; height: 1.7rem; }
+
+    .footer-right a {
+      color: var(--surrogate-paper);
+      font-size: 1.2rem;
+      text-decoration: none;
+    }
+
+    .footer-right a:hover { color: var(--surrogate-amber); }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 900px) {
+      .navbar-nav { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .page-header { padding: 2rem 1.25rem; }
+      .page-header h1 { font-size: clamp(2rem, 10vw, 3rem); }
+      .listing-container { padding: 2rem 1.25rem; }
+    }
+  </style>
+</head>
+<body class="surrogate-warm-journal">
+
+<!-- ================================================================
+     NAVBAR
+     ================================================================ -->
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <a class="navbar-brand" href="https://github.com/surrogate-sci">
+    <img class="navbar-logo"
+         src="./mid-august-update/logo_surrogate_mark.svg"
+         alt="Surrogate Science logo">
+    <span class="navbar-title">SURROGATE SCIENCE</span>
+  </a>
+  <ul class="navbar-nav">
+    <li><a class="nav-link" href="../index.html">PRISM 2026</a></li>
+    <li><a class="nav-link" href="../pages/FAQ.html">FAQ</a></li>
+    <li><a class="nav-link" href="../pages/SETUP.html">Reproduce this pub</a></li>
+    <li>
+      <a class="nav-link"
+         href="https://github.com/surrogate-sci/prism2026"
+         aria-label="GitHub repository">
+        <i class="bi bi-github"></i>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<!-- ================================================================
+     PAGE HEADER
+     ================================================================ -->
+<div class="page-header">
+  <h1>Blog</h1>
+  <p class="subtitle">Updates from the PRISM 2026 team.</p>
+</div>
+
+<!-- ================================================================
+     POST LISTING
+     ================================================================ -->
+<div class="listing-container">
+
+  <a class="post-card" href="./mid-august-update/">
+    <div class="post-meta">Mid-August 2026 &middot; Team Update</div>
+    <div class="post-title">Guiding question: can we figure out something interesting about how LLM models internally represent potency and selectivity, and if they use shortcuts to answer scientific questions?</div>
+    <p class="post-summary">We are using the PXR dataset by Huggingface, with over 11,000 screened compounds, to explore whether LLMs use 'shortcuts' for reasoning in scientific contexts. We probe activations, apply reparameterization, and patch residual streams to investigate whether models genuinely reason about potency and selectivity or default to arithmetic shortcuts.</p>
+    <span class="read-more">Read more &rarr;</span>
+  </a>
+
+</div>
+
+<!-- ================================================================
+     FOOTER
+     ================================================================ -->
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="footer-logo-wrap">
+        <img src="./mid-august-update/logo_surrogate_mark.svg"
+             alt="Surrogate Science">
+      </div>
+      <span>Copyright 2026, Surrogate Science</span>
+    </div>
+    <div class="footer-right">
+      <a href="https://github.com/surrogate-sci/prism2026" aria-label="GitHub">
+        <i class="bi bi-github"></i>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
