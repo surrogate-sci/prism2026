@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>H4: Direction: True or False? | PRISM 2026</title>
+  <title>True/False probes | PRISM 2026</title>
 
   <!-- Fonts (from includes/fonts.html) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -627,7 +627,7 @@
      TITLE BANNER
      ================================================================ -->
 <div class="quarto-title-banner">
-  <h1>H4: Direction: True or False?</h1>
+  <h1>True/False probes</h1>
 </div>
 
 <!-- ================================================================
@@ -664,22 +664,51 @@
   <article class="article-content">
 
     <!-- ---------------------------------------------------------- -->
+    <section id="hypothesis">
+      <h2>Hypothesis</h2>
+
+      <ul>
+        <li>In activation space, is there a direction that separates prompts where the assertion is chemically true from prompts where it is chemically false? Can we steer across these, using selectivity as a case study?</li>
+        <li>Using true, confounded, and false claims...</li>
+      </ul>
+    </section>
+
+    <!-- ---------------------------------------------------------- -->
     <section id="contextualizing">
       <h2>Contextualizing why we're doing this</h2>
 
-      <p>Finding a linear direction that separates true from false claims, or selective from non-selective compounds, does not by itself establish that the model uses that direction when processing the task.</p>
-
-      <p>This is the classic "probe vs. use" gap: a probe can succeed because of a confound without being causally relevant. The experiments under H4 are specifically designed to test whether the direction is:</p>
       <ul>
-        <li><strong>Confounded</strong> &mdash; e.g., it might track surface-level cues like compound family or prompt template rather than the scientific property.</li>
-        <li><strong>Generalizable</strong> &mdash; does it transfer to prompts the model has never seen?</li>
-        <li><strong>Causally active</strong> &mdash; if we steer along it, does the model's behavior change in the predicted direction?</li>
+        <li>There are lots of true/false probes, and it is a natural question to see how they generalize across models, to more specific science-related contexts</li>
+        <li>Personal note: This section needs to be filled out still! Manjari suggested as next steps, also trying experiments but using the true/false probes from cadenza labs (they know which ones work).</li>
       </ul>
     </section>
 
     <!-- ---------------------------------------------------------- -->
     <section id="methodology">
       <h2>Methodology</h2>
+
+      <figure>
+        <img src="./figures/data_partitioning_and_pipeline.png"
+             alt="A: Data partitioning — All PXR compounds split into Ordinary (n=92) and Confounded (n=38), then train/validate/test. B: Probe pipeline — Input prompt through Qwen2.5-7B-Instruct, layer 14, standardize, L2 logistic probe, P(TRUE).">
+        <figcaption>Figure 1
+          <span class="cap-body">Our data partition, and how our true/false probes were trained.</span>
+        </figcaption>
+      </figure>
+
+      <p>We had three types of claims: true, confounded, and false.</p>
+      <ul>
+        <li>A true claim is straightforwardly true, while a false one is very obviously false. These 'obvious' test cases were constructed using the H0 dataset, which was prefiltered to have a large gap between selectivity and potency.</li>
+      </ul>
+
+      <p>What does a confounded claim look like, data partitioning-wise?</p>
+      <ul>
+        <li>All PXR compounds from the interp_benchmark and probe_benchmark datasets are split by selectivity label. Those with selectivity &le; 0.5 AND pEC50PXR &ge; 5.5 are tagged as fake-out (confounded) and held out entirely from probe training.</li>
+      </ul>
+
+      <p>What happens next?</p>
+      <ul>
+        <li>The remaining ordinary (True/False) compounds are split compound-disjointly into probe_train (~80%, ~74 instances) and probe_holdout (~20%, ~18 instances). The confounded set (n = 38 instances, 6 compounds &times; 2 templates &times; ~3 instances each)</li>
+      </ul>
 
       <p>We included 4 models: Mistral-7B-instruct-v0.3, Qwen2.5-7B-instruct, gemma-4-E4b-it, and Qwen3-14B</p>
 
@@ -725,34 +754,80 @@
         </tbody>
       </table>
 
+      <figure>
+        <img src="./figures/experimental_controls_table.png"
+             alt="Experimental Controls table showing: Claim type (True/Confounded/False), Chemistry context (Full/Stripped), Prompt template (6-8 variants), Assertion order (Forward/Reversed), Model (Mistral-7B/Qwen-7B/Gemma-4B), Causal test (Steer confounded to corrected)">
+        <figcaption>Table X
+          <span class="cap-body">Different things we controlled for in the methodology. Experimental Controls, and why we used them.</span>
+        </figcaption>
+      </figure>
+
+      <ul>
+        <li>At some point I was experimenting and realized that things look <em>incredibly</em> different based on how direct the prompt looks like, so we had 6-8 variants.</li>
+        <li>On the to-do is to run this again, but with the SIMPLEST assertion possible (for a ninth variant)</li>
+      </ul>
+
+      <p>Sample prompt:</p>
+
+      <blockquote>
+        <p><em>You are an expert toxicologist. Molecule X (SMILES: COCCOC1CC(CO)CN(S(=O)(=O)C2=CC(F)=CC=C2C)C1) was tested in a human PXR luciferase reporter (pEC50 = 5.52) and a paired PXR-null luciferase reporter (pEC50 = 5.08).</em></p>
+        <p><em>Assertion: "The primary reporter signal for this compound is PXR-specific and is not explained by non-specific luciferase activity."</em></p>
+        <p><em>Is the assertion True or False? Answer with a single line: Assertion: True or Assertion: False.</em></p>
+      </blockquote>
+
+      <p><strong>Ground truth: False.</strong> The compound activates both reporters at nearly the same potency (5.52 vs 5.08 pEC50). The signal is non-specific luciferase activation, not PXR engagement. A toxicologist reading those two numbers carefully should reject the specificity claim immediately: PXR specificity requires the primary reporter to be substantially stronger than the null. Both 7B models (that we tested) say True regardless.</p>
+
       <p>We wrote 4 chemistry-context prompt templates (stating that a compound is or is not PXR-selective). We also wrote 4 stripped-context templates (anonymous numerical comparisons). Every template produces a true and false version using real compound data from the dataset. In other words, we have 4 templates, let's call them "families", and for each template for each molecule we either have one which the claim that is true and one where the claim is false.</p>
+
+      <p>At this point... I was curious. QUESTION: how prompt-dependent is this true/false vector? Can we (in the scope of this experiment :P) find something that generalizes across 6-8 versions of the chemistry context prompt?</p>
+
+      <p>Caveat:</p>
+      <ul>
+        <li>Linear probe.</li>
+        <li>Sweeping can probably be done again to VERIFY</li>
+        <li>That's on the to do :)</li>
+      </ul>
     </section>
 
     <!-- ---------------------------------------------------------- -->
     <section id="results">
       <h2>Results</h2>
 
-      <p>Behavioral results: Model accuracy on the claim-verification task (true/false). The models are able to get these right the majority of the time, especially when the claim is about chemistry (left bars), but also when the claim is stripped of chemistry context (right bars, "stripped").</p>
-
-      <!-- figure placeholder -->
       <figure>
-        <div class="figure-placeholder">Figure &mdash; behavioral accuracy bar charts</div>
-        <figcaption>Figure 1
-          <span class="cap-body">Behavioral accuracy on the claim-verification task across 4 models, chemistry vs. stripped context.</span>
+        <img src="./figures/methodology_bar_charts.png"
+             alt="H4 methodology: probing truth representations across framing conditions — True claim, Confounded key case, False claim">
+        <figcaption>Figure 2
+          <span class="cap-body">H4 methodology: probing truth representations across framing conditions.</span>
         </figcaption>
       </figure>
+
+      <p>Also notable is that the 7B models were not able to understand selectivity UNTIL the null response assay number was actually just larger than the PXR number. Smaller magnitudes didn't really matter</p>
 
       <h3>On Behavioral threshold</h3>
 
       <p>A behavioral threshold refers to the point at which models will demonstrate a behavioral response to a stimulus (claim). More practically, it is the pEC50 gap below which the model stops calling a compound 'selective' and switches to 'not selective'. The plot shows that threshold is nearly the same regardless of whether the prompt uses chemistry framing or stripped/anonymous numerical framing, but varies by model.</p>
 
-      <!-- figure placeholder -->
       <figure>
-        <div class="figure-placeholder">Figure &mdash; behavioral threshold plot</div>
-        <figcaption>Figure 2
+        <img src="./figures/behavioral_threshold.png"
+             alt="Behavioral threshold: 7B model only rejects confounded claims when null reporter strictly exceeds PXR reporter (gap &lt; 0)">
+        <figcaption>Figure 3
           <span class="cap-body">Behavioral threshold by model and context framing.</span>
         </figcaption>
       </figure>
+
+      <ul>
+        <li>there is a flip! That happens at gap = 0</li>
+        <li>Every compound with gap &lt; 0 (null &gt; PXR, even by 0.03 log-units) gets correctly rejected under stripped context. Every compound with gap &ge; 0 (PXR &ge; null, even by 0.03) gets wrongly assigned True. Full context is always True regardless.</li>
+      </ul>
+
+      <p>Also ran versions of the prompt without the chem context, did better on confounded prompts....</p>
+
+      <p>Mistral (AND QWEN) at ~16 layers has literally antipodal truth representations across template families. The selectivity geometry and inactivity geometry for "true/false" are pointing in opposite directions in the residual stream.</p>
+
+      <p>Also with figures below, it seems that Gemma 4B probes generalize from chemistry to stripped, but not other way around as strongly. Also, for other 4B models, the probe doesn't work in either direction!</p>
+      <ul>
+        <li>crazy!</li>
+      </ul>
 
       <h3>On probing</h3>
 
@@ -760,10 +835,10 @@
 
       <p>A DIM probe trained on the 'truth' direction with chemistry context achieves LOTO AUROC above 0.9 at layer 16 for Mistral-7B and Qwen2.5-7B, and above 0.93 at layer 23 for gemma-4-E4b. This indicates the model separates true vs. false claims linearly in its residual stream, and the direction generalizes across different prompt phrasings.</p>
 
-      <!-- figure placeholder -->
+      <!-- figure placeholder: DIM accuracy bar charts not yet extracted -->
       <figure>
-        <div class="figure-placeholder">Figure &mdash; DIM accuracy bar charts (train/LOTO AUROC)</div>
-        <figcaption>Figure 3
+        <div class="figure-placeholder">Figure &mdash; DIM accuracy bar charts (train/LOTO AUROC) &mdash; to be added</div>
+        <figcaption>Figure 4
           <span class="cap-body">DIM probe accuracy for 4 models in chemistry and stripped contexts.</span>
         </figcaption>
       </figure>
@@ -772,10 +847,10 @@
 
       <p>Context transfer &mdash; does the chemistry-context direction work on stripped prompts, and vice versa? This 2&times;2 matrix tests: if I train a DIM probe in one context, does it correctly classify claims in the other context?</p>
 
-      <!-- figure placeholder -->
       <figure>
-        <div class="figure-placeholder">Figure &mdash; context transfer matrix heatmaps (Qwen3-4B layer 18, gemma-4-E4b-it layer 23, Qwen3-14B layer 38)</div>
-        <figcaption>Figure 4
+        <img src="./figures/context_transfer_matrices.png"
+             alt="Context transfer matrices for Qwen3-4B at layer 18, gemma-4-E4b-it at layer 23, and Qwen3-14B at layer 38">
+        <figcaption>Figure 5
           <span class="cap-body">Context transfer matrices for three models.</span>
         </figcaption>
       </figure>
@@ -823,9 +898,9 @@
       <p>Question: So why did we choose L16 for Mistral/Qwen?</p>
       <p>Answer: sweep, and it was highest on the hold-out AUROC. But to be honest the other layers might have something interesting, so this is on the to do.</p>
 
-      <!-- figure placeholder -->
       <figure>
-        <div class="figure-placeholder">Figure &mdash; H4 Layer Sweep &mdash; Qwen2.5-7B-Instruct (E1 probe discrimination, E2 confounded gap, probe logit by class and layer)</div>
+        <img src="./figures/layer_sweep_qwen.png"
+             alt="H4 Layer Sweep for Qwen2.5-7B-Instruct showing E1 probe discrimination, E2 confounded gap, and probe logit by class and layer">
         <figcaption>Appendix Figure
           <span class="cap-body">H4 Layer Sweep &mdash; Qwen2.5-7B-Instruct.</span>
         </figcaption>
@@ -839,6 +914,7 @@
     <div id="toc-title">On this page</div>
     <nav class="toc-nav">
       <ul>
+        <li><a href="#hypothesis">Hypothesis</a></li>
         <li><a href="#contextualizing">Contextualizing</a></li>
         <li><a href="#methodology">Methodology</a></li>
         <li><a href="#results">Results</a>
