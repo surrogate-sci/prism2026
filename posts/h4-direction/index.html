@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en" class="surrogate-warm-journal">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>H4: Direction: True or False? | PRISM 2026</title>
+
+  <!-- Fonts (from includes/fonts.html) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Fira+Mono:wght@400;500&family=Fira+Sans:wght@500;600;700&display=swap">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <style>
+    /* ============================================================
+       CSS CUSTOM PROPERTIES — mirrors colors.css + main.css
+       ============================================================ */
+    :root {
+      /* Canonical Surrogate Science blog palette */
+      --surrogate-paper:    #F5F0E2;
+      --surrogate-teal:     #235F66;
+      --surrogate-orange:   #F28A1C;
+      --surrogate-amber:    #FFB83E;
+      --surrogate-charcoal: #30332F;
+
+      /* Derived transparencies */
+      --surrogate-charcoal-68: rgba(48,51,47,0.68);
+      --surrogate-charcoal-50: rgba(48,51,47,0.50);
+      --surrogate-charcoal-20: rgba(48,51,47,0.20);
+      --surrogate-paper-50:    rgba(245,240,226,0.50);
+
+      /* Semantic tokens */
+      --surrogate-body-color:  var(--surrogate-charcoal);
+      --surrogate-label-color: var(--surrogate-teal);
+      --surrogate-muted-color: var(--surrogate-charcoal-68);
+      --surrogate-link-color:  var(--surrogate-teal);
+      --surrogate-logo-size:   2rem;
+
+      /* Code surface */
+      --bs-code-bg-color:          color-mix(in srgb, #F5F0E2 92%, #30332F);
+      --bs-code-border-color:      rgba(48,51,47,0.20);
+      --bs-code-left-border-color: rgba(35,95,102,0.60);
+      --bs-code-color:             var(--surrogate-teal);
+
+      /* Callout accents */
+      --callout-note-rgb:      var(--surrogate-teal);
+      --callout-warning-rgb:   var(--surrogate-amber);
+      --callout-important-rgb: var(--surrogate-orange);
+
+      /* Typography — mirrors main.css */
+      --nb-font-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+      --nb-font-sans:  "Assistant", ui-sans-serif, system-ui, sans-serif;
+      --nb-font-label: "Fira Sans", ui-sans-serif, system-ui, sans-serif;
+      --nb-font-mono:  "Fira Mono", ui-monospace, Consolas, monospace;
+      --nb-h1-font-size: 2.5rem;
+      --nb-h2-font-size: 2rem;
+
+      /* Layout */
+      --navbar-height:     4rem;
+      --mini-title-height: 3rem;
+    }
+
+    /* ============================================================
+       RESET
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ============================================================
+       BODY — mirrors article.css + warm-journal.css
+       ============================================================ */
+    body {
+      font-family: var(--nb-font-sans);
+      color: var(--surrogate-body-color);
+      background-color: var(--surrogate-paper);
+      line-height: 1.65;
+      font-size: 1rem;
+    }
+
+    a { color: var(--surrogate-teal); text-decoration: none; }
+    a:hover { color: var(--surrogate-orange); }
+
+    /* ============================================================
+       NAVBAR — mirrors navbar.css + warm-journal.css
+       ============================================================ */
+    .navbar {
+      height: var(--navbar-height);
+      background-color: var(--surrogate-paper);
+      border-bottom: 1px solid var(--surrogate-charcoal-20);
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1030;
+      gap: 1rem;
+    }
+
+    .navbar-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .navbar-logo {
+      width: 2.8rem;
+      height: 2.8rem;
+      max-height: 2.8rem;
+    }
+
+    .navbar-title {
+      color: var(--surrogate-charcoal);
+      font-family: var(--nb-font-serif);
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+
+    .navbar-nav {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      gap: 0.25rem;
+      margin-left: auto;
+    }
+
+    .navbar-nav .nav-link {
+      color: var(--surrogate-charcoal);
+      font-family: var(--nb-font-sans);
+      font-size: 0.9rem;
+      padding: 0.4rem 0.6rem;
+      text-decoration: none;
+      position: relative;
+    }
+
+    .navbar-nav .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 100%; height: 2px;
+      bottom: -2px; left: 0;
+      background-color: currentColor;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .navbar-nav .nav-link:hover { color: var(--surrogate-charcoal); }
+    .navbar-nav .nav-link:hover::after { opacity: 1; }
+
+    /* ============================================================
+       TITLE BANNER — mirrors frontmatter.css + warm-journal.css
+       ============================================================ */
+    .quarto-title-banner {
+      background-color: var(--surrogate-paper) !important;
+      border-bottom: 1px solid var(--surrogate-charcoal-20);
+      padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 6vw, 5rem);
+    }
+
+    .quarto-title-banner h1 {
+      max-width: 62rem;
+      color: var(--surrogate-charcoal) !important;
+      font-family: var(--nb-font-serif) !important;
+      font-size: clamp(2.6rem, 6vw, 5.25rem) !important;
+      font-weight: 600 !important;
+      letter-spacing: -0.035em;
+      line-height: 1.0;
+    }
+
+    /* ============================================================
+       TITLE META + ABSTRACT — mirrors frontmatter.css + warm-journal.css
+       ============================================================ */
+    .title-meta-container {
+      padding: 0 clamp(1.5rem, 6vw, 5rem);
+    }
+
+    .quarto-title-meta {
+      background-color: var(--bs-code-bg-color);
+      padding: 1em 2em 0 2em;
+      margin-top: 2rem;
+      border-radius: 8px 8px 0 0;
+      border: 1px solid rgba(0,0,0,0.10);
+      border-bottom: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .quarto-title-meta-heading {
+      font-family: var(--nb-font-label) !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--surrogate-teal) !important;
+      font-size: 0.72rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .quarto-title-meta-contents {
+      font-family: var(--nb-font-sans);
+      font-size: 0.9rem;
+      color: var(--surrogate-body-color);
+      padding-bottom: 1em;
+    }
+
+    .abstract {
+      background-color: var(--bs-code-bg-color);
+      padding: 1rem 2rem 1.5rem 2rem;
+      border-radius: 0 0 8px 8px;
+      border: 1px solid rgba(0,0,0,0.10);
+      border-top: none;
+    }
+
+    .abstract .block-title {
+      font-family: var(--nb-font-label) !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--surrogate-teal) !important;
+      font-size: 0.72rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .abstract p {
+      font-family: var(--nb-font-serif);
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--surrogate-body-color);
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    /* ============================================================
+       PAGE LAYOUT — mirrors grid.css
+       ============================================================ */
+    .page-layout {
+      display: grid;
+      grid-template-columns:
+        [outer-left] clamp(1rem, 4vw, 4rem)
+        [content-start] minmax(0, 820px)
+        [content-end] clamp(0px, 3vw, 2rem)
+        [toc-start] clamp(140px, 16vw, 210px)
+        [toc-end] clamp(1rem, 4vw, 4rem)
+        [outer-right];
+      padding-top: 2.5rem;
+      align-items: start;
+    }
+
+    .article-content {
+      grid-column: content-start / content-end;
+      padding-bottom: 5rem;
+      min-width: 0;
+    }
+
+    .sidebar-toc {
+      grid-column: toc-start / toc-end;
+      position: sticky;
+      top: calc(var(--navbar-height) + 2rem);
+      align-self: start;
+      max-height: calc(100vh - var(--navbar-height) - 4rem);
+      overflow-y: auto;
+    }
+
+    /* ============================================================
+       TABLE OF CONTENTS — mirrors sidebar.css
+       ============================================================ */
+    #toc-title {
+      font-family: var(--nb-font-mono);
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--surrogate-label-color);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.6rem;
+    }
+
+    .toc-nav ul { list-style: none; padding: 0; }
+    .toc-nav li { margin: 0.1rem 0; }
+
+    .toc-nav a {
+      font-family: var(--nb-font-mono);
+      font-weight: 300;
+      font-size: 0.78rem;
+      color: var(--surrogate-body-color);
+      text-decoration: none;
+      display: block;
+      padding: 0.15rem 0.5rem;
+      border-left: 2px solid transparent;
+      transition: all 0.2s ease;
+      line-height: 1.4;
+    }
+
+    .toc-nav a:hover,
+    .toc-nav a.active {
+      border-left-color: var(--surrogate-teal);
+      color: var(--surrogate-teal) !important;
+    }
+
+    .toc-nav ul ul { padding-left: 0.75rem; }
+
+    /* ============================================================
+       ARTICLE TYPOGRAPHY — mirrors article.css + warm-journal.css
+       ============================================================ */
+    .article-content h2 {
+      font-family: var(--nb-font-serif) !important;
+      font-weight: 600 !important;
+      color: var(--surrogate-charcoal);
+      font-size: var(--nb-h2-font-size);
+      margin-top: 3rem;
+      margin-bottom: 0.75rem;
+      line-height: 1.15;
+    }
+
+    .article-content h3 {
+      font-family: var(--nb-font-sans) !important;
+      font-weight: 400 !important;
+      color: var(--surrogate-charcoal);
+      font-size: 1.25rem;
+      margin-top: 2rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .article-content p {
+      margin-bottom: 1.15rem;
+      line-height: 1.7;
+    }
+
+    .article-content ul,
+    .article-content ol {
+      margin-bottom: 1.15rem;
+      padding-left: 1.5rem;
+    }
+
+    .article-content li {
+      margin-bottom: 0.4rem;
+      line-height: 1.65;
+    }
+
+    .article-content li ul {
+      margin-top: 0.4rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .article-content hr {
+      border: none;
+      border-top: 1px solid var(--surrogate-charcoal-20);
+      margin: 2.5rem 0;
+    }
+
+    /* ============================================================
+       CALLOUTS — mirrors article.css
+       ============================================================ */
+    .callout {
+      border-radius: 4px;
+      margin: 1.5rem 0;
+      border: 1px solid var(--surrogate-charcoal-20);
+      border-left-width: 4px;
+      overflow: hidden;
+    }
+
+    .callout-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      font-family: var(--nb-font-label);
+      font-weight: 600;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+    }
+
+    .callout-body {
+      padding: 0.75rem 1rem 0.9rem;
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+
+    .callout-body ul  { margin-bottom: 0; }
+    .callout-body p:last-child { margin-bottom: 0; }
+
+    .callout-note      { border-left-color: var(--surrogate-teal); }
+    .callout-note .callout-header {
+      background-color: rgba(35,95,102,0.10);
+      color: var(--surrogate-teal);
+    }
+
+    .callout-important { border-left-color: var(--surrogate-orange); }
+    .callout-important .callout-header {
+      background-color: rgba(242,138,28,0.10);
+      color: var(--surrogate-orange);
+    }
+
+    .callout-warning   { border-left-color: var(--surrogate-amber); }
+    .callout-warning .callout-header {
+      background-color: rgba(255,184,62,0.12);
+      color: #8a6200;
+    }
+
+    /* ============================================================
+       FIGURES — mirrors article.css
+       ============================================================ */
+    figure { margin: 2rem 0; }
+
+    figure img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+      display: block;
+    }
+
+    figcaption {
+      font-family: var(--nb-font-label) !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--surrogate-teal) !important;
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    figcaption .cap-body {
+      display: block;
+      font-family: var(--nb-font-sans);
+      font-weight: 400;
+      font-size: 0.88rem;
+      text-transform: none;
+      letter-spacing: normal;
+      color: var(--surrogate-muted-color);
+      margin-top: 0.2rem;
+      line-height: 1.55;
+    }
+
+    /* Figure placeholder */
+    .figure-placeholder {
+      background-color: var(--bs-code-bg-color);
+      border: 2px dashed var(--surrogate-charcoal-20);
+      border-radius: 4px;
+      padding: 3rem 2rem;
+      text-align: center;
+      font-family: var(--nb-font-mono);
+      font-size: 0.85rem;
+      color: var(--surrogate-muted-color);
+    }
+
+    /* ============================================================
+       TABLES
+       ============================================================ */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-family: var(--nb-font-sans);
+      font-size: 0.88rem;
+    }
+
+    th {
+      background-color: var(--surrogate-charcoal);
+      color: var(--surrogate-paper);
+      padding: 0.55rem 0.9rem;
+      text-align: left;
+      font-family: var(--nb-font-label);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+    }
+
+    td {
+      padding: 0.55rem 0.9rem;
+      border-bottom: 1px solid var(--surrogate-charcoal-20);
+      vertical-align: top;
+      line-height: 1.55;
+    }
+
+    tr:nth-child(even) td { background-color: var(--bs-code-bg-color); }
+
+    /* ============================================================
+       CODE & FORMULA
+       ============================================================ */
+    code {
+      font-family: var(--nb-font-mono);
+      font-weight: 300;
+      color: var(--bs-code-color);
+      background-color: var(--bs-code-bg-color);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+      font-size: 0.88em;
+    }
+
+    /* ============================================================
+       BLOCKQUOTE — mirrors warm-journal.css
+       ============================================================ */
+    blockquote {
+      border-left: 0.35rem solid var(--surrogate-orange);
+      padding: 0.5rem 1rem;
+      margin: 1.5rem 0;
+      color: var(--surrogate-charcoal-68);
+      font-style: italic;
+    }
+
+    /* ============================================================
+       FOOTER — mirrors footer.css
+       ============================================================ */
+    .site-footer {
+      background-color: var(--surrogate-charcoal) !important;
+      padding: 2rem;
+      margin-top: 4rem;
+      width: 100%;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1300px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--surrogate-paper);
+      font-family: var(--nb-font-sans);
+      font-size: 0.85rem;
+    }
+
+    .footer-logo-wrap {
+      padding: 0.25rem;
+      background: var(--surrogate-paper);
+      border-radius: 0.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.4rem;
+      height: 2.4rem;
+    }
+
+    .footer-logo-wrap img { width: 1.7rem; height: 1.7rem; }
+
+    .footer-right a {
+      color: var(--surrogate-paper);
+      font-size: 1.2rem;
+      text-decoration: none;
+    }
+
+    .footer-right a:hover { color: var(--surrogate-amber); }
+
+    /* ============================================================
+       REFERENCES
+       ============================================================ */
+    .references-section {
+      margin-top: 3rem;
+      border-top: 1px solid var(--surrogate-charcoal-20);
+      padding-top: 2rem;
+    }
+
+    .references-section h2 { font-size: 1.4rem !important; margin-top: 0 !important; }
+
+    .ref-entry {
+      margin: 0.75rem 1rem;
+      font-family: var(--nb-font-sans);
+      font-size: 0.88rem;
+      line-height: 1.55;
+    }
+
+    /* ============================================================
+       APPENDIX
+       ============================================================ */
+    .appendix-section {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 2px solid var(--surrogate-charcoal-20);
+    }
+
+    .appendix-section h2 { margin-top: 0 !important; }
+
+    /* ============================================================
+       RESPONSIVE — mirrors mobile.css
+       ============================================================ */
+    @media (max-width: 900px) {
+      .page-layout { grid-template-columns: 1rem 1fr 1rem; }
+      .article-content { grid-column: 2; }
+      .sidebar-toc { display: none; }
+      .navbar-nav { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .quarto-title-banner { padding: 2rem 1.25rem; }
+      .quarto-title-banner h1 { font-size: clamp(2rem, 10vw, 3rem) !important; }
+      .title-meta-container { padding: 0 1.25rem; }
+    }
+  </style>
+</head>
+<body class="surrogate-warm-journal">
+
+<!-- ================================================================
+     NAVBAR
+     ================================================================ -->
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <a class="navbar-brand" href="https://github.com/surrogate-sci">
+    <img class="navbar-logo"
+         src="./logo_surrogate_mark.svg"
+         alt="Surrogate Science logo">
+    <span class="navbar-title">SURROGATE SCIENCE</span>
+  </a>
+  <ul class="navbar-nav">
+    <li><a class="nav-link" href="../../index.html">PRISM 2026</a></li>
+    <li><a class="nav-link" href="../">Blog</a></li>
+    <li><a class="nav-link" href="../../pages/FAQ.html">FAQ</a></li>
+    <li><a class="nav-link" href="../../pages/SETUP.html">Reproduce this pub</a></li>
+    <li>
+      <a class="nav-link"
+         href="https://github.com/surrogate-sci/prism2026"
+         aria-label="GitHub repository">
+        <i class="bi bi-github"></i>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<!-- ================================================================
+     TITLE BANNER
+     ================================================================ -->
+<div class="quarto-title-banner">
+  <h1>H4: Direction: True or False?</h1>
+</div>
+
+<!-- ================================================================
+     TITLE META + ABSTRACT
+     ================================================================ -->
+<div class="title-meta-container">
+  <div class="quarto-title-meta">
+    <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">September 2026 &middot; Team Update</div>
+    </div>
+    <div>
+      <div class="quarto-title-meta-heading">Authors</div>
+      <div class="quarto-title-meta-contents">PRISM 2026 Contributors</div>
+    </div>
+    <div>
+      <div class="quarto-title-meta-heading">Models</div>
+      <div class="quarto-title-meta-contents">Mistral-7B &middot; Qwen2.5-7B &middot; gemma-4-E4b &middot; Qwen3-14B</div>
+    </div>
+  </div>
+
+  <div class="abstract">
+    <div class="block-title">Hypothesis</div>
+    <p>Given a true claim about a compound (e.g. "this compound is selective for PXR") and a false claim about the same compound, there exists a linear direction in the model's residual stream that separates true from false &mdash; and the same direction works for new compounds.</p>
+  </div>
+</div>
+
+<!-- ================================================================
+     MAIN LAYOUT
+     ================================================================ -->
+<div class="page-layout">
+
+  <!-- ==================== ARTICLE ==================== -->
+  <article class="article-content">
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="contextualizing">
+      <h2>Contextualizing why we're doing this</h2>
+
+      <p>Finding a linear direction that separates true from false claims, or selective from non-selective compounds, does not by itself establish that the model uses that direction when processing the task.</p>
+
+      <p>This is the classic "probe vs. use" gap: a probe can succeed because of a confound without being causally relevant. The experiments under H4 are specifically designed to test whether the direction is:</p>
+      <ul>
+        <li><strong>Confounded</strong> &mdash; e.g., it might track surface-level cues like compound family or prompt template rather than the scientific property.</li>
+        <li><strong>Generalizable</strong> &mdash; does it transfer to prompts the model has never seen?</li>
+        <li><strong>Causally active</strong> &mdash; if we steer along it, does the model's behavior change in the predicted direction?</li>
+      </ul>
+    </section>
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="methodology">
+      <h2>Methodology</h2>
+
+      <p>We included 4 models: Mistral-7B-instruct-v0.3, Qwen2.5-7B-instruct, gemma-4-E4b-it, and Qwen3-14B</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th># Layers</th>
+            <th>Hidden dim</th>
+            <th>Parameters</th>
+            <th>instruct-tuned?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Mistral-7B-instruct-v0.3</td>
+            <td>32</td>
+            <td>4096</td>
+            <td>~7B</td>
+            <td>Yes (v0.3)</td>
+          </tr>
+          <tr>
+            <td>Qwen2.5-7B-instruct</td>
+            <td>28</td>
+            <td>3584</td>
+            <td>~7B</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>gemma-4-E4b-it</td>
+            <td>34</td>
+            <td>2560</td>
+            <td>~4B</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Qwen3-14B</td>
+            <td>40</td>
+            <td>5120</td>
+            <td>~14B</td>
+            <td>Yes</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>We wrote 4 chemistry-context prompt templates (stating that a compound is or is not PXR-selective). We also wrote 4 stripped-context templates (anonymous numerical comparisons). Every template produces a true and false version using real compound data from the dataset. In other words, we have 4 templates, let's call them "families", and for each template for each molecule we either have one which the claim that is true and one where the claim is false.</p>
+    </section>
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="results">
+      <h2>Results</h2>
+
+      <p>Behavioral results: Model accuracy on the claim-verification task (true/false). The models are able to get these right the majority of the time, especially when the claim is about chemistry (left bars), but also when the claim is stripped of chemistry context (right bars, "stripped").</p>
+
+      <!-- figure placeholder -->
+      <figure>
+        <div class="figure-placeholder">Figure &mdash; behavioral accuracy bar charts</div>
+        <figcaption>Figure 1
+          <span class="cap-body">Behavioral accuracy on the claim-verification task across 4 models, chemistry vs. stripped context.</span>
+        </figcaption>
+      </figure>
+
+      <h3>On Behavioral threshold</h3>
+
+      <p>A behavioral threshold refers to the point at which models will demonstrate a behavioral response to a stimulus (claim). More practically, it is the pEC50 gap below which the model stops calling a compound 'selective' and switches to 'not selective'. The plot shows that threshold is nearly the same regardless of whether the prompt uses chemistry framing or stripped/anonymous numerical framing, but varies by model.</p>
+
+      <!-- figure placeholder -->
+      <figure>
+        <div class="figure-placeholder">Figure &mdash; behavioral threshold plot</div>
+        <figcaption>Figure 2
+          <span class="cap-body">Behavioral threshold by model and context framing.</span>
+        </figcaption>
+      </figure>
+
+      <h3>On probing</h3>
+
+      <p>Whether a direction for 'truth' can be found in the residual stream, and whether it generalizes. We train a logistic-regression DIM probe (difference-in-means direction) on the residual stream at the final token on held-in templates, and evaluate on held-out templates (LOTO = leave-one-template-out). Accuracy is AUROC.</p>
+
+      <p>A DIM probe trained on the 'truth' direction with chemistry context achieves LOTO AUROC above 0.9 at layer 16 for Mistral-7B and Qwen2.5-7B, and above 0.93 at layer 23 for gemma-4-E4b. This indicates the model separates true vs. false claims linearly in its residual stream, and the direction generalizes across different prompt phrasings.</p>
+
+      <!-- figure placeholder -->
+      <figure>
+        <div class="figure-placeholder">Figure &mdash; DIM accuracy bar charts (train/LOTO AUROC)</div>
+        <figcaption>Figure 3
+          <span class="cap-body">DIM probe accuracy for 4 models in chemistry and stripped contexts.</span>
+        </figcaption>
+      </figure>
+
+      <h3>Context transfer</h3>
+
+      <p>Context transfer &mdash; does the chemistry-context direction work on stripped prompts, and vice versa? This 2&times;2 matrix tests: if I train a DIM probe in one context, does it correctly classify claims in the other context?</p>
+
+      <!-- figure placeholder -->
+      <figure>
+        <div class="figure-placeholder">Figure &mdash; context transfer matrix heatmaps (Qwen3-4B layer 18, gemma-4-E4b-it layer 23, Qwen3-14B layer 38)</div>
+        <figcaption>Figure 4
+          <span class="cap-body">Context transfer matrices for three models.</span>
+        </figcaption>
+      </figure>
+
+      <p><strong>What we found:</strong> the matched-pair DIM direction is family-specific. When you hold out one contrast family and refit the direction on the other three, it fails to classify the held-out family above chance. That means the direction is capturing something about the particular true/false contrast used in training &mdash; the phrasing, the compound type, the claim structure &mdash; rather than a single abstract "this claim is true" axis that runs through all of them.</p>
+
+      <p><strong>The nuance &mdash; layer 19 OOD:</strong> that result is pulling in a different direction (no pun intended). The OOD test strips all chemistry framing and presents just the numerical comparison. At layer 19, the DIM direction built from chemistry templates correctly classifies those stripped prompts with AUROC 0.972. That suggests there <em>is</em> something at layer 19 that aligns with the underlying numerical comparison, even though it doesn't transfer across chemistry-framed templates.</p>
+
+      <p>So the picture is more like: there may be a numerical-comparison direction at layer 19 that the model uses for pEC50 comparisons in general, but the chemistry framing introduces template-specific offsets that dominate the signal when you test across templates. The DIM direction absorbs those offsets rather than averaging them away.</p>
+    </section>
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="results-part-2">
+      <h2>Results part 2 (IN PROGRESS)</h2>
+
+      <p>Then tried to see if we could do activation steering to turn confounded claims from true to false (correct)</p>
+      <p>This worked without incorrectly steering any actually true or actually false claims away</p>
+    </section>
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="open-questions">
+      <h2>Open questions</h2>
+
+      <ul>
+        <li>So Gemma 4b was better! Do we know why?
+          <ul>
+            <li>How can we even answer this question</li>
+            <li>Potential hypotheses to investigate:
+              <ul>
+                <li>More chem training</li>
+                <li>Understanding what differences thing</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <hr>
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="appendix" class="appendix-section">
+      <h2>Appendix</h2>
+
+      <p>Question: So why did we choose L16 for Mistral/Qwen?</p>
+      <p>Answer: sweep, and it was highest on the hold-out AUROC. But to be honest the other layers might have something interesting, so this is on the to do.</p>
+
+      <!-- figure placeholder -->
+      <figure>
+        <div class="figure-placeholder">Figure &mdash; H4 Layer Sweep &mdash; Qwen2.5-7B-Instruct (E1 probe discrimination, E2 confounded gap, probe logit by class and layer)</div>
+        <figcaption>Appendix Figure
+          <span class="cap-body">H4 Layer Sweep &mdash; Qwen2.5-7B-Instruct.</span>
+        </figcaption>
+      </figure>
+    </section>
+
+  </article>
+
+  <!-- ==================== SIDEBAR TOC ==================== -->
+  <aside class="sidebar-toc" aria-label="Table of contents">
+    <div id="toc-title">On this page</div>
+    <nav class="toc-nav">
+      <ul>
+        <li><a href="#contextualizing">Contextualizing</a></li>
+        <li><a href="#methodology">Methodology</a></li>
+        <li><a href="#results">Results</a>
+          <ul>
+            <li><a href="#results">Behavioral threshold</a></li>
+            <li><a href="#results">Probing</a></li>
+            <li><a href="#results">Context transfer</a></li>
+          </ul>
+        </li>
+        <li><a href="#results-part-2">Results part 2</a></li>
+        <li><a href="#open-questions">Open questions</a></li>
+        <li><a href="#appendix">Appendix</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+</div><!-- /page-layout -->
+
+<!-- ================================================================
+     FOOTER
+     ================================================================ -->
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="footer-logo-wrap">
+        <img src="./logo_surrogate_mark.svg"
+             alt="Surrogate Science">
+      </div>
+      <span>Copyright 2026, Surrogate Science</span>
+    </div>
+    <div class="footer-right">
+      <a href="https://github.com/surrogate-sci/prism2026" aria-label="GitHub">
+        <i class="bi bi-github"></i>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- ================================================================
+     TOC ACTIVE-LINK SCRIPT
+     ================================================================ -->
+<script>
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-nav a');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        tocLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+        });
+      }
+    });
+  }, { rootMargin: '-15% 0% -75% 0%' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
