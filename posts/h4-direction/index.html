@@ -637,11 +637,11 @@
   <div class="quarto-title-meta">
     <div>
       <div class="quarto-title-meta-heading">Published</div>
-      <div class="quarto-title-meta-contents">September 2026 &middot; Team Update</div>
+      <div class="quarto-title-meta-contents">September 2026 &middot; Experiment Update</div>
     </div>
     <div>
       <div class="quarto-title-meta-heading">Authors</div>
-      <div class="quarto-title-meta-contents">PRISM 2026 Contributors</div>
+      <div class="quarto-title-meta-contents">Sanskriti</div>
     </div>
     <div>
       <div class="quarto-title-meta-heading">Models</div>
@@ -868,6 +868,22 @@
 
       <p>Then tried to see if we could do activation steering to turn confounded claims from true to false (correct)</p>
       <p>This worked without incorrectly steering any actually true or actually false claims away</p>
+
+      <figure>
+        <img src="./figures/steering_combined.png"
+             alt="Activation steering at alpha = 1: In-domain truth probe flips 100% confounded and 28% true claims; Random norm-matched flips 0% confounded and 72% true claims">
+        <figcaption>Figure 6
+          <span class="cap-body">Activation steering at &alpha; = 1.</span>
+        </figcaption>
+      </figure>
+
+      <figure>
+        <img src="./figures/steering_alpha_sweep_v2.png"
+             alt="Flip rate across steering strengths: confounded claims peak at alpha = 1, true claims remain mostly unaffected">
+        <figcaption>Figure 7
+          <span class="cap-body">Flip rate across steering strengths.</span>
+        </figcaption>
+      </figure>
     </section>
 
     <!-- ---------------------------------------------------------- -->
