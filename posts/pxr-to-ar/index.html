@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en" class="surrogate-warm-journal">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generalizing from PXR to AR datasets | PRISM 2026</title>
+
+  <!-- Fonts (from includes/fonts.html) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Fira+Mono:wght@400;500&family=Fira+Sans:wght@500;600;700&display=swap">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <style>
+    :root {
+      --surrogate-paper:    #F5F0E2;
+      --surrogate-teal:     #235F66;
+      --surrogate-orange:   #F28A1C;
+      --surrogate-amber:    #FFB83E;
+      --surrogate-charcoal: #30332F;
+      --surrogate-charcoal-68: rgba(48,51,47,0.68);
+      --surrogate-charcoal-50: rgba(48,51,47,0.50);
+      --surrogate-charcoal-20: rgba(48,51,47,0.20);
+      --surrogate-paper-50:    rgba(245,240,226,0.50);
+      --surrogate-body-color:  var(--surrogate-charcoal);
+      --surrogate-label-color: var(--surrogate-teal);
+      --surrogate-muted-color: var(--surrogate-charcoal-68);
+      --surrogate-link-color:  var(--surrogate-teal);
+      --surrogate-logo-size:   2rem;
+      --bs-code-bg-color:          color-mix(in srgb, #F5F0E2 92%, #30332F);
+      --bs-code-border-color:      rgba(48,51,47,0.20);
+      --bs-code-left-border-color: rgba(35,95,102,0.60);
+      --bs-code-color:             var(--surrogate-teal);
+      --nb-font-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+      --nb-font-sans:  "Assistant", ui-sans-serif, system-ui, sans-serif;
+      --nb-font-label: "Fira Sans", ui-sans-serif, system-ui, sans-serif;
+      --nb-font-mono:  "Fira Mono", ui-monospace, Consolas, monospace;
+      --nb-h1-font-size: 2.5rem;
+      --nb-h2-font-size: 2rem;
+      --navbar-height:     4rem;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--nb-font-sans);
+      color: var(--surrogate-body-color);
+      background-color: var(--surrogate-paper);
+      line-height: 1.65;
+      font-size: 1rem;
+    }
+    a { color: var(--surrogate-teal); text-decoration: none; }
+    a:hover { color: var(--surrogate-orange); }
+    .navbar {
+      height: var(--navbar-height);
+      background-color: var(--surrogate-paper);
+      border-bottom: 1px solid var(--surrogate-charcoal-20);
+      display: flex; align-items: center; padding: 0 2rem;
+      position: sticky; top: 0; z-index: 1030; gap: 1rem;
+    }
+    .navbar-brand { display: inline-flex; align-items: center; gap: 0.65rem; text-decoration: none; flex-shrink: 0; }
+    .navbar-logo { width: 2.8rem; height: 2.8rem; max-height: 2.8rem; }
+    .navbar-title { color: var(--surrogate-charcoal); font-family: var(--nb-font-serif); font-size: 1.15rem; font-weight: 700; letter-spacing: 0.01em; white-space: nowrap; }
+    .navbar-nav { display: flex; align-items: center; list-style: none; gap: 0.25rem; margin-left: auto; }
+    .navbar-nav .nav-link { color: var(--surrogate-charcoal); font-family: var(--nb-font-sans); font-size: 0.9rem; padding: 0.4rem 0.6rem; text-decoration: none; position: relative; }
+    .navbar-nav .nav-link::after { content: ''; position: absolute; width: 100%; height: 2px; bottom: -2px; left: 0; background-color: currentColor; opacity: 0; transition: opacity 0.4s ease; }
+    .navbar-nav .nav-link:hover { color: var(--surrogate-charcoal); }
+    .navbar-nav .nav-link:hover::after { opacity: 1; }
+    .quarto-title-banner { background-color: var(--surrogate-paper) !important; border-bottom: 1px solid var(--surrogate-charcoal-20); padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 6vw, 5rem); }
+    .quarto-title-banner h1 { max-width: 62rem; color: var(--surrogate-charcoal) !important; font-family: var(--nb-font-serif) !important; font-size: clamp(2.6rem, 6vw, 5.25rem) !important; font-weight: 600 !important; letter-spacing: -0.035em; line-height: 1.0; }
+    .title-meta-container { padding: 0 clamp(1.5rem, 6vw, 5rem); }
+    .quarto-title-meta { background-color: var(--bs-code-bg-color); padding: 1em 2em 0 2em; margin-top: 2rem; border-radius: 8px 8px 0 0; border: 1px solid rgba(0,0,0,0.10); border-bottom: none; display: flex; flex-wrap: wrap; gap: 2rem; }
+    .quarto-title-meta-heading { font-family: var(--nb-font-label) !important; font-weight: 600 !important; letter-spacing: 0.08em; text-transform: uppercase; color: var(--surrogate-teal) !important; font-size: 0.72rem; margin-bottom: 0.25rem; }
+    .quarto-title-meta-contents { font-family: var(--nb-font-sans); font-size: 0.9rem; color: var(--surrogate-body-color); padding-bottom: 1em; }
+    .abstract { background-color: var(--bs-code-bg-color); padding: 1rem 2rem 1.5rem 2rem; border-radius: 0 0 8px 8px; border: 1px solid rgba(0,0,0,0.10); border-top: none; }
+    .abstract .block-title { font-family: var(--nb-font-label) !important; font-weight: 600 !important; letter-spacing: 0.08em; text-transform: uppercase; color: var(--surrogate-teal) !important; font-size: 0.72rem; margin-bottom: 0.6rem; }
+    .abstract p { font-family: var(--nb-font-serif); font-size: 1.1rem; font-weight: 400; color: var(--surrogate-body-color); line-height: 1.65; margin: 0; }
+    .page-layout { display: grid; grid-template-columns: [outer-left] clamp(1rem, 4vw, 4rem) [content-start] minmax(0, 820px) [content-end] clamp(0px, 3vw, 2rem) [toc-start] clamp(140px, 16vw, 210px) [toc-end] clamp(1rem, 4vw, 4rem) [outer-right]; padding-top: 2.5rem; align-items: start; }
+    .article-content { grid-column: content-start / content-end; padding-bottom: 5rem; min-width: 0; }
+    .sidebar-toc { grid-column: toc-start / toc-end; position: sticky; top: calc(var(--navbar-height) + 2rem); align-self: start; max-height: calc(100vh - var(--navbar-height) - 4rem); overflow-y: auto; }
+    #toc-title { font-family: var(--nb-font-mono); font-size: 0.8rem; font-weight: 300; color: var(--surrogate-label-color); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.6rem; }
+    .toc-nav ul { list-style: none; padding: 0; }
+    .toc-nav li { margin: 0.1rem 0; }
+    .toc-nav a { font-family: var(--nb-font-mono); font-weight: 300; font-size: 0.78rem; color: var(--surrogate-body-color); text-decoration: none; display: block; padding: 0.15rem 0.5rem; border-left: 2px solid transparent; transition: all 0.2s ease; line-height: 1.4; }
+    .toc-nav a:hover, .toc-nav a.active { border-left-color: var(--surrogate-teal); color: var(--surrogate-teal) !important; }
+    .toc-nav ul ul { padding-left: 0.75rem; }
+    .article-content h2 { font-family: var(--nb-font-serif) !important; font-weight: 600 !important; color: var(--surrogate-charcoal); font-size: var(--nb-h2-font-size); margin-top: 3rem; margin-bottom: 0.75rem; line-height: 1.15; }
+    .article-content h3 { font-family: var(--nb-font-sans) !important; font-weight: 400 !important; color: var(--surrogate-charcoal); font-size: 1.25rem; margin-top: 2rem; margin-bottom: 0.6rem; }
+    .article-content p { margin-bottom: 1.15rem; line-height: 1.7; }
+    .article-content ul, .article-content ol { margin-bottom: 1.15rem; padding-left: 1.5rem; }
+    .article-content li { margin-bottom: 0.4rem; line-height: 1.65; }
+    .article-content li ul { margin-top: 0.4rem; margin-bottom: 0.4rem; }
+    .article-content hr { border: none; border-top: 1px solid var(--surrogate-charcoal-20); margin: 2.5rem 0; }
+    .callout { border-radius: 4px; margin: 1.5rem 0; border: 1px solid var(--surrogate-charcoal-20); border-left-width: 4px; overflow: hidden; }
+    .callout-header { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; font-family: var(--nb-font-label); font-weight: 600; font-size: 0.82rem; letter-spacing: 0.04em; }
+    .callout-body { padding: 0.75rem 1rem 0.9rem; font-size: 0.95rem; line-height: 1.65; }
+    .callout-body p:last-child { margin-bottom: 0; }
+    .callout-note { border-left-color: var(--surrogate-teal); }
+    .callout-note .callout-header { background-color: rgba(35,95,102,0.10); color: var(--surrogate-teal); }
+    figure { margin: 2rem 0; }
+    figure img { max-width: 100%; height: auto; border-radius: 4px; display: block; }
+    figcaption { font-family: var(--nb-font-label) !important; font-weight: 600 !important; letter-spacing: 0.07em; text-transform: uppercase; color: var(--surrogate-teal) !important; font-size: 0.75rem; margin-top: 0.5rem; }
+    figcaption .cap-body { display: block; font-family: var(--nb-font-sans); font-weight: 400; font-size: 0.88rem; text-transform: none; letter-spacing: normal; color: var(--surrogate-muted-color); margin-top: 0.2rem; line-height: 1.55; }
+    .figure-placeholder { background-color: var(--bs-code-bg-color); border: 2px dashed var(--surrogate-charcoal-20); border-radius: 4px; padding: 3rem 2rem; text-align: center; font-family: var(--nb-font-mono); font-size: 0.85rem; color: var(--surrogate-muted-color); }
+    blockquote { border-left: 0.35rem solid var(--surrogate-orange); padding: 0.5rem 1rem; margin: 1.5rem 0; color: var(--surrogate-charcoal-68); font-style: italic; }
+    code { font-family: var(--nb-font-mono); font-weight: 300; color: var(--bs-code-color); background-color: var(--bs-code-bg-color); padding: 0.1em 0.35em; border-radius: 3px; font-size: 0.88em; }
+    .formula { font-family: var(--nb-font-mono); background-color: var(--bs-code-bg-color); border: 1px solid var(--bs-code-border-color); border-radius: 4px; padding: 0.75rem 1.5rem; text-align: center; font-size: 1.05rem; margin: 1.5rem 0; color: var(--surrogate-charcoal); }
+    .site-footer { background-color: var(--surrogate-charcoal) !important; padding: 2rem; margin-top: 4rem; width: 100%; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; max-width: 1300px; margin: 0 auto; flex-wrap: wrap; gap: 1rem; }
+    .footer-left { display: flex; align-items: center; gap: 1rem; color: var(--surrogate-paper); font-family: var(--nb-font-sans); font-size: 0.85rem; }
+    .footer-logo-wrap { padding: 0.25rem; background: var(--surrogate-paper); border-radius: 0.6rem; display: flex; align-items: center; justify-content: center; width: 2.4rem; height: 2.4rem; }
+    .footer-logo-wrap img { width: 1.7rem; height: 1.7rem; }
+    .footer-right a { color: var(--surrogate-paper); font-size: 1.2rem; text-decoration: none; }
+    .footer-right a:hover { color: var(--surrogate-amber); }
+    .footnote { font-size: 0.82rem; color: var(--surrogate-muted-color); border-top: 1px solid var(--surrogate-charcoal-20); margin-top: 2rem; padding-top: 1rem; }
+    @media (max-width: 900px) { .page-layout { grid-template-columns: 1rem 1fr 1rem; } .article-content { grid-column: 2; } .sidebar-toc { display: none; } .navbar-nav { display: none; } }
+    @media (max-width: 640px) { .quarto-title-banner { padding: 2rem 1.25rem; } .quarto-title-banner h1 { font-size: clamp(2rem, 10vw, 3rem) !important; } .title-meta-container { padding: 0 1.25rem; } }
+  </style>
+</head>
+<body class="surrogate-warm-journal">
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <a class="navbar-brand" href="https://github.com/surrogate-sci">
+    <img class="navbar-logo" src="./logo_surrogate_mark.svg" alt="Surrogate Science logo">
+    <span class="navbar-title">SURROGATE SCIENCE</span>
+  </a>
+  <ul class="navbar-nav">
+    <li><a class="nav-link" href="../../index.html">PRISM 2026</a></li>
+    <li><a class="nav-link" href="../">Blog</a></li>
+    <li><a class="nav-link" href="../../pages/FAQ.html">FAQ</a></li>
+    <li><a class="nav-link" href="../../pages/SETUP.html">Reproduce this pub</a></li>
+    <li><a class="nav-link" href="https://github.com/surrogate-sci/prism2026" aria-label="GitHub repository"><i class="bi bi-github"></i></a></li>
+  </ul>
+</nav>
+
+<div class="quarto-title-banner">
+  <h1>Generalizing from PXR to AR datasets</h1>
+</div>
+
+<div class="title-meta-container">
+  <div class="quarto-title-meta">
+    <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">September 2026 &middot; Experiment Update</div>
+    </div>
+    <div>
+      <div class="quarto-title-meta-heading">Authors</div>
+      <div class="quarto-title-meta-contents">Sanskriti</div>
+    </div>
+    <div>
+      <div class="quarto-title-meta-heading">Models</div>
+      <div class="quarto-title-meta-contents">deepseek-v4 &middot; gemma-4-26b &middot; gpt-5.4 &middot; qwen3.5-35b</div>
+    </div>
+  </div>
+
+  <div class="abstract">
+    <div class="block-title">Tldr</div>
+    <p>Behavioural tasks to see if models are able to do nuanced thinking about biological datasets with assay data, if we ask them questions that can't just be answered from assay, such as PXR and AR.</p>
+  </div>
+</div>
+
+<div class="page-layout">
+
+  <article class="article-content">
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="introduction">
+      <h2>Introduction</h2>
+
+      <p>For the PXR dataset, the model must infer receptor selectivity from a primary PXR assay and a matched PXR-null counter-screen. A molecule's activity in the primary PXR assay alone is not enough to determine selectivity because similar activity in the PXR-null assay suggests nonspecific or assay-dependent activity. The model is provided with pEC0, Emax. No CIs for this one.</p>
+
+      <div class="callout callout-note">
+        <div class="callout-header"><i class="bi bi-info-circle-fill"></i>&nbsp; Sidenote</div>
+        <div class="callout-body">
+          <p>Some of our other experiments (add link here) asked how good models were at determining selectivity compared to potency for all sorts of molecules. However, here, we're just asking for selectivity, and then classifying accuracy of the models based on which of the ground-truth categories the molecules fall under (real PXR activator, inactive, nonspecific signal, or assay artifact).</p>
+        </div>
+      </div>
+
+      <figure>
+        <img src="./figures/four_classes_pxr.png"
+             alt="Four classes from two reporters: Primary high + Counter-screen low = Real PXR activator; Primary high + Counter-screen high = Nonspecific signal; Primary low + Counter-screen low = Inactive; Primary low + Counter-screen high = Assay artifact">
+        <figcaption>Figure C
+          <span class="cap-body">Four classes from two reporters.</span>
+        </figcaption>
+      </figure>
+
+      <p>For the AR dataset, there are three assays.</p>
+      <ol>
+        <li>Baseline AR agonist assay</li>
+        <li>AR agonist assay + nilutamide</li>
+        <li>AR + nilutamide viability counter-screen</li>
+      </ol>
+
+      <p>The model is given a baseline AR-responsive reporter assay, the same reporter assay under pharmacological AR blockade with nilutamide, and a parallel cell-viability counter-screen. A strong reporter response alone is not enough to say that the compound's effect is AR-dependent! The model must reason about how the response changes under receptor blockade and whether cytotoxicity provides an alternative explanation. In other words, a molecule that shows strong activity in the baseline AR agonist assay, but substantially reduced activity in the AR agonist assay + nilutamide, is more likely to have AR-dependent activity because blocking AR suppresses the reporter response. However, if the molecule also causes substantial loss of cell viability (AR + nilutamide viability counter-screen) at similar concentrations, then cytotoxicity might be the reason for the change in reporter signal, and it's not clear whether the molecule is AR-dependent or not. Therefore, the model must take into account assay values <em>from all three assays</em> in order to make a statamtent about AR-dependency. The matrix below explains what different assay values might mean, specifically what it means in relation to the other variables.w</p>
+
+      <figure>
+        <img src="./figures/ar_decision_matrix.png"
+             alt="AR decision matrix: Baseline high + Activity drops under blockade + cells viable = AR-dependent agonist; Baseline high + Activity persists under blockade + cells viable = Blockade-insensitive; Baseline high + Viability compromised = Cytotoxic confounder; etc.">
+        <figcaption>Figure
+          <span class="cap-body">AR decision matrix: what different assay values might mean.</span>
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="methodology">
+      <h2>Methodology</h2>
+
+      <p>In order to run the following experiments, we first had to define ground truth for what defines whether something is a PXR/AR activator/dependent, then run prompts, and then run the experiments on different models. The models include deepseek-v4, gemma-4-26b, gpt-5.4, qwen3.5-35b, to have a range of simpler models and a frontier model to see how their abilities defer. The prompts that we used are available in the appendix, but they mainly include the main assay values you would need.</p>
+
+      <h3>Defining Ground Truth for PXR</h3>
+
+      <p>One of the two most commonly used models to quantify ligand bias is relative-relative Log (Emax/EC50) [Kolb et al, 2022]<sup>1</sup> which is what I used to define ground truth.</p>
+
+      <div class="formula">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mi>I</mi><mo>=</mo>
+          <mo>(</mo><mi>p</mi><mi>E</mi><msub><mi>C</mi><mrow><mn>50</mn><mo>,</mo><mi>A</mi></mrow></msub>
+          <mo>−</mo>
+          <mi>p</mi><mi>E</mi><msub><mi>C</mi><mrow><mn>50</mn><mo>,</mo><mi>B</mi></mrow></msub><mo>)</mo>
+          <mo>+</mo>
+          <msub><mi>log</mi><mn>10</mn></msub>
+          <mrow><mo>(</mo><mfrac><msub><mi>E</mi><mrow><mi>max</mi><mo>,</mo><mi>A</mi></mrow></msub><msub><mi>E</mi><mrow><mi>max</mi><mo>,</mo><mi>B</mi></mrow></msub></mfrac><mo>)</mo></mrow>
+        </math>
+      </div>
+
+      <p>I needed to choose a 'threshold' for selective or non-selective, and that was: threshold of I &ge; 1.5 (if above, selective), and I &lt;= 0.5 for non-specific. Compounds also had to clear a potency gate of pEC50 &ge; 5.5 to be considered active.</p>
+
+      <h3>Defining Ground Truth for AR</h3>
+
+      <p>The ground truth for AR is a little bit tricky, and I'm still working through adjusting the definitions to be scientifically correct, and also looking into the literature. The way these are defined might change for future experiments.</p>
+
+      <p>Here are the categories:</p>
+      <p>1. <strong>Baseline_inactive</strong>: Baseline AR activity is not "Active" in the PubChem outcome field. (6,814 compounds.)</p>
+      <p>2. <strong>Likely_cytotoxic</strong>: Baseline AR is active, but the viability counter-screen also flags active, suggesting cell death rather than AR-specific activity. (9 compounds.)</p>
+      <p>3. <strong>AR_dependent</strong>: Nilutamide blockade substantially suppressed the response, by any of three criteria: delta_pAC50 &gt; 1.0 (potency shift exceeding one log unit upon blockade), delta_Emax &gt; 30 (efficacy drop exceeding 30 percentage points), or baseline active but blocked inactive. (150 compounds.)</p>
+      <p>4. <strong>Blockade_insensitive</strong>: Baseline active, still active under blockade, and |delta_pAC50| &lt; 0.5 (potency barely shifts). These are "fake-outs" &mdash; compounds whose high baseline activity is NOT AR-mediated. (50 compounds.)</p>
+      <p>5. <strong>Inconclusive</strong>: Does not meet criteria for any of the above. (13 compounds.)</p>
+
+      <p>For the behavioral battery, the ground truth mapping for AR-specific is: AR_dependent &rarr; HIGH, blockade_insensitive &rarr; LOW, baseline_inactive &rarr; LOW. Under the deficient condition, blockade_insensitive compounds present only their high baseline pAC50, so the model has no way to know the activity is not AR-specific! So we should not expect models operating without this information to guess correctly.</p>
+
+      <h3>Replicates Run, Number of Molecules in Each Category, etc.</h3>
+
+      <p>I ran 5 replicates for each PXR experiment, and 3 replicates for each AR experiment, and the number of molecules for the experiments below include (separated by each category, due to limitations of the dataset size):</p>
+      <ul>
+        <li>16 compounds, 4 per cell of the 2&times;2 for PXR</li>
+        <li>For AR, 37 compounds: 15 AR_dependent, 15 blockade_insensitive, 7 inactive</li>
+      </ul>
+
+      <h3>Other notes for people who want to run these experiments</h3>
+
+      <p>Code is in the repo. I used GMI Cloud, but you can use your own OpenAI-compatible keys.</p>
+    </section>
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="results">
+      <h2>Results</h2>
+
+      <figure>
+        <img src="./figures/accuracy_by_cell_pxr.png"
+             alt="Accuracy by 2x2 cell for PXR, 16 compounds, 3839 trials, 4 models, Wilson 95% CI">
+        <figcaption>Figure
+          <span class="cap-body">Accuracy by 2&times;2 cell | Wilson 95% CI | 16 compounds, 3839 trials, 4 models (PXR).</span>
+        </figcaption>
+      </figure>
+
+      <figure>
+        <img src="./figures/accuracy_by_cell.png"
+             alt="Accuracy by condition and compound class for AR, 37 compounds, 1998 trials, 6 models, Wilson 95% CI">
+        <figcaption>Figure
+          <span class="cap-body">Accuracy by condition and compound class | Wilson 95% CI | 37 compounds, 1998 trials, 6 models (AR).</span>
+        </figcaption>
+      </figure>
+
+      <figure>
+        <img src="./figures/sensitivity_specificity.png"
+             alt="Sensitivity and specificity by condition for deepseek-v4, gemini-3.5-flash, gemma-4-26b, gpt-5.4, gpt-5.5, and qwen3.5-35b across Def, Opaque, and Transp conditions">
+        <figcaption>Figure
+          <span class="cap-body">Sensitivity and specificity by condition.</span>
+        </figcaption>
+      </figure>
+
+      <p>This imo is an interesting result because it shows how it's not smth wrong with the representation of specificity specifically for PXR, but being able to actually understand concepts as relationships between different assays (without being explicitly told how to do it, despite this info being relative simple) is harder for models (my initial read of the situation, prbly not worded quite right)</p>
+
+      <p>explaining what the blockade <em>means</em> (transparent) dramatically improves one model (gemini-3.5-flash goes from 0% to 98% specificity) but does nothing for others (gemma-4-26b stays at 0%)</p>
+    </section>
+
+    <!-- ---------------------------------------------------------- -->
+    <section id="limitations">
+      <h2>Limitations and Next Steps</h2>
+
+      <p>Explorations with the AR dataset are still very preliminary, and I haven't <em>fully</em> explored prompting options/information combinations to provide models with to get them really good at being able to tell what specificity is.</p>
+
+      <p>I also haven't done any probing/internal work, which might be interesting to do.</p>
+    </section>
+
+    <hr>
+
+    <div class="footnote">
+      <p><sup>1</sup> <a href="https://bpspubs.onlinelibrary.wiley.com/doi/10.1111/bph.15811">https://bpspubs.onlinelibrary.wiley.com/doi/10.1111/bph.15811</a></p>
+    </div>
+
+  </article>
+
+  <aside class="sidebar-toc" aria-label="Table of contents">
+    <div id="toc-title">On this page</div>
+    <nav class="toc-nav">
+      <ul>
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#methodology">Methodology</a>
+          <ul>
+            <li><a href="#methodology">Ground Truth PXR</a></li>
+            <li><a href="#methodology">Ground Truth AR</a></li>
+            <li><a href="#methodology">Replicates</a></li>
+          </ul>
+        </li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#limitations">Limitations</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+</div>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="footer-logo-wrap"><img src="./logo_surrogate_mark.svg" alt="Surrogate Science"></div>
+      <span>Copyright 2026, Surrogate Science</span>
+    </div>
+    <div class="footer-right">
+      <a href="https://github.com/surrogate-sci/prism2026" aria-label="GitHub"><i class="bi bi-github"></i></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-nav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        tocLinks.forEach(link => { link.classList.toggle('active', link.getAttribute('href') === `#${id}`); });
+      }
+    });
+  }, { rootMargin: '-15% 0% -75% 0%' });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
