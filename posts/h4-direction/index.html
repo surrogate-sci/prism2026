@@ -689,7 +689,7 @@
 
       <figure>
         <img src="./figures/data_partitioning_and_pipeline.png"
-             alt="A: Data partitioning — All PXR compounds split into Ordinary (n=92) and Confounded (n=38), then train/validate/test. B: Probe pipeline — Input prompt through Qwen2.5-7B-Instruct, layer 14, standardize, L2 logistic probe, P(TRUE).">
+             alt="A: Data partitioning — All PXR compounds are split into training compounds or holdout compounds (70 training and 9 hold-out respectively). Of these, we generate 80 train claims and 12 holdout claims. Some compounds can fit multiple templates (examples in Appendix X). B: Probe pipeline — Input prompt through Qwen2.5-7B-Instruct, layer 14, standardize, L2 logistic probe, P(TRUE).">
         <figcaption>Figure 1
           <span class="cap-body">Our data partition, and how our true/false probes were trained.</span>
         </figcaption>
@@ -831,21 +831,21 @@
 
       <h3>On probing</h3>
 
-      <p>Whether a direction for 'truth' can be found in the residual stream, and whether it generalizes. We train a logistic-regression DIM probe (difference-in-means direction) on the residual stream at the final token on held-in templates, and evaluate on held-out templates (LOTO = leave-one-template-out). Accuracy is AUROC.</p>
+      <p>Whether a direction for 'truth' can be found in the residual stream, and whether it generalizes. We train an L2 logistic-regression probe on the residual stream at the final token on held-in templates, and evaluate on held-out templates (LOTO = leave-one-template-out). Accuracy is AUROC.</p>
 
-      <p>A DIM probe trained on the 'truth' direction with chemistry context achieves LOTO AUROC above 0.9 at layer 16 for Mistral-7B and Qwen2.5-7B, and above 0.93 at layer 23 for gemma-4-E4b. This indicates the model separates true vs. false claims linearly in its residual stream, and the direction generalizes across different prompt phrasings.</p>
+      <p>An L2 logistic-regression probe trained on the 'truth' direction with chemistry context achieves LOTO AUROC above 0.9 at layer 16 for Mistral-7B and Qwen2.5-7B, and above 0.93 at layer 23 for gemma-4-E4b. This indicates the model separates true vs. false claims linearly in its residual stream, and the direction generalizes across different prompt phrasings.</p>
 
-      <!-- figure placeholder: DIM accuracy bar charts not yet extracted -->
+      <!-- figure placeholder: L2 logistic-regression accuracy bar charts not yet extracted -->
       <figure>
-        <div class="figure-placeholder">Figure &mdash; DIM accuracy bar charts (train/LOTO AUROC) &mdash; to be added</div>
+        <div class="figure-placeholder">Figure &mdash; L2 logistic-regression accuracy bar charts (train/LOTO AUROC) &mdash; to be added</div>
         <figcaption>Figure 4
-          <span class="cap-body">DIM probe accuracy for 4 models in chemistry and stripped contexts.</span>
+          <span class="cap-body">L2 logistic-regression probe accuracy for 4 models in chemistry and stripped contexts.</span>
         </figcaption>
       </figure>
 
       <h3>Context transfer</h3>
 
-      <p>Context transfer &mdash; does the chemistry-context direction work on stripped prompts, and vice versa? This 2&times;2 matrix tests: if I train a DIM probe in one context, does it correctly classify claims in the other context?</p>
+      <p>Context transfer &mdash; does the chemistry-context direction work on stripped prompts, and vice versa? This 2&times;2 matrix tests: if I train an L2 logistic-regression probe in one context, does it correctly classify claims in the other context?</p>
 
       <figure>
         <img src="./figures/context_transfer_matrices.png"
@@ -855,11 +855,11 @@
         </figcaption>
       </figure>
 
-      <p><strong>What we found:</strong> the matched-pair DIM direction is family-specific. When you hold out one contrast family and refit the direction on the other three, it fails to classify the held-out family above chance. That means the direction is capturing something about the particular true/false contrast used in training &mdash; the phrasing, the compound type, the claim structure &mdash; rather than a single abstract "this claim is true" axis that runs through all of them.</p>
+      <p><strong>What we found:</strong> the matched-pair L2 logistic-regression direction is family-specific. When you hold out one contrast family and refit the direction on the other three, it fails to classify the held-out family above chance. That means the direction is capturing something about the particular true/false contrast used in training &mdash; the phrasing, the compound type, the claim structure &mdash; rather than a single abstract "this claim is true" axis that runs through all of them.</p>
 
-      <p><strong>The nuance &mdash; layer 19 OOD:</strong> that result is pulling in a different direction (no pun intended). The OOD test strips all chemistry framing and presents just the numerical comparison. At layer 19, the DIM direction built from chemistry templates correctly classifies those stripped prompts with AUROC 0.972. That suggests there <em>is</em> something at layer 19 that aligns with the underlying numerical comparison, even though it doesn't transfer across chemistry-framed templates.</p>
+      <p><strong>The nuance &mdash; layer 19 OOD:</strong> that result is pulling in a different direction (no pun intended). The OOD test strips all chemistry framing and presents just the numerical comparison. At layer 19, the L2 logistic-regression direction built from chemistry templates correctly classifies those stripped prompts with AUROC 0.972. That suggests there <em>is</em> something at layer 19 that aligns with the underlying numerical comparison, even though it doesn't transfer across chemistry-framed templates.</p>
 
-      <p>So the picture is more like: there may be a numerical-comparison direction at layer 19 that the model uses for pEC50 comparisons in general, but the chemistry framing introduces template-specific offsets that dominate the signal when you test across templates. The DIM direction absorbs those offsets rather than averaging them away.</p>
+      <p>So the picture is more like: there may be a numerical-comparison direction at layer 19 that the model uses for pEC50 comparisons in general, but the chemistry framing introduces template-specific offsets that dominate the signal when you test across templates. The L2 logistic-regression direction absorbs those offsets rather than averaging them away.</p>
     </section>
 
     <!-- ---------------------------------------------------------- -->
