@@ -1,26 +1,5 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Scientific Causal Reasoning for Interpretability –",
-    "section": "",
-    "text": "NoteAI usage disclosure\n\n\n\n\n\nAI usage disclosure incomplete. Before submission or release, complete ai-use.yml. Every first and last author must describe their exact AI usage, and every remaining author must read the complete disclosure and confirm it in that file."
-  },
-  {
-    "objectID": "index.html#purpose",
-    "href": "index.html#purpose",
-    "title": "Scientific Causal Reasoning for Interpretability –",
-    "section": "Purpose",
-    "text": "Purpose\nOnce edited by you, this file will become your publication. Alternatively, if you already have a notebook written that you’re trying to transform into a pub, replace this file with your own, but be sure to add the YAML front matter (the first cell) to your notebook.\nYour pub should begin with a section titled Purpose where you, as briefly as possible, explain why you did the work described in the pub, the key takeaway, your primary audience, and how you think it could be useful to them/why you’re sharing it."
-  },
-  {
-    "objectID": "index.html#learn-more",
-    "href": "index.html#learn-more",
-    "title": "Scientific Causal Reasoning for Interpretability –",
-    "section": "Learn more",
-    "text": "Learn more\nRefer to Demo to learn about possible syntax."
-  },
-  {
     "objectID": "pages/SETUP.html",
     "href": "pages/SETUP.html",
     "title": "Setup",

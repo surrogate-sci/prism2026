@@ -833,7 +833,7 @@
 
       <p>Whether a direction for 'truth' can be found in the residual stream, and whether it generalizes. We train an L2 logistic-regression probe on the residual stream at the final token on held-in templates, and evaluate on held-out templates (LOTO = leave-one-template-out). Accuracy is AUROC.</p>
 
-      <p>An L2 logistic-regression probe trained on the 'truth' direction with chemistry context achieves LOTO AUROC above 0.9 at layer 16 for Mistral-7B and Qwen2.5-7B, and above 0.93 at layer 23 for gemma-4-E4b. This indicates the model separates true vs. false claims linearly in its residual stream, and the direction generalizes across different prompt phrasings.</p>
+      <p>An L2 logistic-regression probe trained on the 'truth' direction with chemistry context achieves holdout AUROC above 0.9 at layer 16 for Mistral-7B and Qwen2.5-7B, and above 0.93 at layer 23 for gemma-4-E4b. This indicates the model separates true vs. false claims linearly in its residual stream, and the direction generalizes to new compounds within the same template. However, for LOTO, at layer 16, it is 0.286 for Qwen and for Gemma is 0.100.</p>
 
       <!-- figure placeholder: L2 logistic-regression accuracy bar charts not yet extracted -->
       <figure>
@@ -857,9 +857,9 @@
 
       <p><strong>What we found:</strong> the matched-pair L2 logistic-regression direction is family-specific. When you hold out one contrast family and refit the direction on the other three, it fails to classify the held-out family above chance. That means the direction is capturing something about the particular true/false contrast used in training &mdash; the phrasing, the compound type, the claim structure &mdash; rather than a single abstract "this claim is true" axis that runs through all of them.</p>
 
-      <p><strong>The nuance &mdash; layer 19 OOD:</strong> that result is pulling in a different direction (no pun intended). The OOD test strips all chemistry framing and presents just the numerical comparison. At layer 19, the L2 logistic-regression direction built from chemistry templates correctly classifies those stripped prompts with AUROC 0.972. That suggests there <em>is</em> something at layer 19 that aligns with the underlying numerical comparison, even though it doesn't transfer across chemistry-framed templates.</p>
+      <p><strong>The nuance &mdash; late-layer OOD transfer:</strong> that result is pulling in a different direction (no pun intended). The OOD test strips all chemistry framing and presents just the numerical comparison. For Gemma-4-E4b, the stripped-selectivity LOTO AUROC reaches 0.958 at layer 20 and 0.982 at layer 22. For Qwen2.5-7B, the stripped transfer at layer 19 is only 0.5. That suggests there <em>is</em> something in Gemma's late layers that aligns with the underlying numerical comparison, even though it doesn't transfer across chemistry-framed templates &mdash; and this effect is model-dependent.</p>
 
-      <p>So the picture is more like: there may be a numerical-comparison direction at layer 19 that the model uses for pEC50 comparisons in general, but the chemistry framing introduces template-specific offsets that dominate the signal when you test across templates. The L2 logistic-regression direction absorbs those offsets rather than averaging them away.</p>
+      <p>So the picture is more like: there may be a numerical-comparison direction in Gemma's late layers that the model uses for pEC50 comparisons in general, but the chemistry framing introduces template-specific offsets that dominate the signal when you test across templates. The L2 logistic-regression direction absorbs those offsets rather than averaging them away.</p>
     </section>
 
     <!-- ---------------------------------------------------------- -->
@@ -867,7 +867,7 @@
       <h2>Results part 2 (IN PROGRESS)</h2>
 
       <p>Then tried to see if we could do activation steering to turn confounded claims from true to false (correct)</p>
-      <p>This worked without incorrectly steering any actually true or actually false claims away</p>
+      <p>At &alpha; = 1, in-domain steering flipped 100% of confounded claims to the correct answer, but also inadvertently flipped 28% of actually-true claims</p>
 
       <figure>
         <img src="./figures/steering_combined.png"
@@ -911,8 +911,8 @@
     <section id="appendix" class="appendix-section">
       <h2>Appendix</h2>
 
-      <p>Question: So why did we choose L16 for Mistral/Qwen?</p>
-      <p>Answer: sweep, and it was highest on the hold-out AUROC. But to be honest the other layers might have something interesting, so this is on the to do.</p>
+      <p>Question: So why did we choose L14 for Mistral and L18 for Qwen?</p>
+      <p>Answer: sweep, and those were the first layers to reach holdout AUROC of 1.0 for each model (Mistral peaks at layer 14, Qwen at layer 18). But to be honest the other layers might have something interesting, so this is on the to do.</p>
 
       <figure>
         <img src="./figures/layer_sweep_qwen.png"
