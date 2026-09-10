@@ -150,25 +150,25 @@
     .page-header {
       background-color: var(--surrogate-paper);
       border-bottom: 1px solid var(--surrogate-charcoal-20);
-      padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 6vw, 5rem);
+      padding: 1.75rem clamp(1.5rem, 6vw, 5rem) 1.5rem;
     }
 
     .page-header h1 {
       max-width: 62rem;
       color: var(--surrogate-charcoal);
       font-family: var(--nb-font-serif);
-      font-size: clamp(2.6rem, 6vw, 5.25rem);
+      font-size: clamp(2rem, 5vw, 3rem);
       font-weight: 600;
-      letter-spacing: -0.035em;
+      letter-spacing: -0.025em;
       line-height: 1.0;
     }
 
     .page-header .subtitle {
       max-width: 62rem;
       font-family: var(--nb-font-sans);
-      font-size: 1.1rem;
+      font-size: 1rem;
       color: var(--surrogate-muted-color);
-      margin-top: 1rem;
+      margin-top: 0.5rem;
       line-height: 1.55;
     }
 
@@ -178,16 +178,20 @@
     .listing-container {
       max-width: 900px;
       margin: 0 auto;
-      padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 6vw, 5rem);
+      padding: clamp(1.5rem, 4vw, 3rem) clamp(1.5rem, 6vw, 5rem);
     }
 
     .post-card {
-      display: block;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto auto auto;
+      column-gap: 2rem;
+      row-gap: 0;
       background-color: var(--bs-code-bg-color);
       border: 1px solid rgba(0,0,0,0.10);
       border-radius: 8px;
-      padding: 2rem;
-      margin-bottom: 1.5rem;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1rem;
       text-decoration: none;
       transition: border-color 0.25s ease, box-shadow 0.25s ease;
     }
@@ -197,23 +201,15 @@
       box-shadow: 0 2px 12px rgba(35,95,102,0.10);
     }
 
-    .post-card .post-meta {
-      font-family: var(--nb-font-label);
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--surrogate-teal);
-      font-size: 0.72rem;
-      margin-bottom: 0.6rem;
-    }
-
     .post-card .post-title {
+      grid-column: 1;
+      grid-row: 1;
       font-family: var(--nb-font-serif);
-      font-size: 1.5rem;
+      font-size: 1.35rem;
       font-weight: 600;
       color: var(--surrogate-charcoal);
-      line-height: 1.2;
-      margin-bottom: 0.75rem;
+      line-height: 1.25;
+      align-self: start;
     }
 
     .post-card:hover .post-title {
@@ -221,26 +217,81 @@
     }
 
     .post-card .post-summary {
+      grid-column: 1;
+      grid-row: 2;
       font-family: var(--nb-font-serif);
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: var(--surrogate-muted-color);
-      line-height: 1.6;
-      margin: 0;
+      line-height: 1.55;
+      margin-top: 0.5rem;
     }
 
-    .post-card .read-more {
-      display: inline-block;
-      margin-top: 1rem;
+    .post-sidebar {
+      grid-column: 2;
+      grid-row: 1 / -1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.35rem;
+      padding-top: 0.15rem;
+      white-space: nowrap;
+    }
+
+    .post-date {
       font-family: var(--nb-font-label);
       font-weight: 600;
       font-size: 0.78rem;
       letter-spacing: 0.06em;
       text-transform: uppercase;
+      color: var(--surrogate-charcoal-68);
+    }
+
+    .post-category {
+      font-family: var(--nb-font-label);
+      font-weight: 600;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       color: var(--surrogate-teal);
     }
 
-    .post-card:hover .read-more {
-      color: var(--surrogate-orange);
+    .post-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      border: 1.5px solid var(--surrogate-charcoal-20);
+      border-radius: 50%;
+      color: var(--surrogate-teal);
+      font-size: 1rem;
+      margin-top: auto;
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .post-card:hover .post-arrow {
+      background-color: var(--surrogate-teal);
+      border-color: var(--surrogate-teal);
+      color: var(--surrogate-paper);
+    }
+
+    /* ---- responsive: stack on narrow screens ---- */
+    @media (max-width: 520px) {
+      .post-card {
+        grid-template-columns: 1fr;
+      }
+      .post-sidebar {
+        grid-column: 1;
+        grid-row: auto;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.5rem;
+      }
+      .post-arrow {
+        margin-top: 0;
+        margin-left: auto;
+      }
     }
 
     /* ============================================================
@@ -347,31 +398,43 @@
 <div class="listing-container">
 
   <a class="post-card" href="./pxr-to-ar/">
-    <div class="post-meta">September 2026 &middot; Experiment Update</div>
     <div class="post-title">Generalizing from PXR to AR datasets</div>
     <p class="post-summary">Behavioural tasks to see if models are able to do nuanced thinking about biological datasets with assay data, if we ask them questions that can't just be answered from assay, such as PXR and AR.</p>
-    <span class="read-more">Read more &rarr;</span>
+    <div class="post-sidebar">
+      <span class="post-date">Sep 2026</span>
+      <span class="post-category">Experiment Update</span>
+      <span class="post-arrow"><i class="bi bi-arrow-right"></i></span>
+    </div>
   </a>
 
   <a class="post-card" href="./h4-direction/">
-    <div class="post-meta">September 2026 &middot; Experiment Update</div>
     <div class="post-title">True/False probes</div>
     <p class="post-summary">Given a true claim about a compound and a false claim about the same compound, there exists a linear direction in the model's residual stream that separates true from false &mdash; and the same direction works for new compounds. We test whether the direction is confounded, generalizable, and causally active.</p>
-    <span class="read-more">Read more &rarr;</span>
+    <div class="post-sidebar">
+      <span class="post-date">Sep 2026</span>
+      <span class="post-category">Experiment Update</span>
+      <span class="post-arrow"><i class="bi bi-arrow-right"></i></span>
+    </div>
   </a>
 
   <a class="post-card" href="./olmo-update/">
-    <div class="post-meta">September 2026 &middot; Experiment Update</div>
     <div class="post-title">OLMo branch experiments</div>
     <p class="post-summary">Does potency become linearly decodable before selectivity, and does selectivity as a construct emerge before or after arithmetic selectivity? We run frozen probes across OLMo, Pythia, and Gemma checkpoints to investigate whether models learn genuine selectivity constructs or default to arithmetic shortcuts.</p>
-    <span class="read-more">Read more &rarr;</span>
+    <div class="post-sidebar">
+      <span class="post-date">Sep 2026</span>
+      <span class="post-category">Experiment Update</span>
+      <span class="post-arrow"><i class="bi bi-arrow-right"></i></span>
+    </div>
   </a>
 
   <a class="post-card" href="./mid-august-update/">
-    <div class="post-meta">Mid-August 2026 &middot; Team Update</div>
     <div class="post-title">Guiding question: can we figure out something interesting about how LLM models internally represent potency and selectivity, and if they use shortcuts to answer scientific questions?</div>
     <p class="post-summary">We are using the PXR dataset by Huggingface, with over 11,000 screened compounds, to explore whether LLMs use 'shortcuts' for reasoning in scientific contexts. We probe activations, apply reparameterization, and patch residual streams to investigate whether models genuinely reason about potency and selectivity or default to arithmetic shortcuts.</p>
-    <span class="read-more">Read more &rarr;</span>
+    <div class="post-sidebar">
+      <span class="post-date">Aug 2026</span>
+      <span class="post-category">Team Update</span>
+      <span class="post-arrow"><i class="bi bi-arrow-right"></i></span>
+    </div>
   </a>
 
 </div>
