@@ -921,6 +921,74 @@
           <span class="cap-body">H4 Layer Sweep &mdash; Qwen2.5-7B-Instruct.</span>
         </figcaption>
       </figure>
+
+      <h3>Experiment code pathways</h3>
+
+      <p>All experiment code lives in <code>experiments/h4/</code> in the
+      <a href="https://github.com/surrogate-sci/pxr-interp-evals">pxr-interp-evals</a> repository.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Figure</th>
+            <th>Script</th>
+            <th>Run directory</th>
+            <th>Config</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Figure 1 &mdash; Data partitioning</td>
+            <td colspan="3">Extracted from manuscript PDF</td>
+          </tr>
+          <tr>
+            <td>Figure 2 &mdash; Methodology bar charts</td>
+            <td colspan="3">Extracted from manuscript PDF</td>
+          </tr>
+          <tr>
+            <td>Figure 3 &mdash; Behavioral threshold</td>
+            <td><code>run_h4_behavioral.py</code></td>
+            <td><code>runs/lightning_corrected/</code></td>
+            <td>(multi-model configs)</td>
+          </tr>
+          <tr>
+            <td>Figure 5 &mdash; Context transfer matrices</td>
+            <td><code>run_h4_stripped_context_probe.py</code></td>
+            <td><code>runs/20260819-130619_h4-stripped-context-probe/</code></td>
+            <td><code>stripped_context_*.yaml</code></td>
+          </tr>
+          <tr>
+            <td>Figure 6 &mdash; Steering combined</td>
+            <td><code>run_h4_steering_causal.py</code></td>
+            <td><code>runs/full-80-mac/</code></td>
+            <td><code>full_80_mac.yaml</code></td>
+          </tr>
+          <tr>
+            <td>Figure 7 &mdash; Steering alpha sweep</td>
+            <td><code>run_h4_steering_causal.py</code></td>
+            <td><code>runs/full-80-mac/</code></td>
+            <td><code>full_80_mac.yaml</code></td>
+          </tr>
+          <tr>
+            <td>Appendix &mdash; Layer sweep (Qwen)</td>
+            <td><code>run_layer_sweep.py</code></td>
+            <td><code>runs/layer-sweep-lightning/</code></td>
+            <td><code>full_layer_sweep_lightning.yaml</code></td>
+          </tr>
+          <tr>
+            <td>Appendix &mdash; Layer sweep (Mistral)</td>
+            <td><code>run_layer_sweep.py</code></td>
+            <td><code>runs/mistral-layer-sweep-lightning/</code></td>
+            <td><code>mistral_layer_sweep_lightning.yaml</code></td>
+          </tr>
+          <tr>
+            <td>Multi-model layer summaries</td>
+            <td><code>run_layer_sweep.py</code></td>
+            <td><code>runs/lightning_corrected/{gemma4_e4b,qwen3_14b}/</code></td>
+            <td>(per-model configs)</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
   </article>
