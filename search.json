@@ -1,5 +1,26 @@
 [
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Scientific Causal Reasoning for Interpretability –",
+    "section": "",
+    "text": "NoteAI usage disclosure\n\n\n\n\n\nAI usage disclosure incomplete. Before submission or release, complete ai-use.yml. Every first and last author must describe their exact AI usage, and every remaining author must read the complete disclosure and confirm it in that file."
+  },
+  {
+    "objectID": "index.html#purpose",
+    "href": "index.html#purpose",
+    "title": "Scientific Causal Reasoning for Interpretability –",
+    "section": "Purpose",
+    "text": "Purpose\nWe want to share experiments as we go along, including our null results, imperfect designs, and how we iterate through prompt design."
+  },
+  {
+    "objectID": "index.html#learn-more",
+    "href": "index.html#learn-more",
+    "title": "Scientific Causal Reasoning for Interpretability –",
+    "section": "Learn more",
+    "text": "Learn more\nPlease reach out to us, or feel free to look through our blog posts!"
+  },
+  {
     "objectID": "pages/SETUP.html",
     "href": "pages/SETUP.html",
     "title": "Setup",
