@@ -712,11 +712,11 @@
 
       <p>On the developmental experiments, OLMo-2-7B shows arithmetic selectivity reaching the 0.75 AUROC threshold between 5B and 10B training tokens, while the fragility onset is resolved to the 3B&ndash;5B bracket. This means the fragility of the probes occurs either right before or is simultaneous with arithmetic emergence. On Pythia-6.9B the ordering is the same but compressed: arithmetic selectivity emerges at 1B&ndash;2B tokens, fragility at fewer than 1B tokens, and potency at 4B&ndash;6B tokens, all substantially earlier than on OLMo-2-7B. The selectivity direction is basically arithmetic: the model learns early to compare two numbers, and that comparison generalises across chemistry contexts. The stripped probe cannot transfer to the inactivity group judgment that depends on chemistry-specific contextual cues about what absence of signal means in a biological assay (model only makes this distinction when chemistry context is given).</p>
 
-      <!-- figure placeholder -->
       <figure>
-        <div class="figure-placeholder">Figure &mdash; to be added</div>
+        <img src="overlay_olmo.png" alt="OLMo-2-7B developmental trajectory: potency, selectivity arithmetic, and fragility over pretraining tokens">
+        <img src="overlay_pythia.png" alt="Pythia-6.9B developmental trajectory: potency, selectivity arithmetic, and fragility over pretraining tokens" style="margin-top: 1rem;">
         <figcaption>Figure 2
-          <span class="cap-body">OLMo-2-7B and Pythia-6.9B developmental trajectory.</span>
+          <span class="cap-body">OLMo-2-7B and Pythia-6.9B developmental trajectory. Top: OLMo-2-7B. Bottom: Pythia-6.9B. Three curves show potency decodability, selectivity arithmetic decodability, and fragility (ranking accuracy lost when counter-screen is removed) across pretraining tokens.</span>
         </figcaption>
       </figure>
 
