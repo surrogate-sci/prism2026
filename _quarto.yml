@@ -32,8 +32,8 @@ website:
         href: index.ipynb
     - text: '{{< iconify nrk:back >}} Back to Pub'
       href: index.ipynb
-    - text: Demo
-      href: /examples/demo.html
+    - text: Blog
+      href: /posts/index.html
     right:
     - text: FAQ
       href: pages/FAQ.qmd
