@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" class="surrogate-warm-journal">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testing In-Context Learning of Synthetic Structure-Assay Rules with Inspect AI | PRISM 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Fira+Mono:wght@400;500&family=Fira+Sans:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <style>
+    :root {
+      --surrogate-paper:    #F5F0E2;
+      --surrogate-teal:     #235F66;
+      --surrogate-orange:   #F28A1C;
+      --surrogate-amber:    #FFB83E;
+      --surrogate-charcoal: #30332F;
+      --surrogate-charcoal-68: rgba(48,51,47,0.68);
+      --surrogate-charcoal-50: rgba(48,51,47,0.50);
+      --surrogate-charcoal-20: rgba(48,51,47,0.20);
+      --surrogate-paper-50:    rgba(245,240,226,0.50);
+      --surrogate-body-color:  var(--surrogate-charcoal);
+      --surrogate-label-color: var(--surrogate-teal);
+      --surrogate-muted-color: var(--surrogate-charcoal-68);
+      --surrogate-link-color:  var(--surrogate-teal);
+      --surrogate-logo-size:   2rem;
+      --bs-code-bg-color:          color-mix(in srgb, #F5F0E2 92%, #30332F);
+      --bs-code-border-color:      rgba(48,51,47,0.20);
+      --bs-code-left-border-color: rgba(35,95,102,0.60);
+      --bs-code-color:             var(--surrogate-teal);
+      --nb-font-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+      --nb-font-sans:  "Assistant", ui-sans-serif, system-ui, sans-serif;
+      --nb-font-label: "Fira Sans", ui-sans-serif, system-ui, sans-serif;
+      --nb-font-mono:  "Fira Mono", ui-monospace, Consolas, monospace;
+      --nb-h1-font-size: 2.5rem;
+      --nb-h2-font-size: 2rem;
+      --navbar-height:     4rem;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { counter-reset: figure-counter; }
+    figure { counter-increment: figure-counter; }
+    body {
+      font-family: var(--nb-font-sans);
+      color: var(--surrogate-body-color);
+      background-color: var(--surrogate-paper);
+      line-height: 1.65;
+      font-size: 1rem;
+    }
+    a { color: var(--surrogate-teal); text-decoration: none; }
+    a:hover { color: var(--surrogate-orange); }
+    .navbar {
+      height: var(--navbar-height);
+      background-color: var(--surrogate-paper);
+      border-bottom: 1px solid var(--surrogate-charcoal-20);
+      display: flex; align-items: center; padding: 0 2rem;
+      position: sticky; top: 0; z-index: 1030; gap: 1rem;
+    }
+    .navbar-brand { display: inline-flex; align-items: center; gap: 0.65rem; text-decoration: none; flex-shrink: 0; }
+    .navbar-logo { width: 2.8rem; height: 2.8rem; max-height: 2.8rem; }
+    .navbar-title { color: var(--surrogate-charcoal); font-family: var(--nb-font-serif); font-size: 1.15rem; font-weight: 700; letter-spacing: 0.01em; white-space: nowrap; }
+    .navbar-nav { display: flex; align-items: center; list-style: none; gap: 0.25rem; margin-left: auto; }
+    .navbar-nav .nav-link { color: var(--surrogate-charcoal); font-family: var(--nb-font-sans); font-size: 0.9rem; padding: 0.4rem 0.6rem; text-decoration: none; position: relative; }
+    .navbar-nav .nav-link::after { content: ''; position: absolute; width: 100%; height: 2px; bottom: -2px; left: 0; background-color: currentColor; opacity: 0; transition: opacity 0.4s ease; }
+    .navbar-nav .nav-link:hover { color: var(--surrogate-charcoal); }
+    .navbar-nav .nav-link:hover::after { opacity: 1; }
+    .quarto-title-banner { background-color: var(--surrogate-paper) !important; border-bottom: 1px solid var(--surrogate-charcoal-20); padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 6vw, 5rem); }
+    .quarto-title-banner h1 { max-width: 62rem; color: var(--surrogate-charcoal) !important; font-family: var(--nb-font-serif) !important; font-size: clamp(2.6rem, 6vw, 5.25rem) !important; font-weight: 600 !important; letter-spacing: -0.035em; line-height: 1.0; }
+    .title-meta-container { padding: 0 clamp(1.5rem, 6vw, 5rem); }
+    .quarto-title-meta { background-color: var(--bs-code-bg-color); padding: 1em 2em 0 2em; margin-top: 2rem; border-radius: 8px 8px 0 0; border: 1px solid rgba(0,0,0,0.10); border-bottom: none; display: flex; flex-wrap: wrap; gap: 2rem; }
+    .quarto-title-meta-heading { font-family: var(--nb-font-label) !important; font-weight: 600 !important; letter-spacing: 0.08em; text-transform: uppercase; color: var(--surrogate-teal) !important; font-size: 0.72rem; margin-bottom: 0.25rem; }
+    .quarto-title-meta-contents { font-family: var(--nb-font-sans); font-size: 0.9rem; color: var(--surrogate-body-color); padding-bottom: 1em; }
+    .abstract { background-color: var(--bs-code-bg-color); padding: 1rem 2rem 1.5rem 2rem; border-radius: 0 0 8px 8px; border: 1px solid rgba(0,0,0,0.10); border-top: none; }
+    .abstract .block-title { font-family: var(--nb-font-label) !important; font-weight: 600 !important; letter-spacing: 0.08em; text-transform: uppercase; color: var(--surrogate-teal) !important; font-size: 0.72rem; margin-bottom: 0.6rem; }
+    .abstract p { font-family: var(--nb-font-serif); font-size: 1.1rem; font-weight: 400; color: var(--surrogate-body-color); line-height: 1.65; margin: 0; }
+    .page-layout { display: grid; grid-template-columns: [outer-left] clamp(1rem, 4vw, 4rem) [content-start] minmax(0, 820px) [content-end] clamp(0px, 3vw, 2rem) [toc-start] clamp(140px, 16vw, 210px) [toc-end] clamp(1rem, 4vw, 4rem) [outer-right]; padding-top: 2.5rem; align-items: start; }
+    .article-content { grid-column: content-start / content-end; padding-bottom: 5rem; min-width: 0; }
+    .sidebar-toc { grid-column: toc-start / toc-end; position: sticky; top: calc(var(--navbar-height) + 2rem); align-self: start; max-height: calc(100vh - var(--navbar-height) - 4rem); overflow-y: auto; }
+    #toc-title { font-family: var(--nb-font-mono); font-size: 0.8rem; font-weight: 300; color: var(--surrogate-label-color); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.6rem; }
+    .toc-nav ul { list-style: none; padding: 0; }
+    .toc-nav li { margin: 0.1rem 0; }
+    .toc-nav a { font-family: var(--nb-font-mono); font-weight: 300; font-size: 0.78rem; color: var(--surrogate-body-color); text-decoration: none; display: block; padding: 0.15rem 0.5rem; border-left: 2px solid transparent; transition: all 0.2s ease; line-height: 1.4; }
+    .toc-nav a:hover, .toc-nav a.active { border-left-color: var(--surrogate-teal); color: var(--surrogate-teal) !important; }
+    .toc-nav ul ul { padding-left: 0.75rem; }
+    .article-content h2 { font-family: var(--nb-font-serif) !important; font-weight: 600 !important; color: var(--surrogate-charcoal); font-size: var(--nb-h2-font-size); margin-top: 3rem; margin-bottom: 0.75rem; line-height: 1.15; }
+    .article-content h3 { font-family: var(--nb-font-sans) !important; font-weight: 400 !important; color: var(--surrogate-charcoal); font-size: 1.25rem; margin-top: 2rem; margin-bottom: 0.6rem; }
+    .article-content p { margin-bottom: 1.15rem; line-height: 1.7; }
+    .article-content ul, .article-content ol { margin-bottom: 1.15rem; padding-left: 1.5rem; }
+    .article-content li { margin-bottom: 0.4rem; line-height: 1.65; }
+    .article-content li ul { margin-top: 0.4rem; margin-bottom: 0.4rem; }
+    .article-content hr { border: none; border-top: 1px solid var(--surrogate-charcoal-20); margin: 2.5rem 0; }
+    .callout { border-radius: 4px; margin: 1.5rem 0; border: 1px solid var(--surrogate-charcoal-20); border-left-width: 4px; overflow: hidden; }
+    .callout-header { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; font-family: var(--nb-font-label); font-weight: 600; font-size: 0.82rem; letter-spacing: 0.04em; }
+    .callout-body { padding: 0.75rem 1rem 0.9rem; font-size: 0.95rem; line-height: 1.65; }
+    .callout-body p:last-child { margin-bottom: 0; }
+    .callout-note { border-left-color: var(--surrogate-teal); }
+    .callout-note .callout-header { background-color: rgba(35,95,102,0.10); color: var(--surrogate-teal); }
+    figure { margin: 2rem 0; }
+    figure img { max-width: 100%; height: auto; border-radius: 4px; display: block; }
+    figcaption { font-family: var(--nb-font-label) !important; font-weight: 600 !important; letter-spacing: 0.07em; text-transform: uppercase; color: var(--surrogate-teal) !important; font-size: 0.75rem; margin-top: 0.5rem; }
+    figcaption::before { content: "Figure " counter(figure-counter) ". "; }
+    figcaption .cap-body { display: block; font-family: var(--nb-font-sans); font-weight: 400; font-size: 0.88rem; text-transform: none; letter-spacing: normal; color: var(--surrogate-muted-color); margin-top: 0.2rem; line-height: 1.55; }
+    .figure-placeholder { background-color: var(--bs-code-bg-color); border: 2px dashed var(--surrogate-charcoal-20); border-radius: 4px; padding: 3rem 2rem; text-align: center; font-family: var(--nb-font-mono); font-size: 0.85rem; color: var(--surrogate-muted-color); }
+    blockquote { border-left: 0.35rem solid var(--surrogate-orange); padding: 0.5rem 1rem; margin: 1.5rem 0; color: var(--surrogate-charcoal-68); font-style: italic; }
+    code { font-family: var(--nb-font-mono); font-weight: 300; color: var(--bs-code-color); background-color: var(--bs-code-bg-color); padding: 0.1em 0.35em; border-radius: 3px; font-size: 0.88em; }
+    .formula { font-family: var(--nb-font-mono); background-color: var(--bs-code-bg-color); border: 1px solid var(--bs-code-border-color); border-radius: 4px; padding: 0.75rem 1.5rem; text-align: center; font-size: 1.05rem; margin: 1.5rem 0; color: var(--surrogate-charcoal); }
+    pre { background-color: var(--bs-code-bg-color); border: 1px solid var(--bs-code-border-color); border-left: 3px solid rgba(35,95,102,0.60); border-radius: 4px; padding: 1rem 1.25rem; margin: 1rem 0 1.5rem; overflow-x: auto; }
+    pre code { background: none; padding: 0; font-size: 0.82rem; line-height: 1.6; color: var(--surrogate-charcoal); white-space: pre-wrap; word-wrap: break-word; }
+    .site-footer { background-color: var(--surrogate-charcoal) !important; padding: 2rem; margin-top: 4rem; width: 100%; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; max-width: 1300px; margin: 0 auto; flex-wrap: wrap; gap: 1rem; }
+    .footer-left { display: flex; align-items: center; gap: 1rem; color: var(--surrogate-paper); font-family: var(--nb-font-sans); font-size: 0.85rem; }
+    .footer-logo-wrap { padding: 0.25rem; background: var(--surrogate-paper); border-radius: 0.6rem; display: flex; align-items: center; justify-content: center; width: 2.4rem; height: 2.4rem; }
+    .footer-logo-wrap img { width: 1.7rem; height: 1.7rem; }
+    .footer-right a { color: var(--surrogate-paper); font-size: 1.2rem; text-decoration: none; }
+    .footer-right a:hover { color: var(--surrogate-amber); }
+    .footnote { font-size: 0.82rem; color: var(--surrogate-muted-color); border-top: 1px solid var(--surrogate-charcoal-20); margin-top: 2rem; padding-top: 1rem; }
+    @media (max-width: 900px) { .page-layout { grid-template-columns: 1rem 1fr 1rem; } .article-content { grid-column: 2; } .sidebar-toc { display: none; } .navbar-nav { display: none; } }
+    @media (max-width: 640px) { .quarto-title-banner { padding: 2rem 1.25rem; } .quarto-title-banner h1 { font-size: clamp(2rem, 10vw, 3rem) !important; } .title-meta-container { padding: 0 1.25rem; } }
+  
+    .article-content img { max-width: 100%; height: auto; }
+    .article-content table { border-collapse: collapse; width: 100%; margin: 1.5rem 0; }
+    .article-content th, .article-content td { border: 1px solid var(--surrogate-charcoal-20); padding: .55rem .7rem; text-align: left; vertical-align: top; }
+    .article-content th { background: var(--bs-code-bg-color); }
+  </style>
+</head>
+<body class="surrogate-warm-journal">
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <a class="navbar-brand" href="https://github.com/surrogate-sci">
+    <img class="navbar-logo" src="./logo_surrogate_mark.svg" alt="Surrogate Science logo">
+    <span class="navbar-title">SURROGATE SCIENCE</span>
+  </a>
+  <ul class="navbar-nav">
+    <li><a class="nav-link" href="../../index.html">PRISM 2026</a></li>
+    <li><a class="nav-link" href="../">Blog</a></li>
+    <li><a class="nav-link" href="../../pages/FAQ.html">FAQ</a></li>
+    <li><a class="nav-link" href="../../pages/SETUP.html">Reproduce this pub</a></li>
+    <li><a class="nav-link" href="https://github.com/surrogate-sci/prism2026" aria-label="GitHub repository"><i class="bi bi-github"></i></a></li>
+  </ul>
+</nav>
+<div class="quarto-title-banner"><h1>Testing In-Context Learning of Synthetic Structure-Assay Rules with Inspect AI</h1></div>
+<div class="title-meta-container">
+  <div class="quarto-title-meta">
+    <div><div class="quarto-title-meta-heading">Published</div><div class="quarto-title-meta-contents">October 26, 2026 &middot; Experiment Update</div></div>
+  </div>
+</div>
+<div class="page-layout">
+  <article class="article-content"><h2 id="motivation-background">Motivation + Background</h2>
+<p>The ability of LLMs to reason about 'real' causality in biology can potentially have beneficial uses (e.g. assist antiviral design) but can also contribute to biosecurity risks by enabling poor actors to advance harmful capabilities (e.g. seemingly benign capabilities can be used to design biologics that can bind to receptors, crowding out essential cell signals and thus harming the body, or improving antibacterial resistance). Investigating how models reason about causality and building appropriate (and adaptive-ceiling) benchmarks is a large question; this task is a narrowly-scoped capability probe that would be just one part of a larger risk-assessment suite.</p>
+<p>For my task, I chose to work with a small Inspect evaluation of whether models are able infer a simple structure-to-assay rule from in-context examples, with no fine-tuning. I use 90 scaffold-disjoint pairs, three edit classes, and matched no-example versus 10-example prompts. I used synthetic data here (note while the SMILES are real and derived from the PXR dataset, the assay values and 'pairs' I'm making are synthesized as the dataset wasn't large enough for the sorts of pairs I'm testing), but it would make sense to extend to 'real' data, across PXR/AR/etc. datasets. I chose the PXR dataset because it was something that I was already curious about (following up on a discussion that Manjari Narayan and I had last week), and wanted to add to my personal suite of benchmarking tasks. But practically, it asks about just one basic capability and due to its simple set-up, I can perturb it in various ways (e.g. swapping order of structural changes) to build confidence in any findings I have. Prior work has examined molecular property-to-structure reasoning (e.g. <a href="https://arxiv.org/abs/2610.12522">MolP2SBench: Do LLMs Really Reason from Molecular Properties to Structure?</a>) as well as broader causal and scientific-reasoning benchmarks (<a href="https://arxiv.org/abs/2607.04293">1</a>, <a href="https://openreview.net/pdf?id=uQzPkWvTyo">2</a>, <a href="https://www.nature.com/articles/s41557-025-01815-x">3</a>, <a href="https://arxiv.org/abs/2607.11079">4</a>, <a href="https://arxiv.org/abs/2604.03361">5</a>).</p>
+<h2 id="results">Results</h2>
+<p><img alt="GPT-OSS predictions for the positive and control assay changes across three runs: optional RDKit tools, GPT-OSS-20B without tools, and GPT-OSS-120B without tools." src="figures/2026-10-21_h8-main-runs_oss20b-oss120b-optional-rdkit_90prompts.png" /></p>
+<p>Figure 1: Main results. In the optional RDKit experiment shown above, the model invoked an RDKit tool in 4 of 90 samples (4 tool calls total). There were numerous other sub-experiments run (e.g. swapping order of molecules, seeing if this pattern held with another model family (QWEN). As a personal note, I am slightly surprised that even the 120B model was not able to pick up on this rather explicit pattern. Perhaps representing the molecule in a more LLM-friendly visual/parseable way would have improved accuracy.</p>
+<h2 id="limitations">Limitations</h2>
+<p>A central limitation is that the structure–assay rules and values are synthetic and evaluated only in silico, so the ground truth cannot be validated against real measurements. Models also had access only to RDKit; results could differ with a broader set of molecular tools and real SMILES–assay data that capture genuine molecular patterns.</p>
+<p>The model also received molecular structures only as SMILES, which may not expose graph topology as clearly as other representations or tools. For example, <a href="https://arxiv.org/abs/2607.13115">Improving Molecular Property Prediction in Small Language Models Using Graph-based Tools</a> by Bougiatiotis et al. reports that graph-derived context and GNN-generated explanations improved accuracy, often by more than 25% relative and up to 74% on Tox21.</p>
+<h2 id="next-steps">Next steps</h2>
+<p>There are many limitations to the scope of the repo, which means there are many possible exciting next steps.
+1) Expanding tool-use options to include better structural tools that the LLMs can use to better reason about structural consequences
+2) Evolve this into a 'molecule design' task (e.g. ask the model to improve the selectivity, starting from a base SMILES and assay information)
+3) This is asking for benign capabilities; maybe models perform worse (maybe due to internal fine-tuning, or recognizing that what they're doing is dangerous) if asked to design/reason about harmful biologics.
+4) This is a very specific task (e.g. just for the PXR receptor). Worth expanding it and seeing if performance changes if it's just a generic receptor, or for other specific receptors.
+5) Of course, using real data so that any reasoning the LLM does about molecular structure may actually be valid, and the RDKit tool calls would actually be helpful.
+6) Running on a large number of structural changes that have canonnically 'known' effects (e.g. swapping H for NH2, which affects polarity).
+7) Maybe performance was so poor because LLMs are not great at processing SMILES but another representation would have worked better and allowed the LLMs to 'see' that the difference was adding a methyl group on a ring vs chain.</p>
+<h2 id="appendix">Appendix</h2>
+<h2 id="prior-work">Prior Work</h2>
+<ul>
+<li><a href="https://arxiv.org/abs/2610.12522">MolP2SBench: Do LLMs Really Reason from Molecular Properties to Structure?</a></li>
+<li><a href="https://arxiv.org/abs/2601.15279">MolecularIQ: Characterizing Chemical Reasoning Capabilities Through Symbolic Verification on Molecular Graphs</a></li>
+<li><a href="https://arxiv.org/abs/2606.26158">Life After Benchmark Saturation: A Case Study of CORE-Bench</a></li>
+<li><a href="https://neurips.cc/virtual/2025/loc/san-diego/poster/116227">BioReason: Incentivizing Multimodal Biological Reasoning within a DNA-LLM Model</a> — a poster on combining LLMs with DNA foundation models for biological reasoning.</li>
+<li><a href="https://arxiv.org/abs/2607.04293">CausalGame: Benchmarking Causal Thinking of LLM Agents in Games</a></li>
+<li><a href="https://openreview.net/pdf?id=uQzPkWvTyo">CauSciBench: A Comprehensive Benchmark on End-to-End Causal Inference for Scientific Research</a></li>
+<li><a href="https://www.nature.com/articles/s41557-025-01815-x">A framework for evaluating the chemical knowledge and reasoning abilities of large language models against the expertise of chemists</a></li>
+<li><a href="https://arxiv.org/abs/2607.11079">Are LLMs Ready for Scientific Discovery? A Capability-Oriented Benchmark for AI Scientists</a></li>
+<li><a href="https://arxiv.org/abs/2604.03361">The limits of bio-molecular modeling with large language models: a cross-scale evaluation</a></li>
+</ul>
+<h2 id="methodology">Methodology</h2>
+<p>An image demonstrating the structural changes I made (remember that the 'pairs' of molecules are synthetic, with synthetic assay values).</p>
+<p><img alt="Synthetic benchmark chemical transformations" src="figures/chemical_transformations.png" /></p>
+<h3 id="validation-checks">Validation checks</h3>
+<table>
+<thead>
+<tr>
+<th>Validation check</th>
+<th>What it tests</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scaffold-disjoint 90-pair set</td>
+<td>✅ 90 held-out pairs across saturated-ring methyl addition, aliphatic-chain methyl addition, and an aromatic methyl control.</td>
+</tr>
+<tr>
+<td>A/B presentation-order reversal</td>
+<td>✅ Query presentation varies which molecule appears first, and scoring follows the displayed B-minus-A direction. This tests whether predictions follow the edit rather than a fixed position.</td>
+</tr>
+<tr>
+<td>Matched no-example vs. 10-example conditions</td>
+<td>🟡 Manifests and scoring are in place to test whether demonstrations improve recovery over a rule-withheld baseline; the locked matched run cells are pending.</td>
+</tr>
+<tr>
+<td>Numeric assay predictions</td>
+<td>✅ Scorers evaluate each predicted assay change separately and jointly, plus numeric error for assay endpoints and selectivity margin.</td>
+</tr>
+<tr>
+<td>Four-way selectivity classification</td>
+<td>✅ The response schema and scorer cover not active, not selective, ambiguous, and selective outcomes, with label accuracy and confusion-matrix reporting.</td>
+</tr>
+<tr>
+<td>Abstention when the rule is withheld</td>
+<td>✅ The model may answer “insufficient information”; the evaluation records response validity, abstention, and coverage. Agreement with the task’s rule-available/withheld policy is policy agreement, not objective epistemic correctness.</td>
+</tr>
+<tr>
+<td>Matched comparison of two models</td>
+<td>🟡 A two-endpoint comparison is specified, but the locked matched cells are pending. The earlier completed no-example run is exploratory and excluded from that comparison.</td>
+</tr>
+<tr>
+<td>Counterfactual ring/chain rule swap</td>
+<td>🟡 A prepared condition exchanges ring- and chain-edit effects while keeping structures and prompts matched; calls to test whether predictions follow the swapped examples have not been run.</td>
+</tr>
+<tr>
+<td>Optional RDKit tools vs. matched baselines</td>
+<td>🟡 Optional structure-analysis tools and scoring are implemented; matched no-tool and precomputed-structure comparisons are not complete.</td>
+</tr>
+<tr>
+<td>Additional model families and frontier models</td>
+<td>🟡 Could test how general the result is, but they are outside the current run plan, in part because of budget limits.</td>
+</tr>
+<tr>
+<td>Further robustness checks</td>
+<td>🟡 Example-count dose response, shuffled-label demonstrations, and omitting a demonstration class are proposed follow-ups, not completed checks.</td>
+</tr>
+</tbody>
+</table>
+<p>✅ means implemented in code or frozen manifests; 🟡 means planned, prepared, or not yet completed as a matched run. A/B order reversal is distinct from the counterfactual rule swap: the former changes presentation order, while the latter changes the synthetic rule itself.</p>
+</article>
+  <aside class="sidebar-toc" aria-label="Table of contents">
+    <div id="toc-title">On this page</div>
+    <nav class="toc-nav"><ul>
+      <li><a href="#motivation-background">Motivation + Background</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#limitations">Limitations</a></li>
+      <li><a href="#next-steps">Next steps</a></li>
+      <li><a href="#appendix">Appendix</a><ul>
+        <li><a href="#prior-work">Prior Work</a></li>
+        <li><a href="#methodology">Methodology</a></li>
+        <li><a href="#validation-checks">Validation checks</a></li>
+      </ul></li>
+    </ul></nav>
+  </aside>
+</div>
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner"><div class="footer-left"><div class="footer-logo-wrap"><img src="./logo_surrogate_mark.svg" alt="Surrogate Science"></div><div>PRISM 2026</div></div><div class="footer-right"><a href="https://github.com/surrogate-sci/prism2026" aria-label="GitHub"><i class="bi bi-github"></i></a></div></div>
+</footer>
+</body></html>
