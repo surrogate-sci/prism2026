@@ -695,9 +695,9 @@
 
       <p>To test this we trained probes on two different prompt formats for the same task. The chemistry-framed probe is trained on standard prompts: a toxicologist role, SMILES, both pEC50 readings, and a natural-language assertion about PXR specificity or compound activity. The stripped-context probe is trained on anonymous numerical prompts in which all chemistry framing is removed. The two measurements are presented only as "Primary assay measurement" and "Null control assay measurement". The ground truth in the stripped setting is: whether the primary value exceeds the null-control value. To prevent the probe from learning positional shortcuts, we apply two independent randomizations per instance: which value is placed in the Primary slot, and whether the Primary line appears before or after the Null control line in the prompt. We then evaluate both probes on both contexts!</p>
 
-      <!-- figure placeholder -->
       <figure>
-        <div class="figure-placeholder">Figure &mdash; to be added</div>
+        <!-- Editable source: pxr-interp-evals, branch olmo-checkpoint-selectivity, sessions/2026-08-18-olmo7b-fragility-onset/result/figures/probe-setup/make_probe_setup_diagram.py and probe_setup_diagram.svg. structure-example.png is the PubChem PUG-REST 2D rendering of curated PXR SMILES for OADMET-0001982. -->
+        <img src="probe-setup-diagram.svg" alt="Diagram showing an example PXR molecule and assay readings passed through chemistry-framed and stripped-context prompts, hidden-state readouts from OLMo, Pythia, and Gemma, and three probe targets for potency and selectivity transfer">
         <figcaption>Figure 1
           <span class="cap-body">Probe setup diagram.</span>
         </figcaption>
